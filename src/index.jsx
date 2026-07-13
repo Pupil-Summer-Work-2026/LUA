@@ -9,14 +9,14 @@ import {
 
 import './style.css'
 import Registrs from './views/registry-page'
-import LandingPage from './views/landing-page'
-import AboutUs from './views/about-us'
-import Jaunumi from './views/jaunumi'
-import Jaunums from './views/jaunums'
-import Contacts from './views/contacts'
-import Biedri from './views/biedri'
-import Ktparbiedru from './views/ktparbiedru'
-import NotFound from './views/not-found'
+import LandingPage from './views/landing-page.jsx'
+import AboutUs from './views/about-us.jsx'
+import Jaunumi from './views/jaunumi.jsx'
+import Jaunums from './views/jaunums.jsx'
+import Contacts from './views/contacts.jsx'
+import Biedri from './views/biedri.jsx'
+import Ktparbiedru from './views/ktparbiedru.jsx'
+import NotFound from './views/not-found.jsx'
 
 const App = () => {
   return (
