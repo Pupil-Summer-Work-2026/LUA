@@ -3,6 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 import './contacts.css'
+import Navbar from '../components/Navbar'
 
 const Contacts = (props) => {
   return (
@@ -20,22 +21,7 @@ const Contacts = (props) => {
         />
       </Helmet>
       <div className="contacts-thq-contacts-elm">
-        <div className="contacts-thq-nav-bar-elm">
-          <div className="contacts-thq-button-enlist-elm">
-            <span className="contacts-thq-text-elm10">Kļūt par biedru</span>
-          </div>
-          <img
-            src="https://play.teleporthq.io/static/svg/default-img.svg"
-            alt="image29778"
-            className="contacts-thq-image2-elm"
-          />
-          <span className="contacts-thq-text-elm11">Kontakti</span>
-          <span className="contacts-thq-text-elm12">Biedri</span>
-          <span className="contacts-thq-text-elm13">Jaunumi</span>
-          <div className="contacts-thq-parmums-elm">
-            <span className="contacts-thq-text-elm14">Par mums</span>
-          </div>
-        </div>
+        <Navbar />
         <div className="contacts-thq-bg-elm">
           <img
             src="https://play.teleporthq.io/static/svg/default-img.svg"

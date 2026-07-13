@@ -2,9 +2,17 @@ import React from 'react'
 
 import { Helmet } from 'react-helmet'
 
+import { useHistory } from 'react-router-dom'
+
+import Navbar from '../components/Navbar.jsx'
+
 import './about-us.css'
 
 const AboutUs = (props) => {
+  const history = useHistory();
+  function handleClick() {
+    alert('Button clicked!');
+  }
   return (
     <div className="about-us-container1">
       <Helmet>
@@ -20,42 +28,7 @@ const AboutUs = (props) => {
         />
       </Helmet>
       <div className="about-us-thq-about-us-elm">
-        <div className="about-us-thq-nav-bar-elm1">
-          <img
-            src="/image21612-9tc7-200h.png"
-            alt="image21612"
-            className="about-us-thq-image2-elm1"
-          />
-          <div className="about-us-thq-button-enlist-elm1">
-            <span className="about-us-thq-text-elm10">Kļūt par biedru</span>
-          </div>
-          <span className="about-us-thq-text-elm11">Kontakti</span>
-          <span className="about-us-thq-text-elm12">Biedri</span>
-          <span className="about-us-thq-text-elm13">Jaunumi</span>
-          <span className="about-us-thq-text-elm14">Par mums</span>
-        </div>
-        <div className="about-us-thq-bg-elm">
-          <img
-            src="/line2619-jzsv.svg"
-            alt="Line2619"
-            className="about-us-thq-line2-elm"
-          />
-          <span className="about-us-thq-text-elm15">Par mums</span>
-        </div>
-        <div className="about-us-thq-nav-bar-elm2">
-          <div className="about-us-thq-button-enlist-elm2">
-            <span className="about-us-thq-text-elm16">Kļūt par biedru</span>
-          </div>
-          <img
-            src="/image26116-dzzn-200h.png"
-            alt="image26116"
-            className="about-us-thq-image2-elm2"
-          />
-          <span className="about-us-thq-text-elm17">Kontakti</span>
-          <span className="about-us-thq-text-elm18">Biedri</span>
-          <span className="about-us-thq-text-elm19">Jaunumi</span>
-          <span className="about-us-thq-text-elm20">Par mums</span>
-        </div>
+        <Navbar />
         <div className="about-us-thq-sectiona-elm">
           <img
             src="/image45864-tn4k-300h.png"

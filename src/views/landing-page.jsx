@@ -3,6 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 import './landing-page.css'
+import Navbar from '../components/Navbar'
 
 const LandingPage = (props) => {
   return (
@@ -114,22 +115,7 @@ const LandingPage = (props) => {
             className="landing-page-thq-twitter-elm"
           />
         </div>
-        <div className="landing-page-thq-nav-bar-elm">
-          <div className="landing-page-thq-button-enlist-elm1">
-            <span className="landing-page-thq-text-elm29">Kļūt par biedru</span>
-          </div>
-          <img
-            src="https://play.teleporthq.io/static/svg/default-img.svg"
-            alt="image233"
-            className="landing-page-thq-image2-elm"
-          />
-          <span className="landing-page-thq-text-elm30">Kontakti</span>
-          <span className="landing-page-thq-text-elm31">Biedri</span>
-          <span className="landing-page-thq-text-elm32">Jaunumi</span>
-          <div className="landing-page-thq-parmums-elm">
-            <span className="landing-page-thq-text-elm33">Par mums</span>
-          </div>
-        </div>
+        <Navbar />
         <span className="landing-page-thq-text-elm34">
           <span>
             Latvijas Ugunsdrošības asociācija pavieno ugunsdrošības jomas

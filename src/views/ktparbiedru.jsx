@@ -3,6 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 import './ktparbiedru.css'
+import Navbar from '../components/Navbar'
 
 const Ktparbiedru = (props) => {
   return (
@@ -25,22 +26,7 @@ const Ktparbiedru = (props) => {
           alt="Rectangle131684"
           className="ktparbiedru-thq-rectangle13-elm"
         />
-        <div className="ktparbiedru-thq-nav-bar-elm">
-          <div className="ktparbiedru-thq-button-enlist-elm">
-            <span className="ktparbiedru-thq-text-elm10">Kļūt par biedru</span>
-          </div>
-          <img
-            src="/image21685-aggs-200h.png"
-            alt="image21685"
-            className="ktparbiedru-thq-image2-elm"
-          />
-          <span className="ktparbiedru-thq-text-elm11">Kontakti</span>
-          <span className="ktparbiedru-thq-text-elm12">Biedri</span>
-          <span className="ktparbiedru-thq-text-elm13">Jaunumi</span>
-          <div className="ktparbiedru-thq-parmums-elm">
-            <span className="ktparbiedru-thq-text-elm14">Par mums</span>
-          </div>
-        </div>
+        <Navbar />
         <img
           src="/line41685-bi7l.svg"
           alt="Line41685"
