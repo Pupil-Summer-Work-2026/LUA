@@ -12,4 +12,4 @@ To build this project, you will need:
 ## UPD 13.07.26
 As of now, this project uses Vite build tool, which allows changes to be hot-loaded. That means that you do not need to restart the server to apply changes to the code. To hot-load the changes:
 1. Save them to the file (CTRL+S)
-2. Reload the page in your browser (it is possible that the browser will do that automatically)
+2. Reload the page in your browser (it is possible that the browser will do that automatically) 
