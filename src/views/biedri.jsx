@@ -3,6 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 import './biedri.css'
+import Navbar from '../components/Navbar'
 
 const Biedri = (props) => {
   return (
@@ -25,22 +26,7 @@ const Biedri = (props) => {
           alt="Rectangle131152"
           className="biedri-thq-rectangle13-elm"
         />
-        <div className="biedri-thq-nav-bar-elm">
-          <div className="biedri-thq-button-enlist-elm">
-            <span className="biedri-thq-text-elm10">Kļūt par biedru</span>
-          </div>
-          <img
-            src="/image21184-b3tl-200h.png"
-            alt="image21184"
-            className="biedri-thq-image2-elm"
-          />
-          <span className="biedri-thq-text-elm11">Kontakti</span>
-          <span className="biedri-thq-text-elm12">Biedri</span>
-          <span className="biedri-thq-text-elm13">Jaunumi</span>
-          <div className="biedri-thq-parmums-elm">
-            <span className="biedri-thq-text-elm14">Par mums</span>
-          </div>
-        </div>
+        <Navbar />
         <img
           src="https://play.teleporthq.io/static/svg/default-img.svg"
           alt="Line41213"

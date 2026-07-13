@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet'
 
 import './jaunums.css'
 
+import Navbar from '../components/Navbar'
 const Jaunums = (props) => {
   return (
     <div className="jaunums-container1">
@@ -28,20 +29,7 @@ const Jaunums = (props) => {
           />
           <span className="jaunums-thq-text-elm10">Jaunumi</span>
         </div>
-        <div className="jaunums-thq-nav-bar-elm">
-          <div className="jaunums-thq-button-enlist-elm">
-            <span className="jaunums-thq-text-elm11">Kļūt par biedru</span>
-          </div>
-          <img
-            src="/image29339-hxxj-200h.png"
-            alt="image29339"
-            className="jaunums-thq-image2-elm"
-          />
-          <span className="jaunums-thq-text-elm12">Kontakti</span>
-          <span className="jaunums-thq-text-elm13">Biedri</span>
-          <span className="jaunums-thq-text-elm14">Jaunumi</span>
-          <span className="jaunums-thq-text-elm15">Par mums</span>
-        </div>
+        <Navbar />
         <span className="jaunums-thq-text-elm16">BREAKING NEWS</span>
         <img
           src="/image49345-k5nh-600w.png"

@@ -3,6 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 import './jaunumi.css'
+import Navbar from '../components/Navbar'
 
 const Jaunumi = (props) => {
   return (
@@ -28,20 +29,7 @@ const Jaunumi = (props) => {
           />
           <span className="jaunumi-thq-text-elm10">Jaunumi</span>
         </div>
-        <div className="jaunumi-thq-nav-bar-elm">
-          <div className="jaunumi-thq-button-enlist-elm">
-            <span className="jaunumi-thq-text-elm11">Kļūt par biedru</span>
-          </div>
-          <img
-            alt="image25619"
-            src="/image25619-gzfc-200h.png"
-            className="jaunumi-thq-image2-elm"
-          />
-          <span className="jaunumi-thq-text-elm12">Kontakti</span>
-          <span className="jaunumi-thq-text-elm13">Biedri</span>
-          <span className="jaunumi-thq-text-elm14">Jaunumi</span>
-          <span className="jaunumi-thq-text-elm15">Par mums</span>
-        </div>
+        <Navbar />
         <img
           alt="Rectangle67863"
           src="/rectangle67863-5s1q-800w.png"
