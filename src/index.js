@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom'
 
 import './style.css'
+import Registrs from './views/registry-page'
 import LandingPage from './views/landing-page'
 import AboutUs from './views/about-us'
 import Jaunumi from './views/jaunumi'
@@ -28,6 +29,7 @@ const App = () => {
         <Route component={Contacts} exact path="/contacts" />
         <Route component={Biedri} exact path="/biedri" />
         <Route component={Ktparbiedru} exact path="/ktparbiedru" />
+        <Route component={Registrs} exact path="/registry-page" />
         <Route component={NotFound} path="**" />
         <Redirect to="**" />
       </Switch>
