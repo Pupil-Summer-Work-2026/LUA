@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 
 import './style.css'
-import Registrs from './views/registry-page'
+import Registrs from './views/registry-page.jsx'
 import LandingPage from './views/landing-page.jsx'
 import AboutUs from './views/about-us.jsx'
 import Jaunumi from './views/jaunumi.jsx'
