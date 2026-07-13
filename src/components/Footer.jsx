@@ -33,8 +33,8 @@ function Footer(){
               className="contacts-thq-mail-elm2"
             />
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Phone1166"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="contacts-thq-phone-elm2"
             />
           </div>

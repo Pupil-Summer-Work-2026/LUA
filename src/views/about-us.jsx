@@ -182,8 +182,8 @@ const AboutUs = (props) => {
               className="about-us-thq-mail-elm"
             />
             <img
-              src="/phone8542-90dh.svg"
-              alt="Phone8542"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="about-us-thq-phone-elm"
             />
           </div>

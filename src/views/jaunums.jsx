@@ -109,8 +109,8 @@ const Jaunums = (props) => {
               className="jaunums-thq-mail-elm"
             />
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Phone9385"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="jaunums-thq-phone-elm"
             />
           </div>

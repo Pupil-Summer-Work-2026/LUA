@@ -76,8 +76,8 @@ const LandingPage = (props) => {
               className="landing-page-thq-mail-elm"
             />
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Phone5816"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="landing-page-thq-phone-elm"
             />
           </div>

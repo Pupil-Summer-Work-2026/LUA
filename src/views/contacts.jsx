@@ -65,8 +65,8 @@ const Contacts = (props) => {
             className="contacts-thq-mail-elm1"
           />
           <img
-            src="https://play.teleporthq.io/static/svg/default-img.svg"
-            alt="Phone9768"
+            src="/phone1571-57r.svg"
+            alt="Phone1571"
             className="contacts-thq-phone-elm1"
           />
         </div>

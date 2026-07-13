@@ -158,8 +158,8 @@ const Ktparbiedru = (props) => {
               className="ktparbiedru-thq-mail-elm1"
             />
             <img
-              src="/phone1681-04ul.svg"
-              alt="Phone1681"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="ktparbiedru-thq-phone-elm1"
             />
           </div>
@@ -216,8 +216,8 @@ const Ktparbiedru = (props) => {
               className="ktparbiedru-thq-mail-elm2"
             />
             <img
-              src="/phone1681-dvoa.svg"
-              alt="Phone1681"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="ktparbiedru-thq-phone-elm2"
             />
           </div>
@@ -274,8 +274,8 @@ const Ktparbiedru = (props) => {
               className="ktparbiedru-thq-mail-elm3"
             />
             <img
-              src="/phone1682-hclx.svg"
-              alt="Phone1682"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="ktparbiedru-thq-phone-elm3"
             />
           </div>
