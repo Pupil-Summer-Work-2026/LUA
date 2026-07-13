@@ -9,15 +9,13 @@ function Footer(){
      <div className="contacts-thq-footer-elm">
           <div className="contacts-thq-group2-elm">
             <span className="contacts-thq-text-elm40">Navigācija</span>
-            <span className="contacts-thq-text-elm41">Par mums</span>
-            <span className="contacts-thq-text-elm42">Par mums</span>
-            <span className="contacts-thq-text-elm43">Par mums</span>
+            <span onClick={() => history.push('/contacts')} className="contacts-thq-text-elm41">Kontakti</span>
+            <span onClick={() => history.push('/biedri')} className="contacts-thq-text-elm42">Biedri</span>
+            <span onClick={() => history.push('/jaunumi')} className="contacts-thq-text-elm43">Jaunumi</span>
           </div>
           <div className="contacts-thq-group1-elm">
-            <span className="contacts-thq-text-elm44">Navigācija</span>
-            <span className="contacts-thq-text-elm45">Par mums</span>
-            <span className="contacts-thq-text-elm46">Par mums</span>
-            <span className="contacts-thq-text-elm47">Par mums</span>
+            <span className="contacts-thq-text-elm44">Navigacija2</span>
+            <span onClick={() => history.push('/about-us')} className="contacts-thq-text-elm45"> Par mums</span>
           </div>
           <div className="contacts-thq-group3-elm2">
             <span className="contacts-thq-text-elm48">Kontakti</span>

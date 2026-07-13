@@ -1,7 +1,9 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-
+import Navbar from '../components/Navbar.jsx'
+import Footer from '../components/Footer.jsx'
 import './registry-page.css'
+
 
 const RegistryPage = (props) => {
   return (
@@ -10,7 +12,8 @@ const RegistryPage = (props) => {
         <title>Registrācija - LUA</title>
         <meta property="og:title" content="Registrācija - LUA" />
       </Helmet>
-
+      <Navbar />
+      <br />
       <div className="registry-page-content">
         <h1 className="registry-page-title">Kļūt par biedru</h1>
 
@@ -29,7 +32,9 @@ const RegistryPage = (props) => {
           </button>
         </form>
       </div>
+      <Footer/>
     </div>
+
   )
 }
 
