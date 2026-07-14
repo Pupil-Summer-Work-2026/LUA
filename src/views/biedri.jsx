@@ -3,8 +3,7 @@
 import { Helmet } from 'react-helmet'
 
 import './biedri-modern.css'
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { memberLogos } from '../data/members'
 
@@ -14,12 +13,11 @@ function Biedri() {
   }, [])
 
   return (
-    <div className="members-page lua-page">
+    <SiteLayout className="members-page">
       <Helmet>
         <title>Biedri | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Latvijas Ugunsdrošības asociācijas biedru uzņēmumi." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Biedri" />
         <section className="members-page__content lua-container">
@@ -40,8 +38,7 @@ function Biedri() {
           <a href="/ktparbiedru">Rakstiet mums <span>→</span></a>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

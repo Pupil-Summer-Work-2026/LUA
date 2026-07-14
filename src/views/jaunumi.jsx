@@ -3,8 +3,7 @@
 import { Helmet } from 'react-helmet'
 
 import './jaunumi-modern.css'
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 const articles = [
@@ -28,12 +27,11 @@ function Jaunumi() {
   }, [])
 
   return (
-    <div className="news-page lua-page">
+    <SiteLayout className="news-page">
       <Helmet>
         <title>Jaunumi | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Latvijas Ugunsdrošības asociācijas jaunumi." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Jaunumi" />
         <section className="news-page__layout lua-container">
@@ -67,8 +65,7 @@ function Jaunumi() {
           </aside>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

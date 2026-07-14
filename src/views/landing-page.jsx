@@ -4,8 +4,7 @@ import { Helmet } from 'react-helmet'
 import { useHistory } from 'react-router-dom'
 
 import './landing-page.css'
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import { featuredMemberLogos } from '../data/members'
 
 const services = [
@@ -30,9 +29,8 @@ function LandingPage() {
   }, [])
 
   return (
-    <div className="lua-home lua-page">
+    <SiteLayout className="lua-home">
       <Helmet><title>Latvijas Ugunsdrošības asociācija</title><meta name="description" content="Latvijas Ugunsdrošības asociācija" /></Helmet>
-      <SiteHeader />
       <main>
         <section className="lua-hero"><div className="lua-hero__content"><h1>LATVIJAS<br /><em>UGUNSDROŠĪBAS</em><br />ASOCIĀCIJA</h1><p>Latvijas Ugunsdrošības asociācija apvieno ugunsdrošības jomas uzņēmumus un speciālistus, veicinot drošu vidi visā valstī.</p><button onClick={() => history.push('/about-us')}>Par mums</button></div></section>
         <section className="lua-statistics" aria-label="Asociācijas rādītāji">{[['0', 'BIEDRI'], ['0', 'SPONSORI'], ['0', 'PARTNERI'], ['0', 'RAKSTI']].map(([number, label]) => <div key={label}><strong>{number}</strong><span>{label}</span></div>)}</section>
@@ -42,8 +40,7 @@ function LandingPage() {
         <section className="lua-community"><div className="lua-section lua-container"><span className="lua-eyebrow">BIEDRI UN PARTNERI</span><h2>MŪSU NOZARES<br /><em>KOPIENA</em></h2><h3>BIEDRU UZŅĒMUMI</h3><div className="lua-logo-grid">{featuredMemberLogos.map((logo) => <div key={logo}><img src={logo} alt="Biedra logo" /></div>)}</div><h3>SADARBĪBAS PARTNERI</h3><div className="lua-logo-grid lua-logo-grid--empty">{Array.from({ length: 6 }, (_, index) => <div key={index} />)}</div></div></section>
         <section className="lua-join"><div><h2>KĻŪSTIET PAR LUA BIEDRU</h2><p>Pievienojieties vairāk nekā 120 uzņēmumiem, kas veido drošāku Latviju.</p></div><button onClick={() => history.push('/ktparbiedru')}>Kļūt par biedru</button></section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

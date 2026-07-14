@@ -3,8 +3,7 @@
 import { Helmet } from 'react-helmet'
 
 import './ktparbiedru-modern.css'
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 function Ktparbiedru() {
@@ -13,12 +12,11 @@ function Ktparbiedru() {
   }, [])
 
   return (
-    <div className="join-page lua-page">
+    <SiteLayout className="join-page">
       <Helmet>
         <title>Iestāšanās asociācijā | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Informācija par iestāšanos Latvijas Ugunsdrošības asociācijā." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Iestāšanās asociācijā" />
         <section className="join-page__intro">
@@ -41,8 +39,7 @@ function Ktparbiedru() {
           <p>Lēmumu par biedra uzņemšanu Biedrībā pieņem valde. Valdei pieteicēja lūgums ir jāizskata tuvākās sēdes laikā, taču ne ilgāk kā divu nedēļu laikā no visu nepieciešamo dokumentu saņemšanas brīža. Uz valdes sēdi, kurā izskata pieteicēja lūgumu, ir jāuzaicina pats pieteicējs un jādod viņam vārds sava viedokļa paušanai. Pieteicēja neierašanās nav šķērslis valdes lēmuma pieņemšanai. Valdei motivēts lēmums rakstveidā jāpaziņo pieteicējam nedēļas laikā no tā pieņemšanas brīža.</p>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

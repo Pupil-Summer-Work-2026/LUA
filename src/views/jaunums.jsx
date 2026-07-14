@@ -4,8 +4,7 @@ import { Helmet } from 'react-helmet'
 
 import './jaunums-modern.css'
 
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 const paragraphs = [
@@ -26,12 +25,11 @@ function Jaunums() {
   }, [])
 
   return (
-    <div className="article-page lua-page">
+    <SiteLayout className="article-page">
       <Helmet>
         <title>Breaking News | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Latvijas Ugunsdrošības asociācijas jaunums." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Jaunumi" />
         <section className="article-page__layout lua-container">
@@ -64,8 +62,7 @@ function Jaunums() {
           </div>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

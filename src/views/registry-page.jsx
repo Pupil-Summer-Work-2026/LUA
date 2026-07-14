@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import './registry-page.css'
 import './registry-page-modern.css'
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 const RegistryPage = () => {
@@ -12,12 +11,11 @@ const RegistryPage = () => {
   }, [])
 
   return (
-    <div className="registry-page lua-page">
+    <SiteLayout className="registry-page">
       <Helmet>
         <title>Pieteikums biedrībai | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Pieteikums Latvijas Ugunsdrošības asociācijas biedrībai." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Kļūt par biedru" />
         <section className="registry-page__content lua-container">
@@ -37,8 +35,7 @@ const RegistryPage = () => {
           </form>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

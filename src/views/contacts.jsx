@@ -3,8 +3,7 @@
 import { Helmet } from 'react-helmet'
 
 import './contacts-modern.css'
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 const resources = [
@@ -33,12 +32,11 @@ function Contacts() {
   }, [])
 
   return (
-    <div className="contacts-page lua-page">
+    <SiteLayout className="contacts-page">
       <Helmet>
         <title>Kontakti | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Latvijas Ugunsdrošības asociācijas kontaktinformācija un nozares resursi." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Kontakti" />
         <section className="contacts-page__intro lua-container">
@@ -94,8 +92,7 @@ function Contacts() {
           </div>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 

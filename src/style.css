@@ -43,6 +43,12 @@
   }
 }
 
+@media (min-width: 481px) and (max-width: 760px) {
+  .lua-container {
+    width: min(100% - 40px, 1136px);
+  }
+}
+
 :root {
   --dl-layout-size-large: 144px;
   --dl-layout-size-small: 48px;

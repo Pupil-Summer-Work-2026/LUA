@@ -4,8 +4,7 @@ import { Helmet } from 'react-helmet'
 
 import { useHistory } from 'react-router-dom'
 
-import SiteHeader from '../components/SiteHeader'
-import SiteFooter from '../components/SiteFooter'
+import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 import './about-us-modern.css'
@@ -31,12 +30,11 @@ function AboutUs() {
   }, [])
 
   return (
-    <div className="about-page lua-page">
+    <SiteLayout className="about-page">
       <Helmet>
         <title>Par mums | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Latvijas Ugunsdrošības asociācija apvieno ugunsdrošības nozares uzņēmumus un speciālistus." />
       </Helmet>
-      <SiteHeader />
       <main>
         <PageBanner title="Par mums" />
         <section className="about-page__feature about-page__feature--intro lua-container">
@@ -76,8 +74,7 @@ function AboutUs() {
           </div>
         </section>
       </main>
-      <SiteFooter />
-    </div>
+    </SiteLayout>
   )
 }
 
