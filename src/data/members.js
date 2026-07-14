@@ -1,0 +1,28 @@
+export const memberLogos = [
+  '/image231683-wo5-200h.png',
+  '/image21685-aggs-200h.png',
+  '/image21184-b3tl-200h.png',
+  '/image201682-2b2n-200w.png',
+  '/image191682-futi-200h.png',
+  '/image161632-3bd-200h.png',
+  '/sprinklerservicelogo11631-zuvk.svg',
+  '/sprinklerservicelogo21682-u5kc.svg',
+  '/sprinklerservicelogo31683-s9k.svg',
+  '/image131632-6igd-200w.png',
+  '/image241683-xow4-200w.png',
+  '/logolatakvafire11632-ga0c.svg',
+  '/logolatakvafire21682-tqdj.svg',
+  '/logolatakvafire31683-o35u.svg',
+  '/logo11632-obpl.svg',
+  '/image141632-vy7k-200h.png',
+  '/image151632-iguf-200h.png',
+  '/image161632-3bd-200h.png',
+  '/rectangle161571-f5ia-200h.png',
+  '/rectangle171571-5w8-200h.png',
+  '/rectangle181571-p9j8-200h.png',
+  '/rectangle191571-nhjm-200h.png',
+  '/rectangle151571-xelk-200h.png',
+  '/rectangle201571-p2l5-200h.png',
+]
+
+export const featuredMemberLogos = memberLogos.slice(0, 6)

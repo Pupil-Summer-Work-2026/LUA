@@ -1,4 +1,49 @@
 :root {
+  --lua-navy: #0d1f3c;
+  --lua-red: #c8102e;
+  --lua-muted: #8a9bb5;
+  --lua-surface: #f3f6fa;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.lua-page {
+  color: var(--lua-navy);
+  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+}
+
+.lua-container {
+  width: min(100% - 64px, 1136px);
+  margin: 0 auto;
+}
+
+.lua-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--lua-red);
+  font: 400 13px/1 'Barlow Condensed', sans-serif;
+}
+
+.lua-eyebrow::before {
+  width: 27px;
+  height: 1px;
+  content: '';
+  background: currentColor;
+}
+
+@media (max-width: 480px) {
+  .lua-container {
+    width: min(100% - 40px, 1136px);
+  }
+}
+
+:root {
   --dl-layout-size-large: 144px;
   --dl-layout-size-small: 48px;
   --dl-layout-space-unit: 16px;

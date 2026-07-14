@@ -1,40 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import Navbar from '../components/Navbar.jsx'
-import Footer from '../components/Footer.jsx'
 import './registry-page.css'
+import './registry-page-modern.css'
+import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
+import PageBanner from '../components/PageBanner'
 
+const RegistryPage = () => {
+  useEffect(() => {
+    document.title = 'Pieteikums biedrībai | Latvijas Ugunsdrošības asociācija'
+  }, [])
 
-const RegistryPage = (props) => {
   return (
-    <div className="registry-page-container1">
+    <div className="registry-page lua-page">
       <Helmet>
-        <title>Registrācija - LUA</title>
-        <meta property="og:title" content="Registrācija - LUA" />
+        <title>Pieteikums biedrībai | Latvijas Ugunsdrošības asociācija</title>
+        <meta name="description" content="Pieteikums Latvijas Ugunsdrošības asociācijas biedrībai." />
       </Helmet>
-      <Navbar />
-      <br />
-      <div className="registry-page-content">
-        <h1 className="registry-page-title">Kļūt par biedru</h1>
-
-        <form className="registry-page-form">
-          <label htmlFor="name">Vārds, Uzvārds</label>
-          <input type="text" id="name" name="name" />
-
-          <label htmlFor="email">E-pasts</label>
-          <input type="email" id="email" name="email" />
-
-          <label htmlFor="company">Uzņēmums</label>
-          <input type="text" id="company" name="company" />
-
-          <button type="submit" className="registry-page-submit">
-            Iesniegt pieteikumu
-          </button>
-        </form>
-      </div>
-      <Footer/>
+      <SiteHeader />
+      <main>
+        <PageBanner title="Kļūt par biedru" />
+        <section className="registry-page__content lua-container">
+          <div>
+            <span className="lua-eyebrow">PIETEIKUMS</span>
+            <h1>KĻŪSTIET PAR<br /><em>LUA BIEDRU</em></h1>
+            <p>Aizpildiet pieteikumu, lai saņemtu informāciju par pievienošanos Latvijas Ugunsdrošības asociācijai.</p>
+          </div>
+          <form className="registry-page__form" onSubmit={(event) => event.preventDefault()}>
+            <label htmlFor="name">Vārds, Uzvārds</label>
+            <input type="text" id="name" name="name" required />
+            <label htmlFor="email">E-pasts</label>
+            <input type="email" id="email" name="email" required />
+            <label htmlFor="company">Uzņēmums</label>
+            <input type="text" id="company" name="company" required />
+            <button type="submit">Iesniegt pieteikumu</button>
+          </form>
+        </section>
+      </main>
+      <SiteFooter />
     </div>
-
   )
 }
 

@@ -1,0 +1,27 @@
+.join-page__intro, .join-page__documents, .join-page__notice { width: min(100% - 96px, 1136px); margin: 0 auto; }
+.join-page__intro { display: grid; grid-template-columns: minmax(0, .96fr) minmax(400px, 1.04fr); gap: 56px; align-items: center; padding: 56px 0 40px; }
+.join-page__copy h1 { margin: 0 0 24px; font: 800 clamp(56px, 7vw, 92px)/.9 'Barlow Condensed', sans-serif; }
+.join-page em { color: var(--lua-red); font-style: normal; }
+.join-page__copy p { max-width: 505px; margin: 0 0 20px; font-size: 15px; line-height: 1.5; }
+.join-page__intro img { width: 100%; max-height: 455px; object-fit: contain; }
+.join-page__documents { padding: 0 0 58px; }
+.join-page__documents h2 { margin: 0 0 20px; font: 700 20px 'DM Sans', sans-serif; }
+.join-page__document { width: min(100%, 280px); min-height: 66px; display: flex; align-items: center; gap: 18px; padding: 14px 18px; color: #004ca7; border-radius: 4px; background: var(--lua-surface); font-size: 16px; }
+.join-page__document span:first-child { min-width: 42px; padding: 9px 4px; color: #fff; border-radius: 4px; background: #1767d2; text-align: center; font: 700 10px 'DM Sans', sans-serif; }
+.join-page__notice { min-height: 92px; display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: center; margin-bottom: 136px; padding: 20px 24px; border: 2px solid #64c8f1; }
+.join-page__notice strong { color: var(--lua-red); font: 800 42px/1 'Barlow Condensed', sans-serif; }
+.join-page__notice p { margin: 0; color: #111; font-size: 12px; font-weight: 700; line-height: 1.35; }
+
+@media (max-width: 760px) {
+  .join-page__intro { grid-template-columns: 1fr; gap: 28px; }
+  .join-page__intro img { max-height: 360px; }
+  .join-page__notice { margin-bottom: 72px; }
+}
+
+@media (max-width: 480px) {
+  .join-page__intro, .join-page__documents, .join-page__notice { width: min(100% - 40px, 1136px); }
+  .join-page__intro { padding-top: 42px; }
+  .join-page__copy h1 { font-size: 58px; }
+  .join-page__copy p { font-size: 14px; }
+  .join-page__notice { grid-template-columns: 24px 1fr; padding: 18px; }
+}
