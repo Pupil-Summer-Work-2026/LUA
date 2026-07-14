@@ -28,7 +28,10 @@
 .site-header__menu-button { display: none; }
 .site-header__nav { display: flex; align-items: center; gap: 28px; }
 .site-header__nav > button { padding: 0; color: #111; border: 0; background: transparent; font-size: 14px; }
+.site-header__nav > button:hover, .site-header__nav > button.is-active { color: var(--lua-red); }
 .site-header__nav > .site-header__cta { padding: 10px 16px; color: #fff; border-radius: 4px; background: var(--lua-red); }
+.site-header__nav > .site-header__cta:hover, .site-header__nav > .site-header__cta.is-active { color: #fff; background: #a40d18; }
+.site-header button:focus-visible, .site-footer a:focus-visible, .site-footer button:focus-visible { outline: 2px solid #64c8f1; outline-offset: 3px; }
 
 .page-banner {
   min-height: 126px;
@@ -57,6 +60,7 @@
 .site-footer__column span, .site-footer__column a, .site-footer__column button, .site-footer__brand p { display: block; margin: 8px 0; color: var(--lua-muted); font: 400 11px/1.45 'DM Sans', sans-serif; }
 .site-footer__column a { text-decoration: none; }
 .site-footer__column button { padding: 0; border: 0; background: transparent; text-align: left; cursor: pointer; }
+.site-footer__column a:hover, .site-footer__column button:hover, .site-footer__column button[aria-current='page'] { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 .site-footer__copyright { width: min(100% - 64px, 1136px); margin: 0 auto; padding: 16px 0; border-top: 1px solid #33445f; color: var(--lua-muted); font: 10px 'DM Sans', sans-serif; }
 
 @media (max-width: 760px) {

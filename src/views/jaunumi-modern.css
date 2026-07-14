@@ -10,10 +10,16 @@
 .news-page__sidebar { display: grid; gap: 31px; align-content: start; }
 .news-page__sidebar form { position: relative; }
 .news-page__sidebar input { width: 100%; padding: 11px 42px 11px 12px; border: 0; border-radius: 5px; background: #f0f0f0; font: 11px 'DM Sans', sans-serif; }
-.news-page__sidebar button { width: 36px; height: 36px; position: absolute; right: 0; top: 0; color: #111; border: 0; background: transparent; font: 700 25px/1 'DM Sans', sans-serif; cursor: pointer; }
+.news-page__sidebar form button { width: 36px; height: 36px; position: absolute; right: 0; top: 0; display: grid; place-items: center; color: #111; border: 0; background: transparent; cursor: pointer; }
+.news-page__sidebar input:focus-visible, .news-page__sidebar button:focus-visible { outline: 2px solid #1767d2; outline-offset: 2px; }
 .news-page__sidebar h2 { margin: 0 0 12px; color: #111; font: 800 18px/1 'Barlow Condensed', sans-serif; }
 .news-page__sidebar nav { display: grid; gap: 7px; }
-.news-page__sidebar nav a { color: #111; font-size: 11px; text-decoration: none; }
+.news-page__sidebar nav button { padding: 0; color: #111; border: 0; background: transparent; font: 11px 'DM Sans', sans-serif; text-align: left; cursor: pointer; }
+.news-page__sidebar nav button:hover, .news-page__sidebar nav button.is-active { color: var(--lua-red); text-decoration: underline; text-underline-offset: 3px; }
+.news-page__empty { display: grid; justify-items: start; gap: 12px; padding: 28px; border: 1px dashed #b9c5d3; border-radius: 4px; background: var(--lua-surface); }
+.news-page__empty p { margin: 0; color: var(--lua-muted); font-size: 13px; }
+.news-page__empty button { padding: 9px 13px; color: #fff; border: 0; border-radius: 4px; background: var(--lua-red); cursor: pointer; font: 700 12px 'DM Sans', sans-serif; }
+.news-page__empty button:hover { background: #a40d18; }
 .news-page__maintenance img { width: 100%; margin-top: 8px; object-fit: contain; }
 .news-page__sr-only { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 

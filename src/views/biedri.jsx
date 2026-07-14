@@ -1,6 +1,7 @@
 ﻿import React, { useEffect } from 'react'
 
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 
 import './biedri-modern.css'
 import SiteLayout from '../components/SiteLayout'
@@ -35,7 +36,7 @@ function Biedri() {
             <h2>KĻŪSTIET PAR LUA BIEDRU</h2>
             <p>Pievienojies vairāk nekā 120 uzņēmumiem, kas veido drošāku Latviju.</p>
           </div>
-          <a href="/ktparbiedru">Rakstiet mums <span>→</span></a>
+          <Link to="/ktparbiedru">Rakstiet mums <span>→</span></Link>
         </section>
       </main>
     </SiteLayout>

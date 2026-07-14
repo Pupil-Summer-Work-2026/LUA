@@ -1,6 +1,7 @@
-﻿import React, { useEffect } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 
 import './jaunums-modern.css'
 
@@ -13,16 +14,28 @@ const paragraphs = [
   'Jau vairākus gadus Rietumeiropā, īpaši Vācijā ļoti plaši tiek pielietoti ugunsdzēsības aparāti ar citu ugunsdzēsīgās vielas palaišanas metodi. Īpašu popularitāti ir guvuši ugunsdzēsības aparāti, kas neatrodas zem pastāvīga spiediena, bet kuru dzēšana tiek aktivizēta izmantojot dzenošās gāzes baloniņu. Latvijas ugunsdrošības asociācija ir sagatavojusi būtiskāko atšķirību apkopojumu, ar kuru var iepazīties šeit.',
 ]
 
-const comments = Array.from({ length: 4 }, (_, index) => ({
+const initialComments = Array.from({ length: 4 }, (_, index) => ({
   name: 'Lorem Ipsum',
   body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere.',
   id: index,
 }))
 
 function Jaunums() {
+  const [comments, setComments] = useState(initialComments)
+  const [commentText, setCommentText] = useState('')
+
   useEffect(() => {
     document.title = 'Breaking News | Latvijas Ugunsdrošības asociācija'
   }, [])
+
+  function handleCommentSubmit(event) {
+    event.preventDefault()
+    const body = commentText.trim()
+    if (!body) return
+
+    setComments((currentComments) => [{ id: Date.now(), name: 'Jūs', body }, ...currentComments])
+    setCommentText('')
+  }
 
   return (
     <SiteLayout className="article-page">
@@ -34,7 +47,7 @@ function Jaunums() {
         <PageBanner title="Jaunumi" />
         <section className="article-page__layout lua-container">
           <article className="article-page__article">
-            <a className="article-page__back" href="/jaunumi">← Atpakaļ</a>
+            <Link className="article-page__back" to="/jaunumi">← Atpakaļ</Link>
             <h1>BREAKING NEWS</h1>
             <p className="article-page__meta">Bez kategorijas • Vārds Uzvārds • 01.01.1970</p>
             {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
@@ -52,10 +65,10 @@ function Jaunums() {
         </section>
         <section className="article-page__comments lua-container">
           <h2>Komentāri</h2>
-          <form onSubmit={(event) => event.preventDefault()}>
+          <form onSubmit={handleCommentSubmit}>
             <label className="article-page__sr-only" htmlFor="comment">Pievienojies diskusijai</label>
-            <input id="comment" placeholder="Pievienojies diskusijai" />
-            <button type="submit">Post</button>
+            <input id="comment" placeholder="Pievienojies diskusijai" value={commentText} onChange={(event) => setCommentText(event.target.value)} required />
+            <button type="submit" disabled={!commentText.trim()}>Publicēt</button>
           </form>
           <div className="article-page__comment-grid">
             {comments.map((comment) => <article key={comment.id}><h3>{comment.name}</h3><p>{comment.body}</p></article>)}

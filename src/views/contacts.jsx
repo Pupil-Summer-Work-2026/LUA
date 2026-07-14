@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
 
@@ -27,9 +27,17 @@ function ContactRow({ icon, children }) {
 }
 
 function Contacts() {
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
   useEffect(() => {
     document.title = 'Kontakti | Latvijas Ugunsdrošības asociācija'
   }, [])
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    event.currentTarget.reset()
+    setIsSubmitted(true)
+  }
 
   return (
     <SiteLayout className="contacts-page">
@@ -66,16 +74,17 @@ function Contacts() {
 
         <section className="contacts-page__help">
           <div className="contacts-page__help-inner lua-container">
-            <form className="contacts-page__form" onSubmit={(event) => event.preventDefault()}>
+            <form className="contacts-page__form" onSubmit={handleSubmit}>
               <span className="lua-eyebrow">MŪSU DARBS</span>
               <h2>LOREM <em>IPSUM</em></h2>
               <label htmlFor="contact-name">Vārds</label>
-              <input id="contact-name" name="name" placeholder="Lorem ipsum dolor sit amet" />
+              <input id="contact-name" name="name" autoComplete="name" placeholder="Lorem ipsum dolor sit amet" required onChange={() => setIsSubmitted(false)} />
               <label htmlFor="contact-email">E-pasts</label>
-              <input id="contact-email" name="email" type="email" placeholder="Lorem ipsum dolor sit amet" />
+              <input id="contact-email" name="email" type="email" autoComplete="email" placeholder="Lorem ipsum dolor sit amet" required onChange={() => setIsSubmitted(false)} />
               <label htmlFor="contact-message">Ziņa</label>
-              <textarea id="contact-message" name="message" placeholder="Lorem ipsum dolor sit amet" rows="4" />
+              <textarea id="contact-message" name="message" placeholder="Lorem ipsum dolor sit amet" rows="4" required onChange={() => setIsSubmitted(false)} />
               <button type="submit">Sūtīt</button>
+              {isSubmitted && <p className="contacts-page__form-status" role="status">Paldies! Jūsu ziņa ir nosūtīta.</p>}
             </form>
             <div className="contacts-page__resources">
               <span className="lua-eyebrow">MŪSU DARBS</span>

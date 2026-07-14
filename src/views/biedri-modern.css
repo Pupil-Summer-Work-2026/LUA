@@ -7,6 +7,8 @@
 .members-page__join h2 { margin: 0; font: 800 30px/.95 'Barlow Condensed', sans-serif; }
 .members-page__join p { margin: 5px 0 0; font-size: 13px; }
 .members-page__join a { padding: 12px 18px; color: #fff; border-radius: 4px; background: var(--lua-navy); font-size: 13px; text-decoration: none; }
+.members-page__join a:hover { background: #07152c; }
+.members-page__join a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .members-page__join span { margin-left: 8px; }
 
 @media (max-width: 760px) {

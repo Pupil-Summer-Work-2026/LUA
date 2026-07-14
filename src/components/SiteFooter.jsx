@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import './site.css'
 import { footerNavigationColumns } from '../data/navigation'
@@ -8,11 +8,20 @@ const [primaryNavigation] = footerNavigationColumns
 
 function NavigationColumn({ items }) {
   const history = useHistory()
+  const { pathname } = useLocation()
+
+  const navigateTo = (path) => {
+    if (path === pathname) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    history.push(path)
+  }
 
   return (
     <div className="site-footer__column">
       <h2>Navigācija</h2>
-      {items.map(({ label, path }) => <button key={path} onClick={() => history.push(path)}>{label}</button>)}
+      {items.map(({ label, path }) => <button key={path} type="button" aria-current={pathname === path ? 'page' : undefined} onClick={() => navigateTo(path)}>{label}</button>)}
     </div>
   )
 }

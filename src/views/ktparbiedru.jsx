@@ -15,6 +15,7 @@ function Ktparbiedru() {
 
   function handleSubmit(event) {
     event.preventDefault()
+    event.currentTarget.reset()
     setIsSubmitted(true)
   }
 
@@ -39,7 +40,7 @@ function Ktparbiedru() {
             <p>Iestāšanās pieteikums</p>
             <h2 id="application-heading">Piesakiet savu uzņēmumu</h2>
           </div>
-          <form className="join-page__form" onSubmit={handleSubmit}>
+          <form className="join-page__form" onSubmit={handleSubmit} onChange={() => setIsSubmitted(false)}>
             <label>
               Uzņēmuma nosaukums
               <input name="companyName" type="text" autoComplete="organization" required />
