@@ -74,7 +74,7 @@
 @keyframes lua-logo-marquee { to { transform: translateX(-50%); } }
 
 .lua-join { min-height: 150px; display: flex; gap: 32px; align-items: center; justify-content: space-between; padding: 28px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-red); }
-.lua-join h2 { font-size: 30px; }
+.lua-join h2 { font-size: 30px; margin: 0; }
 .lua-join p { margin: 4px 0 0; font-size: 13px; }
 .lua-join button { min-width: auto; background: var(--lua-navy); }
 
