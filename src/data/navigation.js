@@ -6,7 +6,12 @@ const navigationItems = {
   join: { label: 'Kļūsti par biedru', path: '/ktparbiedru' },
 }
 
-export const headerNavigation = Object.values(navigationItems)
+export const headerNavigation = [
+  navigationItems.about,
+  navigationItems.news,
+  navigationItems.members,
+  navigationItems.contacts,
+]
 
 export const footerNavigationColumns = [
   [navigationItems.about, navigationItems.news, navigationItems.members, navigationItems.contacts, navigationItems.join],
