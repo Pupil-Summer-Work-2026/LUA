@@ -40,11 +40,8 @@ function Contacts() {
       <main>
         <PageBanner title="Kontakti" />
         <section className="contacts-page__intro lua-container">
-          <div className="contacts-page__map" role="img" aria-label="Latvijas Ugunsdrošības asociācijas atrašanās vietas karte Rīgā">
-            <span className="contacts-page__map-pin contacts-page__map-pin--one" />
-            <span className="contacts-page__map-pin contacts-page__map-pin--two" />
-            <span className="contacts-page__map-pin contacts-page__map-pin--three" />
-            <span className="contacts-page__map-pin contacts-page__map-pin--four" />
+          <div  role="img" aria-label="Latvijas Ugunsdrošības asociācijas atrašanās vietas karte Rīgā">
+            <iframe className="contacts-page__map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2174.099137750068!2d24.176381977149536!3d56.98136249670095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eecef714d168ab%3A0x908079702e091212!2sVijciema%20iela%201A%2C%20Vidzemes%20priek%C5%A1pils%C4%93ta%2C%20R%C4%ABga%2C%20LV-1006!5e0!3m2!1slv!2slv!4v1784028263043!5m2!1slv!2slv" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
           </div>
           <div className="contacts-page__details">
             <span className="lua-eyebrow">PAR ASOCIĀCIJU</span>
