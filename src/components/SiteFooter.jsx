@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import './site.css'
 import { footerNavigationColumns } from '../data/navigation'
 
-const [primaryNavigation, secondaryNavigation] = footerNavigationColumns
+const [primaryNavigation] = footerNavigationColumns
 
 function NavigationColumn({ items }) {
   const history = useHistory()
@@ -26,7 +26,6 @@ function SiteFooter() {
           <p>Latvijas Ugunsdrošības asociācija - profesionāls atbalsts, izglītība un pārstāvniecība kopš 1994. gada.</p>
         </div>
         <NavigationColumn items={primaryNavigation} />
-        <NavigationColumn items={secondaryNavigation} />
         <address className="site-footer__column">
           <h2>Kontakti</h2>
           <span>Rīga, Latvija</span>

@@ -35,11 +35,13 @@
 .lua-intro p { color: #7d8ea8; font-size: 13px; line-height: 1.6; }
 .lua-text-link { padding: 0; color: var(--lua-red); border: 0; background: transparent; font: 700 13px 'Barlow Condensed', sans-serif; }
 .lua-text-link span { margin-left: 6px; }
-.lua-intro__image { width: 100%; min-height: 300px; object-fit: cover; border-radius: 6px; background: #eef1f5; }
+.lua-intro__visual { position: relative; padding: 0 24px 24px 0; }
+.lua-intro__backdrop { position: absolute; inset: -24px 0 24px 24px; border: 2px solid var(--lua-red); border-radius: 6px; }
+.lua-intro__image { position: relative; width: 100%; min-height: 300px; display: block; object-fit: cover; border-radius: 6px; background: #eef1f5; }
 
 .lua-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; padding-bottom: 64px; }
 .lua-services article { min-height: 232px; padding: 28px; color: #fff; border-radius: 4px; background: var(--lua-navy); }
-.lua-services__icon { display: block; height: 38px; font-size: 34px; line-height: 1; }
+.lua-services__icon { width: 38px; height: 38px; display: block; stroke-width: 1.7; }
 .lua-services h3 { margin: 18px 0 8px; font-size: 27px; line-height: 1; }
 .lua-services p { margin: 0; color: #a9b5c7; font-size: 12px; line-height: 1.55; }
 
@@ -57,10 +59,19 @@
 .lua-community { padding: 68px 0; color: #fff; background: var(--lua-navy); }
 .lua-community h2 { margin-bottom: 42px; }
 .lua-community h3 { margin: 28px 0 14px; }
+.lua-logo-carousel { overflow: hidden; }
+.lua-logo-carousel__track { width: max-content; display: flex; animation: lua-logo-marquee 24s linear infinite; }
+.lua-logo-carousel__group { display: flex; flex: none; gap: 32px; padding-right: 32px; }
+.lua-logo-carousel__item { width: 160px; height: 64px; display: grid; flex: none; place-items: center; overflow: hidden; border-radius: 4px; background: #f2f4f7; transition: transform .2s ease; }
+.lua-logo-carousel__item:hover { position: relative; z-index: 1; transform: scale(1.08); }
+.lua-logo-carousel:hover .lua-logo-carousel__track { animation-play-state: paused; }
+.lua-logo-carousel img { max-width: 92%; max-height: 85%; object-fit: contain; }
 .lua-logo-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 32px; }
 .lua-logo-grid > div { height: 64px; display: grid; place-items: center; overflow: hidden; border-radius: 4px; background: #f2f4f7; }
 .lua-logo-grid img { max-width: 92%; max-height: 85%; object-fit: contain; }
 .lua-logo-grid--empty > div { background: #dfe3e9; }
+
+@keyframes lua-logo-marquee { to { transform: translateX(-50%); } }
 
 .lua-join { min-height: 150px; display: flex; gap: 32px; align-items: center; justify-content: space-between; padding: 28px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-red); }
 .lua-join h2 { font-size: 30px; }
@@ -91,6 +102,8 @@
   .lua-services article { min-height: 0; }
   .lua-article-grid { grid-template-columns: repeat(2, 1fr); }
   .lua-article-grid article:last-child { display: none; }
+  .lua-logo-carousel__group { gap: 14px; padding-right: 14px; }
+  .lua-logo-carousel__item { width: 132px; }
   .lua-logo-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .lua-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
@@ -106,5 +119,9 @@
   .lua-article-grid article:nth-child(n + 4) { display: none; }
   .lua-footer__grid { width: min(100% - 40px, 1136px); grid-template-columns: 1fr; }
   .lua-footer__copyright { width: min(100% - 40px, 1136px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lua-logo-carousel__track { animation: none; }
 }
 
