@@ -3,11 +3,17 @@ const navigationItems = {
   news: { label: 'Jaunumi', path: '/jaunumi' },
   members: { label: 'Biedri', path: '/biedri' },
   contacts: { label: 'Kontakti', path: '/contacts' },
+  join: { label: 'Kļūsti par biedru', path: '/ktparbiedru' },
 }
 
-export const headerNavigation = Object.values(navigationItems)
+export const headerNavigation = [
+  navigationItems.about,
+  navigationItems.news,
+  navigationItems.members,
+  navigationItems.contacts,
+]
 
 export const footerNavigationColumns = [
-  [navigationItems.about, navigationItems.news, navigationItems.members],
+  [navigationItems.about, navigationItems.news, navigationItems.members, navigationItems.contacts, navigationItems.join],
   [navigationItems.news, navigationItems.members, navigationItems.contacts],
 ]

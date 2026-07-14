@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
 
@@ -7,9 +7,16 @@ import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 function Ktparbiedru() {
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
   useEffect(() => {
     document.title = 'Iestāšanās asociācijā | Latvijas Ugunsdrošības asociācija'
   }, [])
+
+  function handleSubmit(event) {
+    event.preventDefault()
+    setIsSubmitted(true)
+  }
 
   return (
     <SiteLayout className="join-page">
@@ -27,12 +34,41 @@ function Ktparbiedru() {
           </div>
           <img src="/image171686-9gsk-500h.png" alt="Latvijas Ugunsdrošības asociācijas pieredze" />
         </section>
-        <section className="join-page__documents">
-          <h2>Biedrības valdei iesniedzamie dokumenti</h2>
-          <a className="join-page__document" href="#" onClick={(event) => event.preventDefault()}>
-            <span>DOC</span>
-            <span>LUA_iesniegums.docx</span>
-          </a>
+        <section className="join-page__application" aria-labelledby="application-heading">
+          <div className="join-page__application-heading">
+            <p>Iestāšanās pieteikums</p>
+            <h2 id="application-heading">Piesakiet savu uzņēmumu</h2>
+          </div>
+          <form className="join-page__form" onSubmit={handleSubmit}>
+            <label>
+              Uzņēmuma nosaukums
+              <input name="companyName" type="text" autoComplete="organization" required />
+            </label>
+            <label>
+              Amats uzņēmumā
+              <input name="position" type="text" autoComplete="organization-title" required />
+            </label>
+            <label>
+              Vārds un uzvārds
+              <input name="fullName" type="text" autoComplete="name" required />
+            </label>
+            <label>
+              E-pasts
+              <input name="email" type="email" autoComplete="email" required />
+            </label>
+            <label>
+              Tālrunis
+              <input name="phone" type="tel" autoComplete="tel" required />
+            </label>
+            <label className="join-page__form-description">
+              Īss uzņēmuma apraksts
+              <textarea name="companyDescription" rows="5" required />
+            </label>
+            <div className="join-page__form-action">
+              <button type="submit">Nosūtīt pieteikumu</button>
+              {isSubmitted && <p role="status">Paldies! Jūsu pieteikums ir sagatavots izskatīšanai.</p>}
+            </div>
+          </form>
         </section>
         <section className="join-page__notice">
           <strong>i</strong>
