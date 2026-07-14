@@ -66,8 +66,8 @@ const LandingPage = (props) => {
             <span className="landing-page-thq-text-elm25">Par mums</span>
             <span className="landing-page-thq-text-elm26">Par mums</span>
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Mappin5816"
+              src="mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="landing-page-thq-mappin-elm"
             />
             <img

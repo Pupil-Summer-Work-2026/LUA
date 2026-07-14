@@ -23,8 +23,8 @@ function Footer(){
             <span className="contacts-thq-text-elm50">Par mums</span>
             <span className="contacts-thq-text-elm51">Par mums</span>
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Mappin1166"
+              src="/mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="contacts-thq-mappin-elm2"
             />
             <img

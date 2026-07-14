@@ -151,8 +151,8 @@ const Jaunumi = (props) => {
             <span className="jaunumi-thq-text-elm46">Par mums</span>
             <span className="jaunumi-thq-text-elm47">Par mums</span>
             <img
-              alt="Mappin9374"
-              src="/mappin9374-dsdj.svg"
+              src="mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="jaunumi-thq-mappin-elm"
             />
             <img

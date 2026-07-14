@@ -148,8 +148,8 @@ const Ktparbiedru = (props) => {
             <span className="ktparbiedru-thq-text-elm40">Par mums</span>
             <span className="ktparbiedru-thq-text-elm41">Par mums</span>
             <img
-              src="/mappin1681-8fol.svg"
-              alt="Mappin1681"
+              src="mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="ktparbiedru-thq-mappin-elm1"
             />
             <img
@@ -187,115 +187,6 @@ const Ktparbiedru = (props) => {
             src="/bg1681-6mum-400h.png"
             alt="BG1681"
             className="ktparbiedru-thq-bg-elm2"
-          />
-          <div className="ktparbiedru-thq-group2-elm2">
-            <span className="ktparbiedru-thq-text-elm44">Navigācija</span>
-            <span className="ktparbiedru-thq-text-elm45">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm46">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm47">Par mums</span>
-          </div>
-          <div className="ktparbiedru-thq-group1-elm2">
-            <span className="ktparbiedru-thq-text-elm48">Navigācija</span>
-            <span className="ktparbiedru-thq-text-elm49">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm50">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm51">Par mums</span>
-          </div>
-          <div className="ktparbiedru-thq-group3-elm2">
-            <span className="ktparbiedru-thq-text-elm52">Kontakti</span>
-            <span className="ktparbiedru-thq-text-elm53">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm54">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm55">Par mums</span>
-            <img
-              src="/mappin1681-xsg.svg"
-              alt="Mappin1681"
-              className="ktparbiedru-thq-mappin-elm2"
-            />
-            <img
-              src="/mail1681-zpzu.svg"
-              alt="Mail1681"
-              className="ktparbiedru-thq-mail-elm2"
-            />
-            <img
-              src="/phone1571-57r.svg"
-              alt="Phone1571"
-              className="ktparbiedru-thq-phone-elm2"
-            />
-          </div>
-          <span className="ktparbiedru-thq-text-elm56">
-            Latvijas Ugunsdrošības asociācija — profesionāls atbalsts, izglītība
-            un pārstāvniecība kopš 1994. gada.
-          </span>
-          <img
-            src="/lualogofullwhite111681-q7h8-200h.png"
-            alt="LUAlogofullwhite111681"
-            className="ktparbiedru-thq-lu-alogofullwhite11-elm2"
-          />
-          <span className="ktparbiedru-thq-text-elm57">
-            © 2026 Latvijas Ugunsdrošības asociācija. Visas tiesības
-            aizsargātas.
-          </span>
-          <img
-            src="/line31682-nw5r.svg"
-            alt="Line31682"
-            className="ktparbiedru-thq-line3-elm3"
-          />
-        </div>
-        <div className="ktparbiedru-thq-footer-elm3">
-          <img
-            src="/bg1682-n6or-400h.png"
-            alt="BG1682"
-            className="ktparbiedru-thq-bg-elm3"
-          />
-          <div className="ktparbiedru-thq-group2-elm3">
-            <span className="ktparbiedru-thq-text-elm58">Navigācija</span>
-            <span className="ktparbiedru-thq-text-elm59">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm60">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm61">Par mums</span>
-          </div>
-          <div className="ktparbiedru-thq-group1-elm3">
-            <span className="ktparbiedru-thq-text-elm62">Navigācija</span>
-            <span className="ktparbiedru-thq-text-elm63">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm64">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm65">Par mums</span>
-          </div>
-          <div className="ktparbiedru-thq-group3-elm3">
-            <span className="ktparbiedru-thq-text-elm66">Kontakti</span>
-            <span className="ktparbiedru-thq-text-elm67">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm68">Par mums</span>
-            <span className="ktparbiedru-thq-text-elm69">Par mums</span>
-            <img
-              src="/mappin1682-sdmc.svg"
-              alt="Mappin1682"
-              className="ktparbiedru-thq-mappin-elm3"
-            />
-            <img
-              src="/mail1682-yp3o.svg"
-              alt="Mail1682"
-              className="ktparbiedru-thq-mail-elm3"
-            />
-            <img
-              src="/phone1571-57r.svg"
-              alt="Phone1571"
-              className="ktparbiedru-thq-phone-elm3"
-            />
-          </div>
-          <span className="ktparbiedru-thq-text-elm70">
-            Latvijas Ugunsdrošības asociācija — profesionāls atbalsts, izglītība
-            un pārstāvniecība kopš 1994. gada.
-          </span>
-          <img
-            src="/lualogofullwhite111682-ykoi-200h.png"
-            alt="LUAlogofullwhite111682"
-            className="ktparbiedru-thq-lu-alogofullwhite11-elm3"
-          />
-          <span className="ktparbiedru-thq-text-elm71">
-            © 2026 Latvijas Ugunsdrošības asociācija. Visas tiesības
-            aizsargātas.
-          </span>
-          <img
-            src="/line31682-1g9.svg"
-            alt="Line31682"
-            className="ktparbiedru-thq-line3-elm4"
           />
         </div>
       </div>
