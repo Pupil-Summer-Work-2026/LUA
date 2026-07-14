@@ -673,6 +673,7 @@
   top: 860px;
   left: 106px;
   width: 216px;
+  height: 424px;
   display: flex;
   position: absolute;
   align-items: center;
@@ -719,6 +720,7 @@
   position: absolute;
   align-items: flex-start;
   flex-shrink: 1;
+  flex-direction: column;
 }
  
 .contacts-thq-text-elm40 {

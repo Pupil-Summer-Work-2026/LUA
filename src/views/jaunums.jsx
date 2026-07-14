@@ -99,8 +99,8 @@ const Jaunums = (props) => {
             <span className="jaunums-thq-text-elm35">Par mums</span>
             <span className="jaunums-thq-text-elm36">Par mums</span>
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Mappin9385"
+              src="mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="jaunums-thq-mappin-elm"
             />
             <img
@@ -109,8 +109,8 @@ const Jaunums = (props) => {
               className="jaunums-thq-mail-elm"
             />
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Phone9385"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="jaunums-thq-phone-elm"
             />
           </div>

@@ -172,8 +172,8 @@ const AboutUs = (props) => {
             <span className="about-us-thq-text-elm47">Par mums</span>
             <span className="about-us-thq-text-elm48">Par mums</span>
             <img
-              src="/mappin8540-dywo.svg"
-              alt="Mappin8540"
+              src="/mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="about-us-thq-mappin-elm"
             />
             <img
@@ -182,8 +182,8 @@ const AboutUs = (props) => {
               className="about-us-thq-mail-elm"
             />
             <img
-              src="/phone8542-90dh.svg"
-              alt="Phone8542"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="about-us-thq-phone-elm"
             />
           </div>
@@ -206,66 +206,6 @@ const AboutUs = (props) => {
             className="about-us-thq-line3-elm"
           />
         </div>
-        <img
-          src="/nozaresparstavnieciba8551-dk6o-300w.png"
-          alt="Nozaresparstavnieciba8551"
-          className="about-us-thq-nozaresparstavnieciba-elm10"
-        />
-        <img
-          src="/nozaresparstavnieciba8569-gy8-300w.png"
-          alt="Nozaresparstavnieciba8569"
-          className="about-us-thq-nozaresparstavnieciba-elm11"
-        />
-        <img
-          src="/nozaresparstavnieciba8571-8jo-300w.png"
-          alt="Nozaresparstavnieciba8571"
-          className="about-us-thq-nozaresparstavnieciba-elm12"
-        />
-        <img
-          src="/nozaresparstavnieciba8573-ueni-300w.png"
-          alt="Nozaresparstavnieciba8573"
-          className="about-us-thq-nozaresparstavnieciba-elm13"
-        />
-        <img
-          src="/nozaresparstavnieciba8575-km12-300w.png"
-          alt="Nozaresparstavnieciba8575"
-          className="about-us-thq-nozaresparstavnieciba-elm14"
-        />
-        <img
-          src="/nozaresparstavnieciba8577-59no-300w.png"
-          alt="Nozaresparstavnieciba8577"
-          className="about-us-thq-nozaresparstavnieciba-elm15"
-        />
-        <img
-          src="/nozaresparstavnieciba8579-lkt7-300w.png"
-          alt="Nozaresparstavnieciba8579"
-          className="about-us-thq-nozaresparstavnieciba-elm16"
-        />
-        <img
-          src="/nozaresparstavnieciba8581-hm3n-300w.png"
-          alt="Nozaresparstavnieciba8581"
-          className="about-us-thq-nozaresparstavnieciba-elm17"
-        />
-        <img
-          src="/nozaresparstavnieciba8583-07nk-300w.png"
-          alt="Nozaresparstavnieciba8583"
-          className="about-us-thq-nozaresparstavnieciba-elm18"
-        />
-        <img
-          src="/nozaresparstavnieciba8563-vwzg-300w.png"
-          alt="Nozaresparstavnieciba8563"
-          className="about-us-thq-nozaresparstavnieciba-elm19"
-        />
-        <img
-          src="/nozaresparstavnieciba8565-tfe-300w.png"
-          alt="Nozaresparstavnieciba8565"
-          className="about-us-thq-nozaresparstavnieciba-elm20"
-        />
-        <img
-          src="/nozaresparstavnieciba8567-w2bp-300w.png"
-          alt="Nozaresparstavnieciba8567"
-          className="about-us-thq-nozaresparstavnieciba-elm21"
-        />
         <span className="about-us-thq-text-elm51">01</span>
         <span className="about-us-thq-text-elm52">05</span>
         <span className="about-us-thq-text-elm53">09</span>

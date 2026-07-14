@@ -55,8 +55,8 @@ const Contacts = (props) => {
             Lorem ipsum dolor sit amet
           </span>
           <img
-            src="https://play.teleporthq.io/static/svg/default-img.svg"
-            alt="Mappin9768"
+            src="mappin1571-nf3j.svg"
+            alt="Mappin1571"
             className="contacts-thq-mappin-elm1"
           />
           <img
@@ -65,8 +65,8 @@ const Contacts = (props) => {
             className="contacts-thq-mail-elm1"
           />
           <img
-            src="https://play.teleporthq.io/static/svg/default-img.svg"
-            alt="Phone9768"
+            src="/phone1571-57r.svg"
+            alt="Phone1571"
             className="contacts-thq-phone-elm1"
           />
         </div>
@@ -196,8 +196,8 @@ const Contacts = (props) => {
             <span className="contacts-thq-text-elm50">Par mums</span>
             <span className="contacts-thq-text-elm51">Par mums</span>
             <img
-              src="https://play.teleporthq.io/static/svg/default-img.svg"
-              alt="Mappin1166"
+              src="mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="contacts-thq-mappin-elm2"
             />
             <img

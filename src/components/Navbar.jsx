@@ -6,11 +6,12 @@ function Navbar() {
     return (
         <div className="about-us-thq-nav-bar-elm1">
           <img
+            onClick={() => history.push('/')}
             src="/image21612-9tc7-200h.png"
             alt="image21612"
             className="about-us-thq-image2-elm1"
           />
-          <div className="about-us-thq-button-enlist-elm1">
+          <div onClick={() => history.push('/ktparbiedru')} className="about-us-thq-button-enlist-elm1">
             <span className="about-us-thq-text-elm10">Kļūt par biedru</span>
           </div>
           <span onClick={() => history.push('/contacts')} className="about-us-thq-text-elm11">Kontakti</span>

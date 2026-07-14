@@ -392,13 +392,13 @@ const Biedri = (props) => {
           className="biedri-thq-sprinklerservicelogo1-elm"
         />
         <img
-          src="/sprinklerservicelogo21682-u5kc.svg"
-          alt="sprinklerservicelogo21682"
+          src="/sprinklerservicelogo11631-zuvk.svg"
+          alt="sprinklerservicelogo11631"
           className="biedri-thq-sprinklerservicelogo2-elm"
         />
         <img
-          src="/sprinklerservicelogo31683-s9k.svg"
-          alt="sprinklerservicelogo31683"
+          src="/sprinklerservicelogo11631-zuvk.svg"
+          alt="sprinklerservicelogo11631"
           className="biedri-thq-sprinklerservicelogo3-elm"
         />
         <img

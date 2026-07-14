@@ -54,31 +54,7 @@ const Jaunumi = (props) => {
           className="jaunumi-thq-rectangle5-elm"
         />
         <span className="jaunumi-thq-text-elm18">Meklēt</span>
-        <img
-          alt="Vector26151"
-          src="/vector26151-vy0f.svg"
-          className="jaunumi-thq-vector2-elm"
-        />
-        <img
-          alt="Vector36152"
-          src="/vector36152-i13u.svg"
-          className="jaunumi-thq-vector3-elm"
-        />
-        <img
-          alt="Vector46153"
-          src="/vector46153-lnwi.svg"
-          className="jaunumi-thq-vector4-elm"
-        />
-        <img
-          alt="Vector56154"
-          src="/vector56154-xk0i.svg"
-          className="jaunumi-thq-vector5-elm"
-        />
-        <img
-          alt="Vector66155"
-          src="/vector66155-b4p.svg"
-          className="jaunumi-thq-vector6-elm"
-        />
+        
         <img
           alt="Rectangle79316"
           src="/rectangle79316-1rh-800w.png"
@@ -175,8 +151,8 @@ const Jaunumi = (props) => {
             <span className="jaunumi-thq-text-elm46">Par mums</span>
             <span className="jaunumi-thq-text-elm47">Par mums</span>
             <img
-              alt="Mappin9374"
-              src="/mappin9374-dsdj.svg"
+              src="mappin1571-nf3j.svg"
+              alt="Mappin1571"
               className="jaunumi-thq-mappin-elm"
             />
             <img
@@ -185,8 +161,8 @@ const Jaunumi = (props) => {
               className="jaunumi-thq-mail-elm"
             />
             <img
-              alt="Phone9374"
-              src="/phone9374-151r.svg"
+              src="/phone1571-57r.svg"
+              alt="Phone1571"
               className="jaunumi-thq-phone-elm"
             />
           </div>
