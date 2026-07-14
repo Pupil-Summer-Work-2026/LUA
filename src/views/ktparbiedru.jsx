@@ -10,7 +10,7 @@ function Ktparbiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
-    document.title = 'Iestāšanās asociācijā | Latvijas Ugunsdrošības asociācija'
+    document.title = 'Iestāšanās | Latvijas Ugunsdrošības asociācija'
   }, [])
 
   function handleSubmit(event) {
@@ -22,7 +22,7 @@ function Ktparbiedru() {
   return (
     <SiteLayout className="join-page">
       <Helmet>
-        <title>Iestāšanās asociācijā | Latvijas Ugunsdrošības asociācija</title>
+        <title>Iestāšanās | Latvijas Ugunsdrošības asociācija</title>
         <meta name="description" content="Informācija par iestāšanos Latvijas Ugunsdrošības asociācijā." />
       </Helmet>
       <main>
@@ -37,7 +37,6 @@ function Ktparbiedru() {
         </section>
         <section className="join-page__application" aria-labelledby="application-heading">
           <div className="join-page__application-heading">
-            <p>Iestāšanās pieteikums</p>
             <h2 id="application-heading">Piesakiet savu uzņēmumu</h2>
           </div>
           <form className="join-page__form" onSubmit={handleSubmit} onChange={() => setIsSubmitted(false)}>

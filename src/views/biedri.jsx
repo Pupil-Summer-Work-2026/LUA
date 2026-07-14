@@ -22,7 +22,7 @@ function Biedri() {
       <main>
         <PageBanner title="Biedri" />
         <section className="members-page__content lua-container">
-          <h1>BIEDRU UZŅĒMUMI</h1>
+          <h1>LATVIJAS UGUNSDROŠĪBAS ASOCIĀCIJAS BIEDRI</h1>
           <div className="members-page__grid">
             {memberLogos.map((logo, index) => (
               <article key={`${logo}-${index}`} className="members-page__logo">
@@ -36,7 +36,7 @@ function Biedri() {
             <h2>KĻŪSTIET PAR LUA BIEDRU</h2>
             <p>Pievienojies vairāk nekā 120 uzņēmumiem, kas veido drošāku Latviju.</p>
           </div>
-          <Link to="/ktparbiedru">Rakstiet mums <span>→</span></Link>
+          <Link to="/ktparbiedru">Piesakieties <span>→</span></Link>
         </section>
       </main>
     </SiteLayout>

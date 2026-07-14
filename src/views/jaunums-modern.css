@@ -14,20 +14,6 @@
 .article-page__related span { color: var(--lua-red); font: 600 10px 'Barlow Condensed', sans-serif; }
 .article-page__related h2 { margin: 4px 0; font: 800 20px/1 'Barlow Condensed', sans-serif; }
 .article-page__related p { margin: 0; color: var(--lua-muted); font-size: 10px; line-height: 1.35; }
-.article-page__ad { min-height: 145px; display: grid; place-items: center; color: #c8d1df; border-radius: 4px; background: var(--lua-surface); font-size: 13px; }
-.article-page__comments { padding: 10px 0 68px; }
-.article-page__comments h2 { margin: 0 0 12px; font: 800 28px 'Barlow Condensed', sans-serif; }
-.article-page__comments form { position: relative; margin-bottom: 14px; }
-.article-page__comments input { width: 100%; padding: 12px 80px 12px 18px; border: 1px solid #e0e6ee; border-radius: 4px; background: var(--lua-surface); font: 12px 'DM Sans', sans-serif; }
-.article-page__comments button { min-width: 60px; position: absolute; right: 4px; top: 4px; bottom: 4px; color: #fff; border: 0; border-radius: 3px; background: var(--lua-red); font: 12px 'DM Sans', sans-serif; cursor: pointer; }
-.article-page__comments button:hover:not(:disabled) { background: #a40d18; }
-.article-page__comments button:disabled { cursor: not-allowed; opacity: .55; }
-.article-page__comments input:focus-visible, .article-page__comments button:focus-visible { outline: 2px solid #1767d2; outline-offset: 2px; }
-.article-page__comment-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.article-page__comment-grid article { min-height: 142px; padding: 22px; border: 1px solid #e1e7ee; border-radius: 4px; background: var(--lua-surface); }
-.article-page__comment-grid h3 { margin: 0 0 6px; font-size: 15px; font-weight: 500; }
-.article-page__comment-grid p { margin: 0; color: var(--lua-muted); font-size: 11px; line-height: 1.42; }
-.article-page__sr-only { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
 @media (max-width: 760px) {
   .article-page__layout { grid-template-columns: 1fr; gap: 28px; }

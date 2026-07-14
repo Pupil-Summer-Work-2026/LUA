@@ -60,19 +60,11 @@ function Jaunums() {
               <img src="/article11645-wq9i-400w.png" alt="Saistīts jaunums" />
               <div><span>Pasākumi</span><h2>Lorem Ipsum</h2><p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p></div>
             </article>
-            <div className="article-page__ad">Vieta reklāmai</div>
+            <article className="article-page__related">
+              <img src="/article11645-wq9i-400w.png" alt="Saistīts jaunums" />
+              <div><span>Pasākumi</span><h2>Lorem Ipsum</h2><p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p></div>
+            </article>
           </aside>
-        </section>
-        <section className="article-page__comments lua-container">
-          <h2>Komentāri</h2>
-          <form onSubmit={handleCommentSubmit}>
-            <label className="article-page__sr-only" htmlFor="comment">Pievienojies diskusijai</label>
-            <input id="comment" placeholder="Pievienojies diskusijai" value={commentText} onChange={(event) => setCommentText(event.target.value)} required />
-            <button type="submit" disabled={!commentText.trim()}>Publicēt</button>
-          </form>
-          <div className="article-page__comment-grid">
-            {comments.map((comment) => <article key={comment.id}><h3>{comment.name}</h3><p>{comment.body}</p></article>)}
-          </div>
         </section>
       </main>
     </SiteLayout>

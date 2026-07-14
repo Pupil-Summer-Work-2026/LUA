@@ -12,12 +12,12 @@ const articles = [
   {
     image: '/rectangle89321-8giw-800w.png',
     category: 'Bez kategorijas',
-    title: 'BREAKING NEWS',
+    title: 'Title of article',
   },
   {
     image: '/rectangle67863-5s1q-800w.png',
     category: 'Ar kategoriju',
-    title: 'BREAKING NEWS 2',
+    title: 'Title of another article',
   },
 ]
 
