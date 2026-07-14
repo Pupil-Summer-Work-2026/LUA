@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect,
+  useLocation,
 } from 'react-router-dom'
 
 import './style.css'
@@ -18,9 +19,20 @@ import Biedri from './views/biedri.jsx'
 import Ktparbiedru from './views/ktparbiedru.jsx'
 import NotFound from './views/not-found.jsx'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Switch>
         <Route component={LandingPage} exact path="/" />
         <Route component={AboutUs} exact path="/about-us" />
