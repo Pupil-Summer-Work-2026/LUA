@@ -8,7 +8,7 @@ import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
 export const members = [
-  ['/image141632-vy7k-200h.png', 'Biedrs 01', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
+  ['/biedri/almo.png', 'Biedrs 01', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/image141632-vy7k-200h.png', 'Biedrs 02', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/image141632-vy7k-200h.png', 'Biedrs 03', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/image141632-vy7k-200h.png', 'Biedrs 04', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
