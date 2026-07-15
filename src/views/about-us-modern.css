@@ -1,5 +1,8 @@
 .about-page__feature { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 48px; align-items: center; padding: 48px 0; }
 .about-page__feature img { width: 100%; min-height: 228px; object-fit: cover; }
+.about-page__years { width: 100%; min-width: 0; position: relative; display: grid; aspect-ratio: 1; container-type: inline-size; place-items: center; }
+.about-page__years img { width: 100%; min-width: 0; height: 100%; min-height: 0; object-fit: contain; }
+.about-page__years strong { position: absolute; transform: translateY(-3.5cqi); color: var(--lua-navy); font: 800 28cqi/1 Bahnschrift, sans-serif; text-shadow: .5cqi .5cqi 0 var(--lua-red); }
 .about-page h1, .about-page h2, .about-page h3 { margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; }
 .about-page h1, .about-page h2 { margin: 16px 0; font-size: 42px; line-height: .95; }
 .about-page em { color: var(--lua-red); font-style: normal; }

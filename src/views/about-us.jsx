@@ -24,7 +24,17 @@ const sectors = [
   { title: 'Ugunsdrošības un aizsardzības apmācība pēc 20 un 160 stundu programmām. Pirmās medicīniskās palīdzības apmācība. Civilās aizsardzības apmācība', label: '/Lables/red%20cross.svg' },
 ]
 
+function getAssociationYears() {
+  const startDate = new Date(2002, 3, 4)
+  const today = new Date()
+  const hasAnniversaryPassed = today.getMonth() > startDate.getMonth() || (today.getMonth() === startDate.getMonth() && today.getDate() >= startDate.getDate())
+
+  return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
+}
+
 function AboutUs() {
+  const associationYears = getAssociationYears()
+
   useEffect(() => {
     document.title = 'Par mums | Latvijas Ugunsdrošības asociācija'
   }, [])
@@ -38,7 +48,10 @@ function AboutUs() {
       <main>
         <PageBanner title="Par mums" />
         <section className="about-page__feature about-page__feature--intro lua-container">
-          <img src="/Images/extinguisher-top.jpg" alt="Ugunsdzēšamais aparāts tuvplānā" />
+          <div className="about-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
+            <img src="/Images/biznesa gadi.svg" alt="" />
+            <strong aria-hidden="true">{associationYears}</strong>
+          </div>
           <div>
             <span className="lua-eyebrow">PAR ASOCIĀCIJU</span>
             <h1>KAS IR <em>LUA</em>?</h1>
