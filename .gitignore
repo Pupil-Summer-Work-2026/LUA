@@ -2,5 +2,7 @@ node_modules
 node_modules/.cache
 dist
 **/__pycache__
-**/migrations/**
 db.sqlite3
+venv/
+.venv/
+media/
