@@ -26,8 +26,11 @@ npm.cmd run dev
 
 Create the first editorial account with:
 
-```powershell
-.\venv\Scripts\python.exe manage.py createsuperuser
+```powershell (Windows)
+python manage.py createsuperuser
+```
+```Bash (Linux/MacOS)
+python3 manage.py createsuperuser
 ```
 
 Open `http://127.0.0.1:8000/admin/` to manage reusable tags and publish posts. Each post can have any number of tags and an ordered set of images. The image with the lowest position becomes the cover shown on the news list; all post images appear in the article gallery. Add useful alt text for every image.
