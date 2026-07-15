@@ -7,34 +7,50 @@ import { Link } from 'react-router-dom'
 import './jaunumi-modern.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import { getPosts, getTags } from '../services/blogApi'
 
-const articles = [
-  {
-    image: '/Images/fire-alarm.jpg',
-    category: 'Bez kategorijas',
-    title: 'Title of article',
-  },
-  {
-    image: '/Images/firehose.jpg',
-    category: 'Ar kategoriju',
-    title: 'Title of another article',
-  },
-]
+const defaultCategory = 'Visi jaunumi'
 
-const categories = ['Visi jaunumi', ...new Set(articles.map(({ category }) => category))]
+function formatDate(value) {
+  return new Intl.DateTimeFormat('lv-LV', { dateStyle: 'long' }).format(new Date(value))
+}
+
+function getSummary(content) {
+  const normalizedContent = content.replace(/\s+/g, ' ').trim()
+  return normalizedContent.length > 220 ? `${normalizedContent.slice(0, 220)}...` : normalizedContent
+}
 
 function Jaunumi() {
-  const [activeCategory, setActiveCategory] = useState('Visi jaunumi')
+  const [activeCategory, setActiveCategory] = useState(defaultCategory)
   const [searchInput, setSearchInput] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [posts, setPosts] = useState([])
+  const [tags, setTags] = useState([])
+  const [status, setStatus] = useState('loading')
+
+  function loadNews() {
+    setStatus('loading')
+
+    Promise.all([getPosts(), getTags()])
+      .then(([nextPosts, nextTags]) => {
+        setPosts(nextPosts)
+        setTags(nextTags)
+        setStatus('ready')
+      })
+      .catch(() => setStatus('error'))
+  }
 
   useEffect(() => {
     document.title = 'Jaunumi | Latvijas Ugunsdrošības asociācija'
+    loadNews()
   }, [])
 
-  const filteredArticles = articles.filter(({ category, title }) => {
-    const matchesCategory = activeCategory === 'Visi jaunumi' || category === activeCategory
-    const matchesSearch = title.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()) || category.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+  const categories = [defaultCategory, ...tags.map(({ name }) => name)]
+  const filteredArticles = posts.filter(({ tags: postTags, title }) => {
+    const tagNames = postTags.map(({ name }) => name)
+    const matchesCategory = activeCategory === defaultCategory || tagNames.includes(activeCategory)
+    const normalizedQuery = searchQuery.toLocaleLowerCase()
+    const matchesSearch = title.toLocaleLowerCase().includes(normalizedQuery) || tagNames.some((name) => name.toLocaleLowerCase().includes(normalizedQuery))
     return matchesCategory && matchesSearch
   })
 
@@ -44,7 +60,7 @@ function Jaunumi() {
   }
 
   function clearFilters() {
-    setActiveCategory('Visi jaunumi')
+    setActiveCategory(defaultCategory)
     setSearchInput('')
     setSearchQuery('')
   }
@@ -59,18 +75,25 @@ function Jaunumi() {
         <PageBanner title="Jaunumi" />
         <section className="news-page__layout lua-container">
           <div className="news-page__list">
-            {filteredArticles.map((article) => (
-              <Link key={article.title} className="news-page__card" to="/jaunums">
-                <img src={article.image} alt="Jaunuma attēls" />
-                <div>
-                  <span>{article.category}</span>
+            {status === 'loading' && <div className="news-page__empty" role="status"><p>Ielādē jaunumus...</p></div>}
+            {status === 'error' && <div className="news-page__empty" role="alert"><p>Jaunumus pašlaik nevar ielādēt.</p><button type="button" onClick={loadNews}>Mēģināt vēlreiz</button></div>}
+            {status === 'ready' && filteredArticles.map((article) => {
+              const coverImage = article.images[0]
+              const tagNames = article.tags.map(({ name }) => name).join(', ') || 'Bez kategorijas'
+
+              return (
+              <Link key={article.id} className="news-page__card" to={`/jaunums/${article.id}`}>
+                {coverImage ? <img src={coverImage.image} alt={coverImage.alt_text || article.title} /> : <div className="news-page__card-image-placeholder" aria-hidden="true" />}
+                <div className="news-page__card-content">
+                  <span>{tagNames}</span>
                   <h1>{article.title}</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                  <small>Autors + Datums 67.27.2727</small>
+                  <p>{getSummary(article.content)}</p>
+                  <small>{formatDate(article.created_at)}</small>
                 </div>
               </Link>
-            ))}
-            {filteredArticles.length === 0 && <div className="news-page__empty" role="status"><p>Neviens jaunums neatbilst izvēlētajiem filtriem.</p><button type="button" onClick={clearFilters}>Notīrīt filtrus</button></div>}
+              )
+            })}
+            {status === 'ready' && filteredArticles.length === 0 && <div className="news-page__empty" role="status"><p>Neviens jaunums neatbilst izvēlētajiem filtriem.</p><button type="button" onClick={clearFilters}>Notīrīt filtrus</button></div>}
           </div>
           <aside className="news-page__sidebar">
             <form onSubmit={handleSearch}>

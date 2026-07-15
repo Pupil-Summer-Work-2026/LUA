@@ -37,7 +37,7 @@ const App = () => {
         <Route component={LandingPage} exact path="/" />
         <Route component={AboutUs} exact path="/about-us" />
         <Route component={Jaunumi} exact path="/jaunumi" />
-        <Route component={Jaunums} exact path="/jaunums" />
+        <Route component={Jaunums} exact path="/jaunums/:postId" />
         <Route component={Contacts} exact path="/contacts" />
         <Route component={Biedri} exact path="/biedri" />
         <Route component={Ktparbiedru} exact path="/ktparbiedru" />
