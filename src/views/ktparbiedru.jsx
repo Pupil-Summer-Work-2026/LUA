@@ -33,7 +33,7 @@ function Ktparbiedru() {
             <p>Kļūt par biedru ir vienkārši. Pievienojieties profesionāļiem, kuri kopā veido drošāku Latviju.</p>
             <p>Jebkura Latvijas Republikā reģistrēta juridiska persona vai tiesībspējīga personālsabiedrība, kas nodarbojas ar ugunsdzēsību vai ugunsdzēsības servisu, vai ir tieši saistīta ar to, un atbalsta Biedrības mērķus, kā arī apņemas ievērot tās statūtus.</p>
           </div>
-          <img src="/image171686-9gsk-500h.png" alt="Latvijas Ugunsdrošības asociācijas pieredze" />
+          <img src="/Images/fire-outfit.jpg" alt="Ugunsdzēsēju aizsargtērpi un ķiveres" />
         </section>
         <section className="join-page__application" aria-labelledby="application-heading">
           <div className="join-page__application-heading">

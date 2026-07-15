@@ -38,7 +38,7 @@ function AboutUs() {
       <main>
         <PageBanner title="Par mums" />
         <section className="about-page__feature about-page__feature--intro lua-container">
-          <img src="/image45864-tn4k-300h.png" alt="Ugunsdzēšamais aparāts" />
+          <img src="/Images/extinguisher-top.jpg" alt="Ugunsdzēšamais aparāts tuvplānā" />
           <div>
             <span className="lua-eyebrow">PAR ASOCIĀCIJU</span>
             <h1>KAS IR <em>LUA</em>?</h1>
@@ -58,7 +58,7 @@ function AboutUs() {
                 <li>Lorem ipsum dolor sit amet</li>
               </ul>
             </div>
-            <img src="/image65819-qo9r-500w.png" alt="Degošs sērkociņš" />
+            <img src="/Images/lit-match.jpg" alt="Aizdegta sērkociņa liesma" />
           </div>
         </section>
         <section className="about-page__sectors lua-container">
