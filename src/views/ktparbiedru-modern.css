@@ -1,9 +1,12 @@
 .join-page__intro, .join-page__application, .join-page__notice { width: min(100% - 96px, 1136px); margin: 0 auto; }
-.join-page__intro { display: grid; grid-template-columns: minmax(0, .96fr) minmax(400px, 1.04fr); gap: 56px; align-items: center; padding: 56px 0 40px; }
+.join-page__intro { display: grid; grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr); gap: 56px; align-items: center; padding: 56px 0 40px; }
 .join-page__copy h1 { margin: 0 0 24px; font: 800 clamp(56px, 7vw, 92px)/.9 'Barlow Condensed', sans-serif; }
 .join-page em { color: var(--lua-red); font-style: normal; }
 .join-page__copy p { max-width: 505px; margin: 0 0 20px; font-size: 15px; line-height: 1.5; }
 .join-page__intro img { width: 100%; max-height: 455px; object-fit: contain; }
+.join-page__years { width: 100%; min-width: 0; position: relative; display: grid; aspect-ratio: 1; container-type: inline-size; place-items: center; }
+.join-page__years img { width: 100%; min-width: 0; height: 100%; max-height: none; object-fit: contain; }
+.join-page__years strong { position: absolute; transform: translateY(-3.5cqi); color: var(--lua-navy); font: 800 28cqi/1 Bahnschrift, sans-serif; text-shadow: .5cqi .5cqi 0 var(--lua-red); }
 .join-page__application { padding: 12px 0 58px; }
 .join-page__application-heading { margin-bottom: 24px; }
 .join-page__application-heading p { margin: 0 0 7px; color: var(--lua-red); font: 700 13px 'DM Sans', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
@@ -25,7 +28,6 @@
 
 @media (max-width: 760px) {
   .join-page__intro { grid-template-columns: 1fr; gap: 28px; }
-  .join-page__intro img { max-height: 360px; }
   .join-page__form { grid-template-columns: 1fr; }
   .join-page__notice { margin-bottom: 72px; }
 }
