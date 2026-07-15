@@ -56,7 +56,7 @@
 
 .site-footer { color: #fff; background: var(--lua-navy); border-top: 1px solid rgb(255 255 255 / 25%); }
 .site-footer__grid { width: min(100% - 64px, 1136px); min-height: 260px; display: grid; grid-template-columns: 1.35fr .75fr 1.1fr; gap: 70px; margin: 0 auto; padding: 54px 0; }
-.site-footer__brand img { width: 145px; height: 53px; object-fit: contain; object-position: left center; }
+.site-footer__brand img { width: 145px; height: 53px; object-fit: contain; object-position: left center; filter: brightness(0) invert(1); }
 .site-footer__brand p { max-width: 180px; }
 .site-footer__column { font-style: normal; }
 .site-footer__column h2 { margin: 0 0 18px; color: #fff; font: 700 15px/1 'Barlow Condensed', sans-serif; }

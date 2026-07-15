@@ -31,7 +31,7 @@ function SiteFooter() {
     <footer className="site-footer">
       <div className="site-footer__grid">
         <div className="site-footer__brand">
-          <img src="/lualogofullwhite111571-bjn-200h.png" alt="Latvijas Ugunsdrošības asociācija" />
+          <img src="/LUA big shield landscape SVG.svg" alt="Latvijas Ugunsdrošības asociācija" />
           <p>Latvijas Ugunsdrošības asociācija - profesionāls atbalsts, izglītība un pārstāvniecība kopš 1994. gada.</p>
         </div>
         <NavigationColumn items={primaryNavigation} />

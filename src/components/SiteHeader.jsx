@@ -30,7 +30,7 @@ function SiteHeader() {
   return (
     <header className="site-header">
       <button className="site-header__logo" type="button" aria-label="Uz sākumlapu" onClick={() => navigateTo('/')}>
-        <img src="/image21612-9tc7-200h.png" alt="Latvijas Ugunsdrošības asociācija" />
+        <img src="/LUA big shield landscape SVG.svg" alt="Latvijas Ugunsdrošības asociācija" />
       </button>
       <button
         className="site-header__menu-button"
