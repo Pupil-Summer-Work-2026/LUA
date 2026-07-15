@@ -67,7 +67,8 @@
 .lua-logo-carousel { overflow: hidden; }
 .lua-logo-carousel__track { width: max-content; display: flex; animation: lua-logo-marquee 24s linear infinite; }
 .lua-logo-carousel__group { display: flex; flex: none; gap: 32px; padding-right: 32px; }
-.lua-logo-carousel__item { width: 160px; height: 64px; display: grid; flex: none; place-items: center; overflow: hidden; border-radius: 4px; background: #f2f4f7; transition: transform .2s ease; }
+.lua-logo-carousel__item { width: 160px; height: 64px; display: grid; flex: none; place-items: center; overflow: hidden; border-radius: 4px; background: #f2f4f7; text-decoration: none; transition: transform .2s ease; }
+.lua-logo-carousel__item[href] { cursor: pointer; }
 .lua-logo-carousel__item:hover { position: relative; z-index: 1; transform: scale(1.08); }
 .lua-logo-carousel:hover .lua-logo-carousel__track { animation-play-state: paused; }
 .lua-logo-carousel img { max-width: 92%; max-height: 85%; object-fit: contain; }
