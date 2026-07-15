@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 import './biedri-modern.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
-import { memberLogos } from '../data/members'
 
 const members = [
   ['/image141632-vy7k-200h.png', 'Biedrs 01', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
