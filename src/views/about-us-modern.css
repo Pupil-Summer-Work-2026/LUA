@@ -13,9 +13,10 @@
 .about-page__mission img { width: 100%; max-height: 300px; object-fit: cover; }
 .about-page__sectors { padding: 58px 0 72px; }
 .about-page__sector-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 32px; border-top: 1px solid #dbe2ec; border-left: 1px solid #dbe2ec; }
-.about-page__sector-grid article { min-height: 176px; padding: 22px 20px; border-right: 1px solid #dbe2ec; border-bottom: 1px solid #dbe2ec; }
+.about-page__sector-grid article { min-height: 176px; position: relative; isolation: isolate; padding: 22px 20px; overflow: hidden; border-right: 1px solid #dbe2ec; border-bottom: 1px solid #dbe2ec; background: #fff; }
+.about-page__sector-grid article::after { width: 112px; height: 112px; position: absolute; z-index: -1; right: -18px; bottom: -20px; content: ''; opacity: .13; background: var(--sector-label) center / contain no-repeat; }
 .about-page__sector-grid span { display: block; margin-bottom: 12px; color: var(--lua-red); font: 400 12px 'Barlow Condensed', sans-serif; }
-.about-page__sector-grid h3 { font-size: 19px; line-height: 1.05; }
+.about-page__sector-grid h3 { max-width: 88%; font-size: 19px; line-height: 1.05; }
 
 @media (max-width: 760px) {
   .about-page__feature, .about-page__mission-inner { grid-template-columns: 1fr; gap: 34px; }

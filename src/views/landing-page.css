@@ -72,7 +72,7 @@
 .lua-logo-carousel:hover .lua-logo-carousel__track { animation-play-state: paused; }
 .lua-logo-carousel img { max-width: 92%; max-height: 85%; object-fit: contain; }
 .lua-logo-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 32px; }
-.lua-logo-grid > div { height: 64px; display: grid; place-items: center; overflow: hidden; border-radius: 4px; background: #f2f4f7; }
+.lua-logo-grid > div { height: 64px; display: grid; place-items: center; overflow: hidden; align-items: center; border-radius: 4px; background: #f2f4f7; }
 .lua-logo-grid img { max-width: 92%; max-height: 85%; object-fit: contain; }
 .lua-logo-grid--empty > div { background: #dfe3e9; }
 

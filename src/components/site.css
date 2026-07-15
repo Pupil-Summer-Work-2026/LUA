@@ -13,6 +13,9 @@
 }
 
 .site-header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
   min-height: 70px;
   display: flex;
   align-items: center;
@@ -64,8 +67,9 @@
 .site-footer__copyright { width: min(100% - 64px, 1136px); margin: 0 auto; padding: 16px 0; border-top: 1px solid #33445f; color: var(--lua-muted); font: 10px 'DM Sans', sans-serif; }
 
 @media (max-width: 760px) {
-  .site-header { position: relative; min-height: 66px; padding: 8px 20px; }
-  .site-header__menu-button { display: block; padding: 9px 12px; color: var(--lua-navy); border: 1px solid #d8dee8; border-radius: 4px; background: #fff; font-size: 13px; }
+  .site-header { min-height: 66px; padding: 8px 20px; }
+  .site-header__menu-button { width: 42px; height: 40px; display: grid; place-content: center; gap: 5px; padding: 0; color: var(--lua-navy); border: 1px solid #d8dee8; border-radius: 4px; background: #fff; }
+  .site-header__menu-button span { width: 18px; height: 2px; background: currentColor; }
   .site-header__nav { position: absolute; z-index: 10; top: 100%; right: 20px; left: 20px; display: none; gap: 0; padding: 8px; border: 1px solid #e8ebf0; border-radius: 4px; background: #fff; box-shadow: 0 12px 28px rgba(13, 31, 60, .14); }
   .site-header__nav--open { display: grid; }
   .site-header__nav > button { padding: 12px; text-align: left; }

@@ -40,7 +40,9 @@ function SiteHeader() {
         aria-label={isMenuOpen ? 'Aizvērt izvēlni' : 'Atvērt izvēlni'}
         onClick={() => setIsMenuOpen((isOpen) => !isOpen)}
       >
-        Izvēlne
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
       </button>
       <nav id="site-navigation" className={`site-header__nav${isMenuOpen ? ' site-header__nav--open' : ''}`} aria-label="Galvenā navigācija">
         {headerNavigation.map(({ label, path }) => (
