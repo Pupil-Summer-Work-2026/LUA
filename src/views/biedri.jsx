@@ -12,7 +12,7 @@ export const members = [
   ['/Biedri/aphelp.png', 'AP HELP', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/Biedri/arcofire.png', 'Arco Fire', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/Biedri/astramar_liepaja.png', 'Astramar Liepāja', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
-  ['/Biedri/daugavpils1.png', 'Daugavpils', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
+  ['/Biedri/daugavpils1.png', 'Daugavpils Brīvprātīgo Ugunsdzēsēju Biedrība', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/Biedri/dns automatika.png', 'DNS Automātika', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/Biedri/etex-logo.webp', 'Etex', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
   ['/Biedri/fireline-pluss.jpg', 'Fireline Pluss', 'Pievienojiet uzņēmuma aprakstu šeit.', ''],
