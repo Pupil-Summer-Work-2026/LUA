@@ -10,12 +10,12 @@ import PageBanner from '../components/PageBanner'
 
 const articles = [
   {
-    image: '/rectangle89321-8giw-800w.png',
+    image: '/Images/fire-alarm.jpg',
     category: 'Bez kategorijas',
     title: 'Title of article',
   },
   {
-    image: '/rectangle67863-5s1q-800w.png',
+    image: '/Images/firehose.jpg',
     category: 'Ar kategoriju',
     title: 'Title of another article',
   },
@@ -84,7 +84,7 @@ function Jaunumi() {
             </section>
             <section className="news-page__maintenance">
               <h2>VAI JŪSU APARĀTI IR APKOPTI?</h2>
-              <img src="/image79327-gb2l-200h.png" alt="Ugunsdzēšamie aparāti" />
+              <img src="/Images/5extinguishers.png" alt="Daudzi ugunsdzēšamie aparāti rindās" />
             </section>
           </aside>
         </section>

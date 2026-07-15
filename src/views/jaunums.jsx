@@ -52,16 +52,16 @@ function Jaunums() {
             <p className="article-page__meta">Bez kategorijas • Vārds Uzvārds • 01.01.1970</p>
             {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             <div className="article-page__gallery">
-              <img src="/image49345-k5nh-600w.png" alt="Ugunsdzēšamie aparāti" />
+              <img src="/Images/extinguisher-top.jpg" alt="Ugunsdzēšamais aparāts tuvplānā" />
             </div>
           </article>
           <aside className="article-page__sidebar">
             <article className="article-page__related">
-              <img src="/article11645-wq9i-400w.png" alt="Saistīts jaunums" />
+              <img src="/Images/fire-alarm2.jpg" alt="Ugunsdrošības zīme un trauksmes poga" />
               <div><span>Pasākumi</span><h2>Lorem Ipsum</h2><p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p></div>
             </article>
             <article className="article-page__related">
-              <img src="/article11645-wq9i-400w.png" alt="Saistīts jaunums" />
+              <img src="/Images/fire-outfit.jpg" alt="Ugunsdzēsēju aizsargtērpi un ķiveres" />
               <div><span>Pasākumi</span><h2>Lorem Ipsum</h2><p>Lorem ipsum dolor sit amet consectetur adipiscing elit.</p></div>
             </article>
           </aside>
