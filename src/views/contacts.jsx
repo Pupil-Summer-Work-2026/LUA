@@ -54,16 +54,14 @@ function Contacts() {
           <div className="contacts-page__details">
             <h1>PAR ASOCIĀCIJU</h1>
             <div className="contacts-page__details-grid">
-              <div>
-                <ContactRow icon="/mappin9374-dsdj.svg">Lorem ipsum dolor sit amet</ContactRow>
                 <div className="contacts-page__billing">
                 <p>Rekvizīti:</p>
-                <p>Lorem ipsum dolor sit amet</p>
-                <p>Lorem ipsum dolor sit amet</p>
-                <p>Lorem ipsum dolor sit amet</p>
-                <p>Lorem ipsum dolor sit amet</p>
-                <p>Lorem ipsum dolor sit amet</p>
-              </div>
+                <span>Latvijas Ugunsdrošības asociācija BIEDRĪBA</span>
+                <span>Vijciema iela 1A, Rīga, LV-1006</span>
+                <span>REĢ. NR: 40008066462</span>
+                <span>BANKA: AS Swedbank</span>
+                <span>SWIFT BIC:HABALV22</span>
+                <span>KONTS: LV24HABA0551044104806</span>
               </div>
               
             </div>
@@ -73,12 +71,12 @@ function Contacts() {
           <div className="contacts-page__help-inner lua-container">
             <form className="contacts-page__form" onSubmit={handleSubmit}>
               <h2>SAZINIETIES</h2>
-              <label htmlFor="contact-name">Vārds</label>
-              <input id="contact-name" name="name" autoComplete="name" placeholder="Lorem ipsum dolor sit amet" required onChange={() => setIsSubmitted(false)} />
+              <label htmlFor="contact-name">Vārds, Uzvārds</label>
+              <input id="contact-name" name="name" autoComplete="name" placeholder="Ievadiet savu vārdu un uzvārdu" required onChange={() => setIsSubmitted(false)} />
               <label htmlFor="contact-email">E-pasts</label>
-              <input id="contact-email" name="email" type="email" autoComplete="email" placeholder="Lorem ipsum dolor sit amet" required onChange={() => setIsSubmitted(false)} />
+              <input id="contact-email" name="email" type="email" autoComplete="email" placeholder="Ievadiet savu e-pastu" required onChange={() => setIsSubmitted(false)} />
               <label htmlFor="contact-message">Ziņa</label>
-              <textarea id="contact-message" name="message" placeholder="Lorem ipsum dolor sit amet" rows="4" required onChange={() => setIsSubmitted(false)} />
+              <textarea id="contact-message" name="message" placeholder="Ievadiet savu ziņu" rows="4" required onChange={() => setIsSubmitted(false)} />
               <button type="submit">Sūtīt</button>
               {isSubmitted && <p className="contacts-page__form-status" role="status">Paldies! Jūsu ziņa ir nosūtīta.</p>}
             </form>
@@ -86,7 +84,12 @@ function Contacts() {
               <h2>NODERĪGAS SAITES</h2>
               <div className="contacts-page__resource-list">
                 {resources.map(([label, link]) => (
-                  <p key={link}>{label && <strong>{label} - </strong>}<a href={`https://${link}`} target="_blank" rel="noreferrer">{link}</a></p>
+                  <div className="contacts-page__resource-category" key={link}>
+                    {label && <strong>{label}</strong>}
+                    <ul>
+                      <li><a href={`https://${link}`} target="_blank" rel="noreferrer">{link}</a></li>
+                    </ul>
+                  </div>
                 ))}
               </div>
             </div>

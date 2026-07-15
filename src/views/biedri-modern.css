@@ -1,8 +1,15 @@
 .members-page__content { padding: 46px 0 74px; }
 .members-page__content h1 { margin: 0 0 28px; color: var(--lua-muted); text-align: center; font: 500 32px/1 'Barlow Condensed', sans-serif; }
 .members-page__grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
-.members-page__logo { min-height: 64px; display: grid; place-items: center; padding: 8px; overflow: hidden; border: 1px solid #e2e7ee; border-radius: 4px; background: #f3f6fa; }
-.members-page__logo img { width: 100%; max-height: 48px; object-fit: contain; }
+.members-page__card-link { color: inherit; text-decoration: none; }
+.members-page__card { min-height: 132px; position: relative; display: grid; place-items: center; padding: 12px; overflow: hidden; border: 1px solid #e2e7ee; border-radius: 4px; background: #f3f6fa; }
+.members-page__card img { width: 100%; max-height: 74px; object-fit: contain; }
+.members-page__card-details { position: absolute; inset: 0; display: grid; align-content: center; gap: 8px; padding: 16px; color: #fff; opacity: 0; background: var(--lua-navy); text-align: center; transform: translateY(100%); transition: opacity .2s ease, transform .2s ease; }
+.members-page__card-details h2 { margin: 0; font: 800 20px/1 'Barlow Condensed', sans-serif; }
+.members-page__card-details p { margin: 0; font-size: 11px; line-height: 1.4; }
+.members-page__card-details span { color: #fff; font: 700 11px 'DM Sans', sans-serif; }
+.members-page__card:hover .members-page__card-details, .members-page__card:focus .members-page__card-details, .members-page__card-link:focus .members-page__card-details { opacity: 1; transform: translateY(0); }
+.members-page__card:focus-visible, .members-page__card-link:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
 .members-page__join { min-height: 150px; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 28px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-red); }
 .members-page__join h2 { margin: 0; font: 800 30px/.95 'Barlow Condensed', sans-serif; }
 .members-page__join p { margin: 5px 0 0; font-size: 13px; }

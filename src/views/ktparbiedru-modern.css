@@ -14,7 +14,7 @@
 .join-page__form input:focus, .join-page__form textarea:focus { outline: 2px solid #64c8f1; outline-offset: 1px; border-color: #1767d2; }
 .join-page__form textarea { min-height: 124px; resize: vertical; }
 .join-page__form-description, .join-page__form-action { grid-column: 1 / -1; }
-.join-page__form-action { display: flex; align-items: center; gap: 18px; }
+.join-page__form-action { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .join-page__form button { padding: 13px 22px; color: #fff; border: 0; border-radius: 4px; background: var(--lua-red); cursor: pointer; font: 700 14px 'DM Sans', sans-serif; }
 .join-page__form button:hover { background: #a40d18; }
 .join-page__form button:focus-visible { outline: 2px solid #1767d2; outline-offset: 2px; }
@@ -36,6 +36,6 @@
   .join-page__copy h1 { font-size: 58px; }
   .join-page__copy p { font-size: 14px; }
   .join-page__form { padding: 20px; }
-  .join-page__form-action { align-items: flex-start; flex-direction: column; }
+  .join-page__form-action { align-items: center; }
   .join-page__notice { grid-template-columns: 24px 1fr; padding: 18px; }
 }
