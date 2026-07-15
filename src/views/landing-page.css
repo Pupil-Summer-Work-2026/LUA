@@ -27,7 +27,7 @@
 .lua-home button:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
 .lua-hero button:hover { background: #a40d18; }
 
-.lua-statistics { display: grid; grid-template-columns: repeat(4, 1fr); min-height: 160px; padding: 26px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-navy); }
+.lua-statistics { display: grid; grid-template-columns: repeat(2, 1fr); min-height: 160px; padding: 26px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-navy); }
 .lua-statistics div { display: grid; align-content: center; justify-items: center; gap: 8px; }
 .lua-statistics strong { color: var(--lua-red); font: 700 48px/1 'Barlow Condensed', sans-serif; }
 .lua-statistics span, .lua-community h3 { color: var(--lua-muted); font: 400 14px/1 'Barlow Condensed', sans-serif; }
@@ -71,7 +71,7 @@
 .lua-logo-carousel__item:hover { position: relative; z-index: 1; transform: scale(1.08); }
 .lua-logo-carousel:hover .lua-logo-carousel__track { animation-play-state: paused; }
 .lua-logo-carousel img { max-width: 92%; max-height: 85%; object-fit: contain; }
-.lua-logo-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 32px; }
+.lua-logo-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 160px)); justify-content: center; gap: 32px; }
 .lua-logo-grid > div { height: 64px; display: grid; place-items: center; overflow: hidden; align-items: center; border-radius: 4px; background: #f2f4f7; }
 .lua-logo-grid img { max-width: 92%; max-height: 85%; object-fit: contain; }
 .lua-logo-grid--empty > div { background: #dfe3e9; }
@@ -111,6 +111,7 @@
   .lua-logo-carousel__group { gap: 14px; padding-right: 14px; }
   .lua-logo-carousel__item { width: 132px; }
   .lua-logo-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .lua-logo-grid--empty { grid-template-columns: repeat(2, minmax(0, 160px)); }
   .lua-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 
