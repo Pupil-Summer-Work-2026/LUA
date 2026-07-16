@@ -54,7 +54,7 @@ function Biedri() {
           <h1>LATVIJAS UGUNSDROŠĪBAS ASOCIĀCIJAS BIEDRI</h1>
           <div className="members-page__grid">
             {members.map(([logo, title, link, hasWhiteBackground], index) => {
-              const hasVisibleCaption = title === 'AP HELP' || title === 'DNS Automātika'
+              const hasVisibleCaption = null
               const card = (
                 <article className="members-page__card" tabIndex={link ? undefined : 0} key={`${title}-${index}`}>
                   {logo && <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={`${title} logotips`} />}
