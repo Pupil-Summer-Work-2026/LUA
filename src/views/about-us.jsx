@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import CountUpNumber from '../components/CountUpNumber'
 
 import './about-us-modern.css'
 
@@ -50,7 +51,7 @@ function AboutUs() {
         <section className="about-page__feature about-page__feature--intro lua-container">
           <div className="about-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
             <img src="/Images/biznesa gadi.svg" alt="" />
-            <strong aria-hidden="true">{associationYears}</strong>
+            <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
           <div>
             <span className="lua-eyebrow">PAR ASOCIĀCIJU</span>

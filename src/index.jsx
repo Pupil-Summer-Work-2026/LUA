@@ -35,9 +35,20 @@ const App = () => {
 
   useEffect(() => {
     const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2900
-    const timer = window.setTimeout(() => setIsLoading(false), delay)
+    let readyFrame
+    const timer = window.setTimeout(() => {
+      setIsLoading(false)
+      readyFrame = window.requestAnimationFrame(() => {
+        document.documentElement.dataset.luaContentReady = 'true'
+        window.dispatchEvent(new Event('lua:content-ready'))
+      })
+    }, delay)
 
-    return () => window.clearTimeout(timer)
+    return () => {
+      window.clearTimeout(timer)
+      window.cancelAnimationFrame(readyFrame)
+      delete document.documentElement.dataset.luaContentReady
+    }
   }, [])
 
   return (
