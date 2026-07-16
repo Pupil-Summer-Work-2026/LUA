@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react'
+﻿import React, { useEffect, useRef, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
 import { Landmark, Award, Shield} from 'lucide-react'
@@ -15,6 +15,11 @@ const services = [
   [Shield, 'Ugunsaizsardzība','Mūsu asociācija nodrošina ugunsdrošības pasākumus un ugunsdzēsības aprīkojumu, lai aizsargātu cilvēkus un īpašumu.']
 ]
 
+const statistics = [
+  { value: 30, label: 'BIEDRI' },
+  { value: 4, label: 'SADARBĪBAS PARTNERI' },
+]
+
 function getSummary(content) {
   const normalizedContent = content.replace(/\s+/g, ' ').trim()
   return normalizedContent.length > 120 ? `${normalizedContent.slice(0, 120)}...` : normalizedContent
@@ -24,6 +29,8 @@ function LandingPage() {
   const history = useHistory()
   const [posts, setPosts] = useState([])
   const [newsStatus, setNewsStatus] = useState('loading')
+  const [statisticValues, setStatisticValues] = useState(() => statistics.map(() => 0))
+  const statisticsRef = useRef(null)
 
   useEffect(() => {
     document.title = 'Latvijas Ugunsdrošības asociācija'
@@ -35,6 +42,51 @@ function LandingPage() {
       .catch(() => setNewsStatus('error'))
   }, [])
 
+  useEffect(() => {
+    const statisticSection = statisticsRef.current
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!statisticSection || prefersReducedMotion) {
+      setStatisticValues(statistics.map(({ value }) => value))
+      return undefined
+    }
+
+    let animationFrame
+    let hasStarted = false
+
+    const startCounting = () => {
+      if (hasStarted) return
+
+      hasStarted = true
+      const startedAt = performance.now()
+      const duration = 1200
+
+      const updateValues = (now) => {
+        const progress = Math.min((now - startedAt) / duration, 1)
+        const easedProgress = 1 - Math.pow(1 - progress, 3)
+        setStatisticValues(statistics.map(({ value }) => Math.round(value * easedProgress)))
+
+        if (progress < 1) animationFrame = window.requestAnimationFrame(updateValues)
+      }
+
+      animationFrame = window.requestAnimationFrame(updateValues)
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        startCounting()
+        observer.disconnect()
+      }
+    }, { threshold: 0.5 })
+
+    observer.observe(statisticSection)
+
+    return () => {
+      observer.disconnect()
+      window.cancelAnimationFrame(animationFrame)
+    }
+  }, [])
+
   const featuredArticles = posts.slice(0, 5)
 
   return (
@@ -42,7 +94,7 @@ function LandingPage() {
       <Helmet><title>Latvijas Ugunsdrošības asociācija</title><meta name="description" content="Latvijas Ugunsdrošības asociācija" /></Helmet>
       <main>
         <section className="lua-hero"><div className="lua-hero__content"><h1>LATVIJAS<br /><em>UGUNSDROŠĪBAS</em><br />ASOCIĀCIJA</h1><p>Latvijas Ugunsdrošības asociācija apvieno ugunsdrošības jomas uzņēmumus un speciālistus, veicinot drošu vidi visā valstī.</p><button onClick={() => history.push('/ktparbiedru')}>Piesakieties</button></div></section>
-        <section className="lua-statistics" aria-label="Asociācijas rādītāji">{[['30', 'BIEDRI'], ['4', 'SADARBĪBAS PARTNERI']].map(([number, label]) => <div key={label}><strong>{number}</strong><span>{label}</span></div>)}</section>
+        <section className="lua-statistics" aria-label="Asociācijas rādītāji" ref={statisticsRef}>{statistics.map(({ value, label }, index) => <div key={label}><strong>{statisticValues[index]}</strong><span>{label}</span></div>)}</section>
         <section className="lua-section lua-container lua-intro"><div className="lua-intro__copy"><span className="lua-eyebrow">PAR ASOCIĀCIJU</span><h2>DROŠĀKA<br /><em>LATVIJA</em><br />KOPĀ</h2><p>Latvijas Ugunsdrošības asociācija (LUA) ir dibināta 2002. gadā un apvieno Latvijas ugunsdrošības jomas uzņēmumus, organizācijas un speciālistus. Mēs sekmējam nozares profesionalitāti, drošību un ilgtspēju. Asociācija aktīvi sadarbojas ar valsts iestādēm, lai veidotu efektīvu ugunsdrošības politiku Latvijā.</p><button className="lua-text-link" onClick={() => history.push('/about-us')}>Uzzināt vairāk <span>→</span></button></div><div className="lua-intro__visual"><span className="lua-intro__backdrop" aria-hidden="true" /><img className="lua-intro__image" src="\Images\extintinguisher-army.jpg" alt="Ugunsdzēšamie aparāti" /></div></section>
         <section className="lua-section lua-container lua-services">{services.map(([Icon, title, description]) => <article key={title}><Icon className="lua-services__icon" aria-hidden="true" /><h3>{title}</h3><p>{description}</p></article>)}</section>
         

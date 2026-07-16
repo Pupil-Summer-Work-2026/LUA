@@ -29,7 +29,7 @@
 
 .lua-statistics { display: grid; grid-template-columns: repeat(2, 1fr); min-height: 100px; padding: 26px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-navy); }
 .lua-statistics div { display: grid; align-content: center; justify-items: center; gap: 8px; }
-.lua-statistics strong { color: var(--lua-red); font: 700 48px/1 'Barlow Condensed', sans-serif; }
+.lua-statistics strong { color: var(--lua-red); font: 700 48px/1 'Barlow Condensed', sans-serif; font-variant-numeric: tabular-nums; }
 .lua-statistics span, .lua-community h3 { color: var(--lua-muted); font: 400 14px/1 'Barlow Condensed', sans-serif; }
 
 .lua-intro { display: grid; grid-template-columns: minmax(0, .92fr) minmax(360px, 1.08fr); align-items: center; gap: 70px; padding: 88px 0 56px; }
