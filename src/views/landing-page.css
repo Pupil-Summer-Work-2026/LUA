@@ -58,8 +58,8 @@
 .lua-article-grid img { width: 100%; aspect-ratio: 1.52; display: block; object-fit: cover; background: #e6eaf0; }
 .lua-article-grid article div { padding: 12px; }
 .lua-article-grid span { color: var(--lua-red); font: 600 10px 'Barlow Condensed', sans-serif; }
-.lua-article-grid h3 { margin: 4px 0; font-size: 16px; }
-.lua-article-grid p { margin: 0; color: #7485a0; font-size: 10px; line-height: 1.4; }
+.lua-article-grid h3 { margin: 4px 4px; font-size: 16px; }
+.lua-article-grid p { margin: 4px 4px; color: #7485a0; font-size: 10px; line-height: 1.4; }
 
 .lua-community { padding: 68px 0; color: #fff; background: var(--lua-navy); }
 .lua-community h2 { margin-bottom: 42px; }

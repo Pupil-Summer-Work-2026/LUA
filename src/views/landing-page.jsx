@@ -48,7 +48,7 @@ function LandingPage() {
         
         <section className="lua-section lua-container lua-news"><div className="lua-section__heading"><div><span className="lua-eyebrow">JAUNUMI</span><h2>ATKLĀJIET JAUNĀKĀS IZMAIŅAS</h2></div><button className="lua-text-link" onClick={() => history.push('/jaunumi')}>Uzzināt vairāk <span>→</span></button></div>
         <div className="lua-article-grid">{newsStatus === 'ready' && featuredArticles.map((article) => {
-          const coverImage = article.images[0]
+          const coverImage = article.images?.[0] ?? { image: '/Images/placeholder.jpg', alt_text: article.title }
 
           return <Link key={article.id} to={`/jaunums/${article.id}`}>{coverImage ? <img src={coverImage.image} alt={coverImage.alt_text || article.title} /> : <div className="lua-article-grid__image-placeholder" aria-hidden="true" />}<div><h3>{article.title}</h3><p>{getSummary(article.content)}</p></div></Link>
         })}</div>
