@@ -128,6 +128,7 @@
   .lua-section__heading, .lua-join { align-items: flex-start; flex-direction: column; }
   .lua-article-grid { grid-template-columns: 1fr; }
   .lua-article-grid article:nth-child(n + 4) { display: none; }
+  .lua-logo-grid { grid-template-columns: repeat(2, minmax(0, 160px)); }
   .lua-footer__grid { width: min(100% - 40px, 1136px); grid-template-columns: 1fr; }
   .lua-footer__copyright { width: min(100% - 40px, 1136px); }
 }

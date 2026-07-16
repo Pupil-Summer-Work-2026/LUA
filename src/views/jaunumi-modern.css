@@ -25,9 +25,11 @@
 .news-page__sr-only { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
 @media (max-width: 760px) {
-  .news-page__layout { grid-template-columns: 1fr; }
-  .news-page__sidebar { grid-template-columns: 1fr 1fr; gap: 24px; }
-  .news-page__sidebar form { grid-column: 1 / -1; }
+  .news-page__layout { grid-template-columns: 1fr; gap: 24px; }
+  .news-page__sidebar { display: contents; }
+  .news-page__sidebar form { order: -2; }
+  .news-page__sidebar > section:not(.news-page__maintenance) { order: -1; }
+  .news-page__maintenance { order: 1; }
 }
 
 @media (max-width: 480px) {
