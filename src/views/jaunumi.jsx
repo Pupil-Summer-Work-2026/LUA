@@ -73,8 +73,7 @@ function Jaunumi() {
       </Helmet>
       <main>
         <PageBanner title="Jaunumi" />
-        <section className="news-page__layout lua-container">
-          <div className="news-page__list">
+        <section className="news-page__layout lua-container"> <div className="news-page__list">
             {status === 'loading' && <div className="news-page__empty" role="status"><p>Ielādē jaunumus...</p></div>}
             {status === 'error' && <div className="news-page__empty" role="alert"><p>Jaunumus pašlaik nevar ielādēt.</p><button type="button" onClick={loadNews}>Mēģināt vēlreiz</button></div>}
             {status === 'ready' && filteredArticles.map((article) => {

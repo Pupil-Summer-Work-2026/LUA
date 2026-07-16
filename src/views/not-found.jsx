@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 
 import { Helmet } from 'react-helmet'
 
+import SiteLayout from '../components/SiteLayout'
+
 import './not-found.css'
 
 const NotFound = () => {
@@ -10,20 +12,20 @@ const NotFound = () => {
   }, [])
 
   return (
-    <div className="not-found-container1">
+    <SiteLayout className="not-found-container1">
       <Helmet>
         <title>404 | Latvijas Ugunsdrošības asociācija</title>
       </Helmet>
-      <h3>OOPS! PAGE NOT FOUND</h3>
+      <h3>UPS! LAPA NETIKA ATRASTA</h3>
       <div className="not-found-container2">
-        <h1 className="not-found-text2">404</h1>
+        <img src="/Images/404.svg" alt="404 Lapa nav atrasta" className="not-found-image" />
       </div>
       <div className="not-found-container3">
         <h2 className="not-found-text3">
-          WE ARE SORRY, BUT THE PAGE YOU REQUESTED WAS NOT FOUND
+          PIEDODIET, BET PIEPRASĪTĀ LAPA NETIKA ATRASTA
         </h2>
       </div>
-    </div>
+    </SiteLayout>
   )
 }
 
