@@ -17,7 +17,7 @@
 .lua-header nav button { border: 0; background: transparent; color: #111; font-size: 14px; }
 .lua-header .lua-header__cta { padding: 10px 16px; border-radius: 4px; background: var(--lua-red); color: #fff; }
 
-.lua-hero { min-height: 590px; display: flex; align-items: center; padding: 88px max(32px, calc((100% - 600px) / 2)); color: #fff; background-image: linear-gradient(90deg, rgba(7, 27, 54, .85), rgba(7, 27, 54, .62)), url('/bg1579-2gha-400h.png'); background-position: center; background-size: cover; }
+.lua-hero { min-height: 590px; display: flex; align-items: center; padding: 88px max(32px, calc((100% - 600px) / 2)); color: #fff; background-image: linear-gradient(90deg, rgba(7, 27, 54, .85), rgba(7, 27, 54, .62)), url('/Images/fighterfire.jpg'); background-position: center; background-size: cover; }
 .lua-hero__content { width: min(100%, 475px); }
 .lua-hero h1, .lua-home h2, .lua-home h3, .lua-join h2 { margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; }
 .lua-hero h1 { font-size: clamp(48px, 6vw, 72px); line-height: .91; }
@@ -27,7 +27,7 @@
 .lua-home button:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
 .lua-hero button:hover { background: #a40d18; }
 
-.lua-statistics { display: grid; grid-template-columns: repeat(4, 1fr); min-height: 160px; padding: 26px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-navy); }
+.lua-statistics { display: grid; grid-template-columns: repeat(2, 1fr); min-height: 100px; padding: 26px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-navy); }
 .lua-statistics div { display: grid; align-content: center; justify-items: center; gap: 8px; }
 .lua-statistics strong { color: var(--lua-red); font: 700 48px/1 'Barlow Condensed', sans-serif; }
 .lua-statistics span, .lua-community h3 { color: var(--lua-muted); font: 400 14px/1 'Barlow Condensed', sans-serif; }
@@ -40,7 +40,7 @@
 .lua-text-link span { margin-left: 6px; }
 .lua-intro__visual { position: relative; padding: 0 24px 24px 0; }
 .lua-intro__backdrop { position: absolute; inset: -24px 0 24px 24px; border: 2px solid var(--lua-red); border-radius: 6px; }
-.lua-intro__image { position: relative; width: 100%; min-height: 300px; display: block; object-fit: cover; border-radius: 6px; background: #eef1f5; }
+.lua-intro__image { position: relative; width: 100%; aspect-ratio: 16 / 9; display: block; object-fit: cover; object-position: center; border-radius: 6px; background: #eef1f5; }
 
 .lua-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; padding-bottom: 64px; }
 .lua-services article { min-height: 232px; padding: 28px; color: #fff; border-radius: 4px; background: var(--lua-navy); }
@@ -58,22 +58,26 @@
 .lua-article-grid img { width: 100%; aspect-ratio: 1.52; display: block; object-fit: cover; background: #e6eaf0; }
 .lua-article-grid article div { padding: 12px; }
 .lua-article-grid span { color: var(--lua-red); font: 600 10px 'Barlow Condensed', sans-serif; }
-.lua-article-grid h3 { margin: 4px 0; font-size: 16px; }
-.lua-article-grid p { margin: 0; color: #7485a0; font-size: 10px; line-height: 1.4; }
+.lua-article-grid h3 { margin: 4px 4px; font-size: 16px; }
+.lua-article-grid p { margin: 4px 4px; color: #7485a0; font-size: 10px; line-height: 1.4; }
 
 .lua-community { padding: 68px 0; color: #fff; background: var(--lua-navy); }
 .lua-community h2 { margin-bottom: 42px; }
 .lua-community h3 { margin: 28px 0 14px; }
-.lua-logo-carousel { overflow: hidden; }
-.lua-logo-carousel__track { width: max-content; display: flex; animation: lua-logo-marquee 24s linear infinite; }
+.lua-logo-carousel { padding: 16px 0; overflow: hidden; }
+.lua-logo-carousel__track { width: max-content; display: flex; animation: lua-logo-marquee 42s linear infinite; }
 .lua-logo-carousel__group { display: flex; flex: none; gap: 32px; padding-right: 32px; }
-.lua-logo-carousel__item { width: 160px; height: 64px; display: grid; flex: none; place-items: center; overflow: hidden; border-radius: 4px; background: #f2f4f7; transition: transform .2s ease; }
-.lua-logo-carousel__item:hover { position: relative; z-index: 1; transform: scale(1.08); }
+.lua-logo-carousel__item, .lua-logo-grid__item { width: 160px; height: 96px; display: grid; flex: none; place-items: center; overflow: hidden; padding: 8px; border: 1px solid #8fa5bd; border-radius: 16px; background: #dce8f3; text-decoration: none; transition: transform .25s ease; }
+.lua-logo-carousel__item:nth-child(even), .lua-logo-grid__item:nth-child(even) { border-color: #bd8794; background: #f4d9df; }
+.lua-logo-carousel__item[href] { cursor: pointer; }
+.lua-logo-carousel__item:hover, .lua-logo-carousel__item:focus-visible, .lua-logo-grid__item:hover, .lua-logo-grid__item:focus-visible { position: relative; z-index: 1; transform: scale(1.16); }
+.lua-logo-carousel__item:focus-visible, .lua-logo-grid__item:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .lua-logo-carousel:hover .lua-logo-carousel__track { animation-play-state: paused; }
-.lua-logo-carousel img { max-width: 92%; max-height: 85%; object-fit: contain; }
-.lua-logo-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 32px; }
-.lua-logo-grid > div { height: 64px; display: grid; place-items: center; overflow: hidden; align-items: center; border-radius: 4px; background: #f2f4f7; }
-.lua-logo-grid img { max-width: 92%; max-height: 85%; object-fit: contain; }
+.lua-logo-carousel img { width: 100%; height: 100%; min-width: 0; min-height: 0; display: block; object-fit: contain; }
+.lua-logo-carousel img.logo--blend-background, .lua-logo-grid img.logo--blend-background { mix-blend-mode: multiply; }
+.lua-logo-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 160px)); justify-content: center; gap: 32px; }
+.lua-logo-grid > div { height: 96px; display: grid; place-items: center; overflow: hidden; align-items: center; border-radius: 16px; background: #f2f4f7; }
+.lua-logo-grid img { width: 100%; height: 100%; min-width: 0; min-height: 0; display: block; object-fit: contain; }
 .lua-logo-grid--empty > div { background: #dfe3e9; }
 
 @keyframes lua-logo-marquee { to { transform: translateX(-50%); } }
@@ -111,6 +115,7 @@
   .lua-logo-carousel__group { gap: 14px; padding-right: 14px; }
   .lua-logo-carousel__item { width: 132px; }
   .lua-logo-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .lua-logo-grid--empty { grid-template-columns: repeat(2, minmax(0, 160px)); }
   .lua-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 

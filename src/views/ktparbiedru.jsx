@@ -6,8 +6,17 @@ import './ktparbiedru-modern.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
+function getAssociationYears() {
+  const startDate = new Date(2002, 3, 4)
+  const today = new Date()
+  const hasAnniversaryPassed = today.getMonth() > startDate.getMonth() || (today.getMonth() === startDate.getMonth() && today.getDate() >= startDate.getDate())
+
+  return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
+}
+
 function Ktparbiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const associationYears = getAssociationYears()
 
   useEffect(() => {
     document.title = 'Iestāšanās | Latvijas Ugunsdrošības asociācija'
@@ -33,7 +42,10 @@ function Ktparbiedru() {
             <p>Kļūt par biedru ir vienkārši. Pievienojieties profesionāļiem, kuri kopā veido drošāku Latviju.</p>
             <p>Jebkura Latvijas Republikā reģistrēta juridiska persona vai tiesībspējīga personālsabiedrība, kas nodarbojas ar ugunsdzēsību vai ugunsdzēsības servisu, vai ir tieši saistīta ar to, un atbalsta Biedrības mērķus, kā arī apņemas ievērot tās statūtus.</p>
           </div>
-          <img src="/image171686-9gsk-500h.png" alt="Latvijas Ugunsdrošības asociācijas pieredze" />
+          <div className="join-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
+            <img src="/Images/biznesa gadi.svg" alt="" />
+            <strong aria-hidden="true">{associationYears}</strong>
+          </div>
         </section>
         <section className="join-page__application" aria-labelledby="application-heading">
           <div className="join-page__application-heading">

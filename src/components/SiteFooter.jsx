@@ -32,14 +32,17 @@ function SiteFooter() {
       <div className="site-footer__grid">
         <div className="site-footer__brand">
           <img src="/LUA big shield landscape SVG.svg" alt="Latvijas Ugunsdrošības asociācija" />
-          <p>Latvijas Ugunsdrošības asociācija - profesionāls atbalsts, izglītība un pārstāvniecība kopš 1994. gada.</p>
+          <p>Latvijas Ugunsdrošības asociācija - par vienotu ugunsdrošības pārstāvniecību jau kopš 2002. gada.</p>
         </div>
         <NavigationColumn items={primaryNavigation} />
         <address className="site-footer__column">
-          <h2>Kontakti</h2>
-          <span>Rīga, Latvija</span>
-          <a href="mailto:info@lua.lv">info@lua.lv</a>
-          <a href="tel:+37100000000">+371 00 000 000</a>
+          <h2>Rekvizīti:</h2>
+          <span>Latvijas Ugunsdrošības asociācija BIEDRĪBA</span>
+          <span>Vijciema iela 1A, Rīga, LV-1006</span>
+          <span>REĢ. NR: 40008066462</span>
+          <span>BANKA: AS Swedbank</span>
+          <span>SWIFT BIC:HABALV22</span>
+          <span>KONTS: LV24HABA0551044104806</span>
         </address>
       </div>
       <div className="site-footer__copyright">© 2026 Latvijas Ugunsdrošības asociācija. Visas tiesības aizsargātas.</div>
