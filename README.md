@@ -1,5 +1,5 @@
 # LUA: dev branch
-## This branch is used for the main development of LUA website. All pull requests that consist of code changes must target this branch.
+## This branch is deprecated.
 
 ## Build & Run
 To build this project, you will need:
