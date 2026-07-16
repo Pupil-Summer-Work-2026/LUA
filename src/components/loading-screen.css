@@ -1,0 +1,36 @@
+.loading-screen {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: #fff;
+}
+
+.loading-screen::before,
+.loading-screen::after {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 4px;
+  content: '';
+  background: var(--lua-red);
+}
+
+.loading-screen::before { top: 0; }
+.loading-screen::after { bottom: 0; }
+
+.loading-screen__art,
+.loading-screen__art img {
+  width: min(430px, 86vw);
+  height: auto;
+}
+
+.loading-screen__art {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen { display: none; }
+}
