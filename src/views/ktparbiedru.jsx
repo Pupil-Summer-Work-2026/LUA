@@ -6,6 +6,8 @@ import './ktparbiedru-modern.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
+const recipientEmail = 'krastinsmarisss@gmail.com'
+
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
   const today = new Date()
@@ -16,16 +18,52 @@ function getAssociationYears() {
 
 function Ktparbiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const associationYears = getAssociationYears()
 
   useEffect(() => {
     document.title = 'Iestāšanās | Latvijas Ugunsdrošības asociācija'
   }, [])
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    event.currentTarget.reset()
-    setIsSubmitted(true)
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    console.log('Submit clicked', Object.fromEntries(formData.entries()))
+    setSubmitError('')
+
+    try {
+      const response = await fetch('/api/ktparbiedru/', {
+        method: 'POST',
+        body: formData,
+      })
+
+      console.log('Fetch response status:', response.status, 'ok:', response.ok)
+
+      let data = null
+      try {
+        data = await response.json()
+        console.log('Fetch response JSON:', data)
+      } catch (jsonError) {
+        console.warn('Fetch response JSON parse failed:', jsonError)
+      }
+
+      const backendSuccess = response.ok && (data === null || data.success !== false)
+
+      if (!backendSuccess) {
+        const errorMessage = data?.message || `Request failed with status ${response.status}`
+        throw new Error(errorMessage)
+      }
+
+      setIsSubmitted(true)
+      setSubmitError('')
+      form.reset()
+    } catch (error) {
+      console.error('Membership form submission failed', error)
+      setSubmitError('Radās kļūda. Mēģiniet vēlreiz.')
+      setIsSubmitted(false)
+    }
   }
 
   return (
@@ -51,7 +89,11 @@ function Ktparbiedru() {
           <div className="join-page__application-heading">
             <h2 id="application-heading">Piesakiet savu uzņēmumu</h2>
           </div>
-          <form className="join-page__form" onSubmit={handleSubmit} onChange={() => setIsSubmitted(false)}>
+          <form
+            className="join-page__form"
+            onSubmit={handleSubmit}
+            onChange={() => setIsSubmitted(false)}
+          >
             <label>
               Uzņēmuma nosaukums
               <input name="companyName" type="text" autoComplete="organization" required />
@@ -78,7 +120,8 @@ function Ktparbiedru() {
             </label>
             <div className="join-page__form-action">
               <button type="submit">Nosūtīt pieteikumu</button>
-              {isSubmitted && <p role="status">Paldies! Jūsu pieteikums ir sagatavots izskatīšanai.</p>}
+              {isSubmitted && <p role="status">Paldies! Jūsu pieteikums ir nosūtīts.</p>}
+              {submitError && <p role="alert">{submitError}</p>}
             </div>
           </form>
         </section>
