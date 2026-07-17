@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import { Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import './jaunumi-modern.css'
+import './jaunumi.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { getPosts, getTags } from '../services/blogApi'

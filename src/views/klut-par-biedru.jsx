@@ -2,12 +2,10 @@
 
 import { Helmet } from 'react-helmet'
 
-import './ktparbiedru-modern.css'
+import './klut-par-biedru.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
-
-const recipientEmail = 'krastinsmarisss@gmail.com'
 
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
@@ -17,7 +15,7 @@ function getAssociationYears() {
   return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
 }
 
-function Ktparbiedru() {
+function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const associationYears = getAssociationYears()
@@ -31,7 +29,6 @@ function Ktparbiedru() {
 
     const form = event.currentTarget
     const formData = new FormData(form)
-    console.log('Submit clicked', Object.fromEntries(formData.entries()))
     setSubmitError('')
 
     try {
@@ -40,15 +37,7 @@ function Ktparbiedru() {
         body: formData,
       })
 
-      console.log('Fetch response status:', response.status, 'ok:', response.ok)
-
-      let data = null
-      try {
-        data = await response.json()
-        console.log('Fetch response JSON:', data)
-      } catch (jsonError) {
-        console.warn('Fetch response JSON parse failed:', jsonError)
-      }
+      const data = await response.json().catch(() => null)
 
       const backendSuccess = response.ok && (data === null || data.success !== false)
 
@@ -135,4 +124,4 @@ function Ktparbiedru() {
   )
 }
 
-export default Ktparbiedru
+export default KlutParBiedru

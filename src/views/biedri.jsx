@@ -3,7 +3,7 @@
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 
-import './biedri-modern.css'
+import './biedri.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
@@ -54,11 +54,9 @@ function Biedri() {
           <h1>LATVIJAS UGUNSDROŠĪBAS ASOCIĀCIJAS BIEDRI</h1>
           <div className="members-page__grid">
             {members.map(([logo, title, link, hasWhiteBackground], index) => {
-              const hasVisibleCaption = null
               const card = (
                 <article className="members-page__card" tabIndex={link ? undefined : 0} key={`${title}-${index}`}>
                   {logo && <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={`${title} logotips`} />}
-                  {hasVisibleCaption && <span className="members-page__logo-caption">{title}</span>}
                   <div className="members-page__card-details">
                     <h2>{title}</h2>
                     {link && <span>Apmeklēt vietni →</span>}
@@ -77,7 +75,7 @@ function Biedri() {
             <h2>KĻŪSTIET PAR LUA BIEDRU</h2>
             <p>Pievienojies vairāk nekā 120 uzņēmumiem, kas veido drošāku Latviju.</p>
           </div>
-          <Link to="/ktparbiedru">Piesakieties <span>→</span></Link>
+          <Link to="/klut-par-biedru">Piesakieties <span>→</span></Link>
         </section>
       </main>
     </SiteLayout>

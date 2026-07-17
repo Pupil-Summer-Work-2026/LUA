@@ -2,7 +2,7 @@
 
 import { Helmet } from 'react-helmet'
 
-import './contacts-modern.css'
+import './kontakti.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
@@ -17,16 +17,7 @@ const resources = [
   ['', 'building.lv'],
 ]
 
-function ContactRow({ icon, children }) {
-  return (
-    <div className="contacts-page__contact-row">
-      <img src={icon} alt="" aria-hidden="true" />
-      <span>{children}</span>
-    </div>
-  )
-}
-
-function Contacts() {
+function Kontakti() {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
@@ -100,4 +91,4 @@ function Contacts() {
   )
 }
 
-export default Contacts
+export default Kontakti

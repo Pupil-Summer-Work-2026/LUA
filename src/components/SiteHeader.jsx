@@ -48,7 +48,7 @@ function SiteHeader() {
         {headerNavigation.map(({ label, path }) => (
           <button key={path} className={pathname === path ? 'is-active' : ''} type="button" aria-current={pathname === path ? 'page' : undefined} onClick={() => navigateTo(path)}>{label}</button>
         ))}
-        <button className={`site-header__cta${pathname === '/ktparbiedru' ? ' is-active' : ''}`} type="button" aria-current={pathname === '/ktparbiedru' ? 'page' : undefined} onClick={() => navigateTo('/ktparbiedru')}>Kļūt par biedru</button>
+        <button className={`site-header__cta${pathname === '/klut-par-biedru' ? ' is-active' : ''}`} type="button" aria-current={pathname === '/klut-par-biedru' ? 'page' : undefined} onClick={() => navigateTo('/klut-par-biedru')}>Kļūt par biedru</button>
       </nav>
     </header>
   )

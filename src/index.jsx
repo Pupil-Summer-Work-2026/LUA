@@ -9,15 +9,15 @@ import {
 } from 'react-router-dom'
 
 import './style.css'
-import Registrs from './views/registry-page.jsx'
-import LandingPage from './views/landing-page.jsx'
-import AboutUs from './views/about-us.jsx'
+import Registrs from './views/registrs.jsx'
+import Sakumlapa from './views/sakumlapa.jsx'
+import ParMums from './views/par-mums.jsx'
 import Jaunumi from './views/jaunumi.jsx'
 import Jaunums from './views/jaunums.jsx'
-import Contacts from './views/contacts.jsx'
+import Kontakti from './views/kontakti.jsx'
 import Biedri from './views/biedri.jsx'
-import Ktparbiedru from './views/ktparbiedru.jsx'
-import NotFound from './views/not-found.jsx'
+import KlutParBiedru from './views/klut-par-biedru.jsx'
+import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
 import LoadingScreen from './components/LoadingScreen'
 
 function ScrollToTop() {
@@ -57,16 +57,19 @@ const App = () => {
       <Router>
         <ScrollToTop />
         <Switch>
-          <Route component={LandingPage} exact path="/" />
-          <Route component={AboutUs} exact path="/about-us" />
+          <Route component={Sakumlapa} exact path="/" />
+          <Route component={ParMums} exact path="/par-mums" />
           <Route component={Jaunumi} exact path="/jaunumi" />
           <Route component={Jaunums} exact path="/jaunums/:postId" />
-          <Route component={Contacts} exact path="/contacts" />
+          <Route component={Kontakti} exact path="/kontakti" />
           <Route component={Biedri} exact path="/biedri" />
-          <Route component={Ktparbiedru} exact path="/ktparbiedru" />
-          <Route component={Registrs} exact path="/registry-page" />
-          <Route component={NotFound} path="**" />
-          <Redirect to="**" />
+          <Route component={KlutParBiedru} exact path="/klut-par-biedru" />
+          <Route component={Registrs} exact path="/registrs" />
+          <Redirect exact from="/about-us" to="/par-mums" />
+          <Redirect exact from="/contacts" to="/kontakti" />
+          <Redirect exact from="/ktparbiedru" to="/klut-par-biedru" />
+          <Redirect exact from="/registry-page" to="/registrs" />
+          <Route component={LapaNavAtrasta} />
         </Switch>
       </Router>
     </>

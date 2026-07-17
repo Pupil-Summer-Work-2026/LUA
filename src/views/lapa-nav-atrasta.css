@@ -1,4 +1,4 @@
-.not-found-container1 {
+.lapa-nav-atrasta {
   width: 100%;
   display: flex;
   overflow: auto;
@@ -8,7 +8,7 @@
   justify-content: center;
 }
  
-.not-found-container2 {
+.lapa-nav-atrasta__attels {
   display: flex;
   position: relative;
   align-items: center;
@@ -16,16 +16,7 @@
   justify-content: center;
 }
  
-.not-found-text2 {
-  color: rgb(38, 38, 38);
-  font-size: 252px;
-  margin-top: -20px;
-  font-weight: 900;
-  margin-bottom: -20px;
-  letter-spacing: -20px;
-}
- 
-.not-found-container3 {
+.lapa-nav-atrasta__teksts {
   width: 421px;
   display: flex;
   align-items: center;
@@ -33,12 +24,12 @@
   justify-content: center;
 }
  
-.not-found-text3 {
+.lapa-nav-atrasta__teksts h2 {
   text-align: center;
   font-weight: 400;
 }
 
-.not-found-image {
+.lapa-nav-atrasta__attels img {
   width: 60%;
   height: auto;
   margin-bottom: 20px;

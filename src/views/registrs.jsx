@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import './registry-page-modern.css'
+import './registrs.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
-const RegistryPage = () => {
+const Registrs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   useEffect(() => {
@@ -46,4 +46,4 @@ const RegistryPage = () => {
   )
 }
 
-export default RegistryPage
+export default Registrs

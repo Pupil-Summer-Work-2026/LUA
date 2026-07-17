@@ -1,21 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap');
 
-.landing-page-container1 {
-  width: 100%;
-  display: flex;
-  overflow: auto;
-  min-height: 100vh;
-  align-items: center;
-  flex-direction: column;
-}
-
 .lua-home button { font: inherit; cursor: pointer; }
-.lua-header { height: 70px; padding: 0 max(32px, calc((100% - 1136px) / 2)); display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #e8ebf0; }
-.lua-header__logo { width: 124px; height: 54px; padding: 0; border: 0; background: transparent; }
-.lua-header__logo img { width: 100%; height: 100%; object-fit: contain; }
-.lua-header nav { display: flex; align-items: center; gap: 28px; }
-.lua-header nav button { border: 0; background: transparent; color: #111; font-size: 14px; }
-.lua-header .lua-header__cta { padding: 10px 16px; border-radius: 4px; background: var(--lua-red); color: #fff; }
 
 .lua-hero { min-height: 590px; display: flex; align-items: center; padding: 88px max(32px, calc((100% - 600px) / 2)); color: #fff; background-image: linear-gradient(90deg, rgba(7, 27, 54, .85), rgba(7, 27, 54, .62)), url('/Images/fighterfire.jpg'); background-position: center; background-size: cover; }
 .lua-hero__content { width: min(100%, 475px); }
@@ -56,7 +41,7 @@
 .lua-article-grid a:hover { border-color: var(--lua-red); box-shadow: 0 8px 20px rgba(13, 31, 60, .12); transform: translateY(-2px); }
 .lua-article-grid a:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
 .lua-article-grid img { width: 100%; aspect-ratio: 1.52; display: block; object-fit: cover; background: #e6eaf0; }
-.lua-article-grid article div { padding: 12px; }
+.lua-article-grid a > div { padding: 12px; }
 .lua-article-grid span { color: var(--lua-red); font: 600 10px 'Barlow Condensed', sans-serif; }
 .lua-article-grid h3 { margin: 4px 4px; font-size: 16px; }
 .lua-article-grid p { margin: 4px 4px; color: #7485a0; font-size: 10px; line-height: 1.4; }
@@ -76,9 +61,7 @@
 .lua-logo-carousel img { width: 100%; height: 100%; min-width: 0; min-height: 0; display: block; object-fit: contain; }
 .lua-logo-carousel img.logo--blend-background, .lua-logo-grid img.logo--blend-background { mix-blend-mode: multiply; }
 .lua-logo-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 160px)); justify-content: center; gap: 32px; }
-.lua-logo-grid > div { height: 96px; display: grid; place-items: center; overflow: hidden; align-items: center; border-radius: 16px; background: #f2f4f7; }
 .lua-logo-grid img { width: 100%; height: 100%; min-width: 0; min-height: 0; display: block; object-fit: contain; }
-.lua-logo-grid--empty > div { background: #dfe3e9; }
 
 @keyframes lua-logo-marquee { to { transform: translateX(-50%); } }
 
@@ -88,22 +71,7 @@
 .lua-join button { min-width: auto; background: var(--lua-navy); }
 .lua-join button:hover { background: #07152c; }
 
-.lua-footer { color: #fff; background: var(--lua-navy); }
-.lua-footer__grid { width: min(100% - 64px, 1136px); min-height: 260px; display: grid; grid-template-columns: 1.35fr .75fr .75fr 1.1fr; gap: 70px; margin: 0 auto; padding: 54px 0; }
-.lua-footer__brand img { width: 145px; height: 53px; object-fit: contain; object-position: left center; }
-.lua-footer p, .lua-footer address span, .lua-footer address a, .lua-footer button { display: block; margin: 8px 0; color: var(--lua-muted); font: 400 11px/1.45 'DM Sans', sans-serif; }
-.lua-footer__brand p { max-width: 180px; }
-.lua-footer h3 { margin: 0 0 18px; font-size: 15px; }
-.lua-footer button { padding: 0; border: 0; background: transparent; text-align: left; }
-.lua-footer address { font-style: normal; }
-.lua-footer address a { text-decoration: none; }
-.lua-footer__copyright { width: min(100% - 64px, 1136px); margin: 0 auto; padding: 16px 0; border-top: 1px solid #33445f; color: var(--lua-muted); font-size: 10px; }
-
 @media (max-width: 760px) {
-  .lua-header { height: auto; min-height: 66px; padding: 8px 20px; }
-  .lua-header nav { gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
-  .lua-header nav > button:not(.lua-header__cta) { font-size: 12px; }
-  .lua-header .lua-header__cta { padding: 8px 10px; font-size: 12px; }
   .lua-hero { min-height: 500px; padding: 64px 32px; }
   .lua-statistics { grid-template-columns: repeat(2, 1fr); min-height: 210px; }
   .lua-statistics strong { font-size: 38px; }
@@ -111,26 +79,18 @@
   .lua-services { grid-template-columns: 1fr; gap: 16px; }
   .lua-services article { min-height: 0; }
   .lua-article-grid { grid-template-columns: repeat(2, 1fr); }
-  .lua-article-grid article:last-child { display: none; }
+  .lua-article-grid a:last-child { display: none; }
   .lua-logo-carousel__group { gap: 14px; padding-right: 14px; }
   .lua-logo-carousel__item { width: 132px; }
   .lua-logo-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .lua-logo-grid--empty { grid-template-columns: repeat(2, minmax(0, 160px)); }
-  .lua-footer__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 
 @media (max-width: 480px) {
-  .lua-header { align-items: flex-start; }
-  .lua-header__logo { width: 92px; }
-  .lua-header nav { max-width: 245px; }
-  .lua-header nav > button:not(.lua-header__cta) { display: none; }
   .lua-hero h1 { font-size: 48px; }
   .lua-section__heading, .lua-join { align-items: flex-start; flex-direction: column; }
   .lua-article-grid { grid-template-columns: 1fr; }
-  .lua-article-grid article:nth-child(n + 4) { display: none; }
+  .lua-article-grid a:nth-child(n + 4) { display: none; }
   .lua-logo-grid { grid-template-columns: repeat(2, minmax(0, 160px)); }
-  .lua-footer__grid { width: min(100% - 40px, 1136px); grid-template-columns: 1fr; }
-  .lua-footer__copyright { width: min(100% - 40px, 1136px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
