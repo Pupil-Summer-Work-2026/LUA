@@ -1,9 +1,9 @@
 const navigationItems = {
-  about: { label: 'Par mums', path: '/par-mums' },
-  news: { label: 'Jaunumi', path: '/jaunumi' },
-  members: { label: 'Biedri', path: '/biedri' },
-  contacts: { label: 'Kontakti', path: '/kontakti' },
-  join: { label: 'Kļūsti par biedru', path: '/klut-par-biedru' },
+  about: { labelKey: 'navigation.about', path: '/par-mums' },
+  news: { labelKey: 'navigation.news', path: '/jaunumi' },
+  members: { labelKey: 'navigation.members', path: '/biedri' },
+  contacts: { labelKey: 'navigation.contacts', path: '/kontakti' },
+  join: { labelKey: 'navigation.join', path: '/klut-par-biedru' },
 }
 
 export const headerNavigation = [

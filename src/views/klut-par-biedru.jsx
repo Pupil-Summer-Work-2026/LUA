@@ -6,6 +6,7 @@ import './klut-par-biedru.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import { useLanguage } from '../i18n/LanguageContext'
 
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
@@ -19,10 +20,11 @@ function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const associationYears = getAssociationYears()
+  const { t } = useLanguage()
 
   useEffect(() => {
-    document.title = 'Iestāšanās | Latvijas Ugunsdrošības asociācija'
-  }, [])
+    document.title = t('join.pageTitle')
+  }, [t])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -51,7 +53,7 @@ function KlutParBiedru() {
       form.reset()
     } catch (error) {
       console.error('Membership form submission failed', error)
-      setSubmitError('Radās kļūda. Mēģiniet vēlreiz.')
+      setSubmitError(t('join.error'))
       setIsSubmitted(false)
     }
   }
@@ -59,25 +61,25 @@ function KlutParBiedru() {
   return (
     <SiteLayout className="join-page">
       <Helmet>
-        <title>Iestāšanās | Latvijas Ugunsdrošības asociācija</title>
-        <meta name="description" content="Informācija par iestāšanos Latvijas Ugunsdrošības asociācijā." />
+        <title>{t('join.pageTitle')}</title>
+        <meta name="description" content={t('join.meta')} />
       </Helmet>
       <main>
-        <PageBanner title="Iestāšanās" />
+        <PageBanner title={t('join.title')} />
         <section className="join-page__intro">
           <div className="join-page__copy">
-            <h1>KĻŪSTI PAR<br /><em>BIEDRU!</em></h1>
-            <p>Kļūt par biedru ir vienkārši. Pievienojieties profesionāļiem, kuri kopā veido drošāku Latviju.</p>
-            <p>Jebkura Latvijas Republikā reģistrēta juridiska persona vai tiesībspējīga personālsabiedrība, kas nodarbojas ar ugunsdzēsību vai ugunsdzēsības servisu, vai ir tieši saistīta ar to, un atbalsta Biedrības mērķus, kā arī apņemas ievērot tās statūtus.</p>
+            <h1>{t('join.heading')}</h1>
+            <p>{t('join.intro')}</p>
+            <p>{t('join.eligibility')}</p>
           </div>
-          <div className="join-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
+          <div className="join-page__years" aria-label={t('join.years', { years: associationYears })}>
             <img src="/Images/biznesa gadi.svg" alt="" />
             <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
         </section>
         <section className="join-page__application" aria-labelledby="application-heading">
           <div className="join-page__application-heading">
-            <h2 id="application-heading">Piesakiet savu uzņēmumu</h2>
+            <h2 id="application-heading">{t('join.application')}</h2>
           </div>
           <form
             className="join-page__form"
@@ -85,39 +87,39 @@ function KlutParBiedru() {
             onChange={() => setIsSubmitted(false)}
           >
             <label>
-              Uzņēmuma nosaukums
+              {t('join.company')}
               <input name="companyName" type="text" autoComplete="organization" required />
             </label>
             <label>
-              Amats uzņēmumā
+              {t('join.position')}
               <input name="position" type="text" autoComplete="organization-title" required />
             </label>
             <label>
-              Vārds un uzvārds
+              {t('join.name')}
               <input name="fullName" type="text" autoComplete="name" required />
             </label>
             <label>
-              E-pasts
+              {t('join.email')}
               <input name="email" type="email" autoComplete="email" required />
             </label>
             <label>
-              Tālrunis
+              {t('join.phone')}
               <input name="phone" type="tel" autoComplete="tel" required />
             </label>
             <label className="join-page__form-description">
-              Īss uzņēmuma apraksts
+              {t('join.description')}
               <textarea name="companyDescription" rows="5" required />
             </label>
             <div className="join-page__form-action">
-              <button type="submit">Nosūtīt pieteikumu</button>
-              {isSubmitted && <p role="status">Paldies! Jūsu pieteikums ir nosūtīts.</p>}
+              <button type="submit">{t('join.send')}</button>
+              {isSubmitted && <p role="status">{t('join.sent')}</p>}
               {submitError && <p role="alert">{submitError}</p>}
             </div>
           </form>
         </section>
         <section className="join-page__notice">
           <strong>i</strong>
-          <p>Lēmumu par biedra uzņemšanu Biedrībā pieņem valde. Valdei pieteicēja lūgums ir jāizskata tuvākās sēdes laikā, taču ne ilgāk kā divu nedēļu laikā no visu nepieciešamo dokumentu saņemšanas brīža. Uz valdes sēdi, kurā izskata pieteicēja lūgumu, ir jāuzaicina pats pieteicējs un jādod viņam vārds sava viedokļa paušanai. Pieteicēja neierašanās nav šķērslis valdes lēmuma pieņemšanai. Valdei motivēts lēmums rakstveidā jāpaziņo pieteicējam nedēļas laikā no tā pieņemšanas brīža.</p>
+          <p>{t('join.notice')}</p>
         </section>
       </main>
     </SiteLayout>
