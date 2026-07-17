@@ -73,7 +73,7 @@ function Ktparbiedru() {
         <meta name="description" content="Informācija par iestāšanos Latvijas Ugunsdrošības asociācijā." />
       </Helmet>
       <main>
-        <PageBanner title="Iestāšanās asociācijā" />
+        <PageBanner title="Iestāšanās" />
         <section className="join-page__intro">
           <div className="join-page__copy">
             <h1>KĻŪSTI PAR<br /><em>BIEDRU!</em></h1>
