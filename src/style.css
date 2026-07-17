@@ -17,6 +17,42 @@
   background: #fff;
 }
 
+.lua-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+
+.lua-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lua-reveal--visible .lua-services article,
+.lua-reveal--visible .about-page__sector-grid article,
+.lua-reveal--visible .lua-article-grid > a,
+.lua-reveal--visible .lua-logo-grid__item {
+  animation: lua-item-reveal .5s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.lua-reveal--visible .lua-services article:nth-child(2),
+.lua-reveal--visible .about-page__sector-grid article:nth-child(2),
+.lua-reveal--visible .lua-article-grid > a:nth-child(2),
+.lua-reveal--visible .lua-logo-grid__item:nth-child(2) { animation-delay: .08s; }
+
+.lua-reveal--visible .lua-services article:nth-child(3),
+.lua-reveal--visible .about-page__sector-grid article:nth-child(3),
+.lua-reveal--visible .lua-article-grid > a:nth-child(3),
+.lua-reveal--visible .lua-logo-grid__item:nth-child(3) { animation-delay: .16s; }
+
+.lua-reveal--visible .about-page__sector-grid article:nth-child(4),
+.lua-reveal--visible .lua-article-grid > a:nth-child(4) { animation-delay: .24s; }
+
+@keyframes lua-item-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .lua-container {
   width: min(100% - 64px, 1136px);
   margin: 0 auto;
@@ -47,6 +83,19 @@
   .lua-container {
     width: min(100% - 40px, 1136px);
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lua-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .lua-reveal--visible .lua-services article,
+  .lua-reveal--visible .about-page__sector-grid article,
+  .lua-reveal--visible .lua-article-grid > a,
+  .lua-reveal--visible .lua-logo-grid__item { animation: none; }
 }
 
 :root {

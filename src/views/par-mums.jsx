@@ -2,12 +2,11 @@
 
 import { Helmet } from 'react-helmet'
 
-import { useHistory } from 'react-router-dom'
-
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import CountUpNumber from '../components/CountUpNumber'
 
-import './about-us-modern.css'
+import './par-mums.css'
 
 const sectors = [
   { title: 'Visa veida ugunsdzēsības aparātu tirdzniecība, apkope un uzpildīšana', label: '/Lables/fire%20extinguisher.svg' },
@@ -32,7 +31,7 @@ function getAssociationYears() {
   return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
 }
 
-function AboutUs() {
+function ParMums() {
   const associationYears = getAssociationYears()
 
   useEffect(() => {
@@ -50,7 +49,7 @@ function AboutUs() {
         <section className="about-page__feature about-page__feature--intro lua-container">
           <div className="about-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
             <img src="/Images/biznesa gadi.svg" alt="" />
-            <strong aria-hidden="true">{associationYears}</strong>
+            <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
           <div>
             <span className="lua-eyebrow">PAR ASOCIĀCIJU</span>
@@ -99,4 +98,4 @@ function AboutUs() {
   )
 }
 
-export default AboutUs
+export default ParMums

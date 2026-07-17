@@ -2,7 +2,8 @@
 
 import { Helmet } from 'react-helmet'
 
-import './ktparbiedru-modern.css'
+import './klut-par-biedru.css'
+import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
@@ -14,18 +15,45 @@ function getAssociationYears() {
   return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
 }
 
-function Ktparbiedru() {
+function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const associationYears = getAssociationYears()
 
   useEffect(() => {
     document.title = 'Iestāšanās | Latvijas Ugunsdrošības asociācija'
   }, [])
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    event.currentTarget.reset()
-    setIsSubmitted(true)
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    setSubmitError('')
+
+    try {
+      const response = await fetch('/api/ktparbiedru/', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const data = await response.json().catch(() => null)
+
+      const backendSuccess = response.ok && (data === null || data.success !== false)
+
+      if (!backendSuccess) {
+        const errorMessage = data?.message || `Request failed with status ${response.status}`
+        throw new Error(errorMessage)
+      }
+
+      setIsSubmitted(true)
+      setSubmitError('')
+      form.reset()
+    } catch (error) {
+      console.error('Membership form submission failed', error)
+      setSubmitError('Radās kļūda. Mēģiniet vēlreiz.')
+      setIsSubmitted(false)
+    }
   }
 
   return (
@@ -35,7 +63,7 @@ function Ktparbiedru() {
         <meta name="description" content="Informācija par iestāšanos Latvijas Ugunsdrošības asociācijā." />
       </Helmet>
       <main>
-        <PageBanner title="Iestāšanās asociācijā" />
+        <PageBanner title="Iestāšanās" />
         <section className="join-page__intro">
           <div className="join-page__copy">
             <h1>KĻŪSTI PAR<br /><em>BIEDRU!</em></h1>
@@ -44,14 +72,18 @@ function Ktparbiedru() {
           </div>
           <div className="join-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
             <img src="/Images/biznesa gadi.svg" alt="" />
-            <strong aria-hidden="true">{associationYears}</strong>
+            <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
         </section>
         <section className="join-page__application" aria-labelledby="application-heading">
           <div className="join-page__application-heading">
             <h2 id="application-heading">Piesakiet savu uzņēmumu</h2>
           </div>
-          <form className="join-page__form" onSubmit={handleSubmit} onChange={() => setIsSubmitted(false)}>
+          <form
+            className="join-page__form"
+            onSubmit={handleSubmit}
+            onChange={() => setIsSubmitted(false)}
+          >
             <label>
               Uzņēmuma nosaukums
               <input name="companyName" type="text" autoComplete="organization" required />
@@ -78,7 +110,8 @@ function Ktparbiedru() {
             </label>
             <div className="join-page__form-action">
               <button type="submit">Nosūtīt pieteikumu</button>
-              {isSubmitted && <p role="status">Paldies! Jūsu pieteikums ir sagatavots izskatīšanai.</p>}
+              {isSubmitted && <p role="status">Paldies! Jūsu pieteikums ir nosūtīts.</p>}
+              {submitError && <p role="alert">{submitError}</p>}
             </div>
           </form>
         </section>
@@ -91,4 +124,4 @@ function Ktparbiedru() {
   )
 }
 
-export default Ktparbiedru
+export default KlutParBiedru

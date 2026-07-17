@@ -45,7 +45,12 @@
       #path4 {
          stroke-dasharray: 1.01 !important;
          stroke-dashoffset: 1.01;
-         animation: lua-shield-draw 1.15s ease-out forwards;
+         animation: lua-shield-draw 1.15s ease-out forwards, lua-shield-finish 0.01s linear 1.15s forwards;
+      }
+
+      #shield-finish {
+         opacity: 0;
+         animation: lua-shield-complete 0.01s linear 1.15s forwards;
       }
 
       #path5 {
@@ -65,6 +70,14 @@
          to { stroke-dashoffset: 0; }
       }
 
+      @keyframes lua-shield-finish {
+         to { opacity: 0; }
+      }
+
+      @keyframes lua-shield-complete {
+         to { opacity: 1; }
+      }
+
       @keyframes lua-flame-in {
          from { opacity: 0; transform: translateY(3px); }
          to { opacity: 1; transform: translateY(0); }
@@ -76,6 +89,7 @@
 
       @media (prefers-reduced-motion: reduce) {
          #path4 { stroke-dashoffset: 0; animation: none; }
+         #shield-finish { opacity: 1; animation: none; }
          #path5, #wordmark { opacity: 1; transform: none; animation: none; }
       }
    </style>
@@ -91,6 +105,11 @@
          d="M 28.206215,8.7294598 C 34.78776,12.813723 41.45953,15.364138 48.209863,16.578993 46.672725,31.781252 53.299239,49.844351 28.14292,60.637696 2.3315711,49.409727 10.26739,31.404514 8.3924552,16.452386 15.819681,15.317706 22.113725,12.199952 28.206215,8.7294598 Z"
          id="path4"
          pathLength="1"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         id="shield-finish"
+         style="fill:none;fill-opacity:0.605422;stroke:#0d1f3c;stroke-width:4.65589;stroke-dasharray:none;stroke-opacity:1"
+         d="M 28.206215,8.7294598 C 34.78776,12.813723 41.45953,15.364138 48.209863,16.578993 46.672725,31.781252 53.299239,49.844351 28.14292,60.637696 2.3315711,49.409727 10.26739,31.404514 8.3924552,16.452386 15.819681,15.317706 22.113725,12.199952 28.206215,8.7294598 Z"
          sodipodi:nodetypes="ccccc" />
       <path
          style="fill:#c8102e;fill-opacity:1;stroke:none;stroke-width:1.81296;stroke-dasharray:none;stroke-opacity:1"

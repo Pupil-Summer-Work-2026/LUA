@@ -21,3 +21,12 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ("id", "title", "content", "tags", "images", "created_at")
+
+
+class MembershipApplicationSerializer(serializers.Serializer):
+    companyName = serializers.CharField()
+    position = serializers.CharField()
+    fullName = serializers.CharField()
+    email = serializers.EmailField()
+    phone = serializers.CharField()
+    companyDescription = serializers.CharField()

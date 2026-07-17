@@ -3,7 +3,7 @@
 import { Helmet } from 'react-helmet'
 import { Link, useParams } from 'react-router-dom'
 
-import './jaunums-modern.css'
+import './jaunums.css'
 
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'

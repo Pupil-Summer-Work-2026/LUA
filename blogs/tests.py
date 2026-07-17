@@ -1,5 +1,6 @@
 import tempfile
 from datetime import timedelta
+from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import override_settings
@@ -62,3 +63,34 @@ class PostApiTests(APITestCase):
 
 		self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 		self.assertEqual(Post.objects.filter(title="Nedrīkst publicēt").count(), 0)
+
+
+class MembershipFormTests(APITestCase):
+	@patch("blogs.views.send_mail")
+	def test_membership_form_rejects_empty_request(self, mock_send_mail):
+		response = self.client.post(reverse("ktparbiedru"), {})
+
+		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+		self.assertFalse(response.json()["success"])
+		self.assertIn("companyName", response.json()["errors"])
+		mock_send_mail.assert_not_called()
+
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.views.send_mail")
+	def test_membership_form_returns_success(self, mock_send_mail):
+		response = self.client.post(
+			reverse("ktparbiedru"),
+			{
+				"companyName": "Acme",
+				"position": "CTO",
+				"fullName": "Jane Doe",
+				"email": "jane@example.com",
+				"phone": "+37112345678",
+				"companyDescription": "We provide fire safety services.",
+			},
+		)
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertTrue(response.json()["success"])
+		mock_send_mail.assert_called_once()
+		self.assertEqual(mock_send_mail.call_args.kwargs["recipient_list"], ["membership@example.com"])
