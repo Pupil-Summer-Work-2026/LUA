@@ -50,11 +50,14 @@ function SiteHeader() {
         {headerNavigation.map(({ labelKey, path }) => (
           <button key={path} className={pathname === path ? 'is-active' : ''} type="button" aria-current={pathname === path ? 'page' : undefined} onClick={() => navigateTo(path)}>{t(labelKey)}</button>
         ))}
-        <div className="site-header__language" role="group" aria-label={t('header.language')}>
-          <button className={language === 'lv' ? 'is-active' : ''} type="button" aria-pressed={language === 'lv'} onClick={() => setLanguage('lv')}>LV</button>
-          <button className={language === 'en' ? 'is-active' : ''} type="button" aria-pressed={language === 'en'} onClick={() => setLanguage('en')}>EN</button>
-        </div>
         <button className={`site-header__cta${pathname === '/klut-par-biedru' ? ' is-active' : ''}`} type="button" aria-current={pathname === '/klut-par-biedru' ? 'page' : undefined} onClick={() => navigateTo('/klut-par-biedru')}>{t('navigation.join')}</button>
+        <label className="site-header__language">
+          <span className="site-header__language-label">{t('header.language')}</span>
+          <select value={language} aria-label={t('header.language')} onChange={(event) => setLanguage(event.target.value)}>
+            <option value="lv">LV</option>
+            <option value="en">EN</option>
+          </select>
+        </label>
       </nav>
     </header>
   )
