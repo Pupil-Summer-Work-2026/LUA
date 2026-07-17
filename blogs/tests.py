@@ -66,6 +66,15 @@ class PostApiTests(APITestCase):
 
 
 class MembershipFormTests(APITestCase):
+	@patch("blogs.views.send_mail")
+	def test_membership_form_rejects_empty_request(self, mock_send_mail):
+		response = self.client.post(reverse("ktparbiedru"), {})
+
+		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+		self.assertFalse(response.json()["success"])
+		self.assertIn("companyName", response.json()["errors"])
+		mock_send_mail.assert_not_called()
+
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.views.send_mail")
 	def test_membership_form_returns_success(self, mock_send_mail):

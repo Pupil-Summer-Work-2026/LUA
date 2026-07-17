@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Post, Tag
-from .serializers import PostSerializer, TagSerializer
+from .serializers import MembershipApplicationSerializer, PostSerializer, TagSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -17,12 +17,19 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 @require_POST
 def ktparbiedru(request):
-    company_name = request.POST.get("companyName", "").strip()
-    position = request.POST.get("position", "").strip()
-    full_name = request.POST.get("fullName", "").strip()
-    email = request.POST.get("email", "").strip()
-    phone = request.POST.get("phone", "").strip()
-    company_description = request.POST.get("companyDescription", "").strip()
+    serializer = MembershipApplicationSerializer(data=request.POST)
+    if not serializer.is_valid():
+        return JsonResponse(
+            {"success": False, "errors": serializer.errors},
+            status=400,
+        )
+
+    company_name = serializer.validated_data["companyName"]
+    position = serializer.validated_data["position"]
+    full_name = serializer.validated_data["fullName"]
+    email = serializer.validated_data["email"]
+    phone = serializer.validated_data["phone"]
+    company_description = serializer.validated_data["companyDescription"]
 
     logger.info("Membership form received for %s", email or full_name)
 
