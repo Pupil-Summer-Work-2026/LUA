@@ -45,7 +45,7 @@ def ktparbiedru(request):
             subject="jauna biedra pieteikums",
             message=message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['krastinsmarisss@gmail.com'],
+            recipient_list=[settings.MEMBERSHIP_FORM_RECIPIENT],
             fail_silently=False,
         )
         logger.info("Membership form email sent successfully")

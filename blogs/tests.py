@@ -66,6 +66,7 @@ class PostApiTests(APITestCase):
 
 
 class MembershipFormTests(APITestCase):
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.views.send_mail")
 	def test_membership_form_returns_success(self, mock_send_mail):
 		response = self.client.post(
@@ -83,3 +84,4 @@ class MembershipFormTests(APITestCase):
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertTrue(response.json()["success"])
 		mock_send_mail.assert_called_once()
+		self.assertEqual(mock_send_mail.call_args.kwargs["recipient_list"], ["membership@example.com"])
