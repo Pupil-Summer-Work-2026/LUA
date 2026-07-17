@@ -1,3 +1,4 @@
 django==6.0.7
 djangorestframework
 Pillow
+python-dotenv
