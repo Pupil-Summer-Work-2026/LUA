@@ -5,6 +5,7 @@ import { Landmark, Award, Shield} from 'lucide-react'
 import { Link, useHistory } from 'react-router-dom'
 
 import './landing-page.css'
+import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import { members } from './biedri'
 import { getPosts } from '../services/blogApi'
@@ -13,6 +14,11 @@ const services = [
   [Landmark, 'Standartu izstrāde','Kā svarīgāko uzdevumu asociācija uzskata ugunsdrošības standartu izstrādi un to ieviešanu, lai nodrošinātu augstus drošības standartus visā valstī.'],
   [Award, 'Izglītība un apmācības','Asociācijas biedriem ir iespēja piedalīties dažādos izglītības un apmācību pasākumos, kas palīdz uzlabot zināšanas un prasmes ugunsdrošības jomā.'],
   [Shield, 'Ugunsaizsardzība','Mūsu asociācija nodrošina ugunsdrošības pasākumus un ugunsdzēsības aprīkojumu, lai aizsargātu cilvēkus un īpašumu.']
+]
+
+const statistics = [
+  { value: 30, label: 'BIEDRI' },
+  { value: 4, label: 'SADARBĪBAS PARTNERI' },
 ]
 
 function getSummary(content) {
@@ -42,7 +48,7 @@ function LandingPage() {
       <Helmet><title>Latvijas Ugunsdrošības asociācija</title><meta name="description" content="Latvijas Ugunsdrošības asociācija" /></Helmet>
       <main>
         <section className="lua-hero"><div className="lua-hero__content"><h1>LATVIJAS<br /><em>UGUNSDROŠĪBAS</em><br />ASOCIĀCIJA</h1><p>Latvijas Ugunsdrošības asociācija apvieno ugunsdrošības jomas uzņēmumus un speciālistus, veicinot drošu vidi visā valstī.</p><button onClick={() => history.push('/ktparbiedru')}>Piesakieties</button></div></section>
-        <section className="lua-statistics" aria-label="Asociācijas rādītāji">{[['30', 'BIEDRI'], ['4', 'SADARBĪBAS PARTNERI']].map(([number, label]) => <div key={label}><strong>{number}</strong><span>{label}</span></div>)}</section>
+        <section className="lua-statistics" aria-label="Asociācijas rādītāji">{statistics.map(({ value, label }) => <div key={label}><CountUpNumber value={value} /><span>{label}</span></div>)}</section>
         <section className="lua-section lua-container lua-intro"><div className="lua-intro__copy"><span className="lua-eyebrow">PAR ASOCIĀCIJU</span><h2>DROŠĀKA<br /><em>LATVIJA</em><br />KOPĀ</h2><p>Latvijas Ugunsdrošības asociācija (LUA) ir dibināta 2002. gadā un apvieno Latvijas ugunsdrošības jomas uzņēmumus, organizācijas un speciālistus. Mēs sekmējam nozares profesionalitāti, drošību un ilgtspēju. Asociācija aktīvi sadarbojas ar valsts iestādēm, lai veidotu efektīvu ugunsdrošības politiku Latvijā.</p><button className="lua-text-link" onClick={() => history.push('/about-us')}>Uzzināt vairāk <span>→</span></button></div><div className="lua-intro__visual"><span className="lua-intro__backdrop" aria-hidden="true" /><img className="lua-intro__image" src="\Images\extintinguisher-army.jpg" alt="Ugunsdzēšamie aparāti" /></div></section>
         <section className="lua-section lua-container lua-services">{services.map(([Icon, title, description]) => <article key={title}><Icon className="lua-services__icon" aria-hidden="true" /><h3>{title}</h3><p>{description}</p></article>)}</section>
         

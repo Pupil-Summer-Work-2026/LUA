@@ -3,6 +3,7 @@
 import { Helmet } from 'react-helmet'
 
 import './ktparbiedru-modern.css'
+import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 
@@ -73,7 +74,7 @@ function Ktparbiedru() {
         <meta name="description" content="Informācija par iestāšanos Latvijas Ugunsdrošības asociācijā." />
       </Helmet>
       <main>
-        <PageBanner title="Iestāšanās asociācijā" />
+        <PageBanner title="Iestāšanās" />
         <section className="join-page__intro">
           <div className="join-page__copy">
             <h1>KĻŪSTI PAR<br /><em>BIEDRU!</em></h1>
@@ -82,7 +83,7 @@ function Ktparbiedru() {
           </div>
           <div className="join-page__years" aria-label={`Latvijas Ugunsdrošības asociācijai ir ${associationYears} gadi`}>
             <img src="/Images/biznesa gadi.svg" alt="" />
-            <strong aria-hidden="true">{associationYears}</strong>
+            <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
         </section>
         <section className="join-page__application" aria-labelledby="application-heading">
