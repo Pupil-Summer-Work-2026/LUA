@@ -16,7 +16,13 @@ const resources = [
   ['', 'serteks.lv'],
   ['', 'building.lv'],
 ]
-async function handleSubmit(event) {
+
+function Kontakti() {
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+
+
+  async function handleSubmit(event) {
     event.preventDefault()
 
     const form = event.currentTarget
@@ -37,9 +43,9 @@ async function handleSubmit(event) {
         const errorMessage = data?.message || `Request failed with status ${response.status}`
         throw new Error(errorMessage)
       }
-
       setIsSubmitted(true)
       setSubmitError('')
+
       form.reset()
     } catch (error) {
       console.error('Contact form submission failed', error)
@@ -47,10 +53,6 @@ async function handleSubmit(event) {
       setIsSubmitted(false)
     }
   }
-
-function Kontakti() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [submitError, setSubmitError] = useState('')
 
   useEffect(() => {
     document.title = 'Kontakti | Latvijas Ugunsdrošības asociācija'
@@ -98,6 +100,7 @@ function Kontakti() {
               <textarea id="contact-message" name="message" placeholder="Ievadiet savu ziņu" rows="4" required onChange={() => setIsSubmitted(false)} />
               <button type="submit">Sūtīt</button>
               {isSubmitted && <p className="contacts-page__form-status" role="status">Paldies! Jūsu ziņa ir nosūtīta.</p>}
+              {submitError && <p className="contacts-page__form-status" role="alert">{submitError}</p>}
             </form>
             <div className="contacts-page__resources">
               <h2>NODERĪGAS SAITES</h2>

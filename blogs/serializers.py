@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from .models import Post, PostImage, Tag
 
+class MessageApplicationSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    email = serializers.EmailField()
+    message = serializers.CharField()
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:

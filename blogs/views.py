@@ -9,13 +9,56 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Post, Tag
-from .serializers import MembershipApplicationSerializer, PostSerializer, TagSerializer
+from .serializers import MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer
 
 logger = logging.getLogger(__name__)
 
 
 @csrf_exempt
 @require_POST
+def kontakti(request):
+    serializer = MessageApplicationSerializer(data=request.POST)
+    if not serializer.is_valid():
+        return JsonResponse(
+            {"success": False, "errors": serializer.errors},
+            status=400,
+        )
+
+    name = serializer.validated_data["name"]
+    email = serializer.validated_data["email"]
+    message_content = serializer.validated_data["message"]
+
+    logger.info("Contact form received from %s", email or name)
+
+    message = "\n".join(
+        [
+            "Jauns kontaktu pieteikums",
+            f"Vārds un uzvārds: {name}",
+            f"E-pasts: {email}",
+            "",
+            "Ziņa:",
+            message_content,
+        ]
+    )
+
+    try:
+        send_mail(
+            subject="Jauns LUA lietotaja zinojums",
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.CONTACT_FORM_RECIPIENT],
+            fail_silently=False,
+        )
+        logger.info("Contact form email sent successfully")
+    except Exception:
+        logger.exception("Contact form email failed")
+        return JsonResponse(
+            {"success": False, "message": "Ziņas nosūtīšana neizdevās."},
+            status=500,
+        )
+
+    return JsonResponse({"success": True, "message": "Ziņa saņemta"})
+
 def ktparbiedru(request):
     serializer = MembershipApplicationSerializer(data=request.POST)
     if not serializer.is_valid():

@@ -94,3 +94,22 @@ class MembershipFormTests(APITestCase):
 		self.assertTrue(response.json()["success"])
 		mock_send_mail.assert_called_once()
 		self.assertEqual(mock_send_mail.call_args.kwargs["recipient_list"], ["membership@example.com"])
+
+
+class ContactFormTests(APITestCase):
+	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
+	@patch("blogs.views.send_mail")
+	def test_contact_form_sends_message_to_configured_recipient(self, mock_send_mail):
+		response = self.client.post(
+			reverse("kontakti"),
+			{
+				"name": "Jane Doe",
+				"email": "jane@example.com",
+				"message": "Labdien!",
+			},
+		)
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertTrue(response.json()["success"])
+		mock_send_mail.assert_called_once()
+		self.assertEqual(mock_send_mail.call_args.kwargs["recipient_list"], ["contact@example.com"])
