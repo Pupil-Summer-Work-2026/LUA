@@ -19,8 +19,8 @@ async function request(path, options) {
   return data
 }
 
-export function getPosts() {
-  return request('/posts/')
+export function getPosts(options) {
+  return request('/posts/', options)
 }
 
 export function getPost(postId) {
@@ -31,8 +31,8 @@ export function getTags() {
   return request('/tags/')
 }
 
-export function getMembers() {
-  return request('/members/')
+export function getMembers(options) {
+  return request('/members/', options)
 }
 
 export function submitForm(path, formData) {

@@ -2,6 +2,7 @@ import logging
 from uuid import uuid4
 
 from django.conf import settings
+from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -18,10 +19,11 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 @require_POST
 def registrs(request):
+    correlation_id = str(uuid4())
     serializer = RegistrationApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
-            {"success": False, "errors": serializer.errors},
+            {"success": False, "errors": serializer.errors, "correlationId": correlation_id},
             status=400,
         )
     full_name = serializer.validated_data["fullName"]
@@ -54,11 +56,17 @@ def registrs(request):
     except Exception:
         logger.exception("Membership form email failed")
         return JsonResponse(
-            {"success": False, "message": "Pieteikuma nosūtīšana neizdevās."},
+            {
+                "success": False,
+                "message": "Pieteikuma nosūtīšana neizdevās.",
+                "correlationId": correlation_id,
+            },
             status=500,
         )
 
-    return JsonResponse({"success": True, "message": "Pieteikums saņemts"})
+    return JsonResponse(
+        {"success": True, "message": "Pieteikums saņemts", "correlationId": correlation_id}
+    )
 @csrf_exempt
 @require_POST
 def kontakti(request):
