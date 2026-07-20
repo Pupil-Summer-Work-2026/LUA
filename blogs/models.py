@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 
 class Tag(models.Model):
@@ -36,7 +37,12 @@ class PostImage(models.Model):
 class Member(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField(blank=True, null=True)
-    logo = models.ImageField(upload_to="members/logos/", blank=True, null=True)
+    logo = models.FileField(
+        upload_to="members/logos/",
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=["png", "svg"])],
+    )
     tags = models.ManyToManyField("MemberTag", blank=True, related_name="members")
 
     class Meta:
