@@ -16,11 +16,6 @@ const services = [
   Shield,
 ]
 
-const statistics = [
-  30,
-  4,
-]
-
 const collaborationPartners = [
   ['/Biedri/DAKIB.png', 'DAKIB', 'https://www.dakib.lv/', true],
   ['/Biedri/iekslietu ministrija.png', 'Iekšlietu ministrija', 'https://www.iem.gov.lv/lv'],
@@ -67,6 +62,7 @@ function Sakumlapa() {
   }, [t])
 
   const featuredArticles = posts.slice(0, 5)
+  const statistics = [members.length, collaborationPartners.length]
 
   return (
     <SiteLayout className="lua-home">
