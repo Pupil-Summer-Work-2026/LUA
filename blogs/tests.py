@@ -10,7 +10,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Member, Post, PostImage, Tag
+from .models import Member, MemberTag, Post, PostImage, Tag
 
 
 class PostApiTests(APITestCase):
@@ -67,13 +67,34 @@ class PostApiTests(APITestCase):
 
 
 class MemberApiTests(APITestCase):
-	def test_member_list_returns_member_details(self):
+	def test_member_list_returns_member_details_with_tags(self):
 		member = Member.objects.create(name="Acme", url="https://example.com")
+		member_tag = MemberTag.objects.create(name="Ražotājs")
+		member.tags.add(member_tag)
 
 		response = self.client.get(reverse("member-list"))
 
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
-		self.assertEqual(response.data, [{"id": member.id, "name": "Acme", "url": "https://example.com", "logo": None}])
+		self.assertEqual(
+			response.data,
+			[
+				{
+					"id": member.id,
+					"name": "Acme",
+					"url": "https://example.com",
+					"logo": None,
+					"tags": [{"id": member_tag.id, "name": member_tag.name}],
+				}
+			],
+		)
+
+	def test_member_tag_list_returns_reusable_member_tags(self):
+		member_tag = MemberTag.objects.create(name="Pakalpojumu sniedzējs")
+
+		response = self.client.get(reverse("membertag-list"))
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(response.data, [{"id": member_tag.id, "name": member_tag.name}])
 
 
 class MembershipFormTests(APITestCase):

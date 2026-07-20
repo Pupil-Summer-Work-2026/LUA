@@ -37,6 +37,16 @@ class Member(models.Model):
     name = models.CharField(max_length=100)
     url = models.URLField(blank=True, null=True)
     logo = models.ImageField(upload_to="members/logos/", blank=True, null=True)
+    tags = models.ManyToManyField("MemberTag", blank=True, related_name="members")
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+class MemberTag(models.Model):
+    name = models.CharField(max_length=80, unique=True)
 
     class Meta:
         ordering = ("name",)
