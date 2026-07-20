@@ -9,6 +9,16 @@ import PageBanner from '../components/PageBanner'
 import { useLanguage } from '../i18n/LanguageContext'
 import { getMembers } from '../services/blogApi'
 
+export const honoraryMembers = [
+  'Juris Ļabis',
+  "Vladimirs Jemeļjanovs",
+  'Georgijs Gerasimovs',
+  'Sergejs Jefimovs',
+  'Māris Ziemelis',
+  'Igors Ponomarjovs',
+  'Grigorijs Rodins'
+]
+
 function Biedri() {
   const [members, setMembers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -72,6 +82,16 @@ function Biedri() {
               ) : <React.Fragment key={member.id}>{card}</React.Fragment>
             })}
           </div>
+          <section className="members-page__honorary" aria-labelledby="honorary-members-heading">
+            <h2 id="honorary-members-heading">{t('members.honoraryHeading')}</h2>
+            <div className="members-page__honorary-grid">
+              {honoraryMembers.map((name, index) => (
+                <article className="members-page__honorary-card" key={`${name}-${index}`}>
+                  <h3>{name}</h3>
+                </article>
+              ))}
+            </div>
+          </section>
         </section>
         <section className="members-page__join">
           <div>

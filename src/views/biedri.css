@@ -16,6 +16,15 @@
 .members-page__card-details span { color: #fff; font: 700 11px 'DM Sans', sans-serif; }
 .members-page__card:hover .members-page__card-details, .members-page__card:focus .members-page__card-details, .members-page__card-link:focus .members-page__card-details { opacity: 1; transform: translateY(0); }
 .members-page__card:focus-visible, .members-page__card-link:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
+.members-page__honorary { margin-top: 68px; }
+.members-page__honorary h2 { margin: 0 0 24px; color: #435773; text-align: center; font: 500 28px/1 'Barlow Condensed', sans-serif; }
+.members-page__honorary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.members-page__honorary-card { min-height: 104px; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 16px; border: 1px solid #8fa5bd; border-radius: 8px; background: #dce8f3; color: var(--lua-navy); text-align: center; }
+.members-page__honorary-grid > :nth-child(even) .members-page__honorary-card { border-color: #bd8794; background: #f4d9df; }
+.members-page__honorary-card h3 { margin: 0; font: 700 22px/1.1 'Barlow Condensed', sans-serif; }
+.members-page__honorary-card span { font: 700 11px 'DM Sans', sans-serif; }
+.members-page__honorary-card:hover, .members-page__honorary-card:focus { color: #fff; background: var(--lua-navy); border-color: var(--lua-navy); }
+.members-page__honorary-card:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
 .members-page__join { min-height: 150px; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 28px max(32px, calc((100% - 1136px) / 2)); color: #fff; background: var(--lua-red); }
 .members-page__join h2 { margin: 0; font: 800 30px/.95 'Barlow Condensed', sans-serif; }
 .members-page__join p { margin: 5px 0 0; font-size: 13px; }
@@ -31,5 +40,7 @@
 @media (max-width: 480px) {
   .members-page__content { padding: 38px 0 52px; }
   .members-page__grid { grid-template-columns: repeat(2, 1fr); }
+  .members-page__honorary { margin-top: 52px; }
+  .members-page__honorary-grid { grid-template-columns: 1fr; }
   .members-page__join { align-items: flex-start; flex-direction: column; padding: 32px 20px; }
 }

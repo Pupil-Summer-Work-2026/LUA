@@ -9,12 +9,101 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Member, Post, Tag
-from .serializers import MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer, MemberSerializer
+from .serializers import MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer, RegistrationApplicationSerializer, MemberSerializer
 from .emailing import send_traced_email
 
 logger = logging.getLogger(__name__)
 
 
+@csrf_exempt
+@require_POST
+def registrs(request):
+    serializer = RegistrationApplicationSerializer(data=request.POST)
+    if not serializer.is_valid():
+        return JsonResponse(
+            {"success": False, "errors": serializer.errors},
+            status=400,
+        )
+    full_name = serializer.validated_data["fullName"]
+    email = serializer.validated_data["email"]
+    company_name = serializer.validated_data["companyName"]
+
+    logger.info("Membership form received for %s", email or full_name)
+
+    message = "\n".join(
+        [
+            "Jauns lietotaja pieteikums",
+
+            f"Vārds un uzvārds: {full_name}",
+            f"E-pasts: {email}",
+            f"Uzņēmuma nosaukums: {company_name}",
+            "",
+            "Jauns lietotaja pieteikums:",
+        ]
+    )
+
+    try:
+        send_mail(
+            subject="jauna biedra pieteikums",
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.MEMBERSHIP_FORM_RECIPIENT],
+            fail_silently=False,
+        )
+        logger.info("Membership form email sent successfully")
+    except Exception:
+        logger.exception("Membership form email failed")
+        return JsonResponse(
+            {"success": False, "message": "Pieteikuma nosūtīšana neizdevās."},
+            status=500,
+        )
+
+    return JsonResponse({"success": True, "message": "Pieteikums saņemts"})
+@csrf_exempt
+@require_POST
+def kontakti(request):
+    correlation_id = str(uuid4())
+    serializer = MessageApplicationSerializer(data=request.POST)
+    if not serializer.is_valid():
+        return JsonResponse(
+            {"success": False, "errors": serializer.errors, "correlationId": correlation_id},
+            status=400,
+        )
+    full_name = serializer.validated_data["fullName"]
+    email = serializer.validated_data["email"]
+    company_name = serializer.validated_data["companyName"]
+
+    logger.info("Membership form received for %s", email or full_name)
+
+    message = "\n".join(
+        [
+            "Jauns lietotaja pieteikums",
+
+            f"Vārds un uzvārds: {full_name}",
+            f"E-pasts: {email}",
+            f"Uzņēmuma nosaukums: {company_name}",
+            "",
+            "Jauns lietotaja pieteikums:",
+        ]
+    )
+
+    try:
+        send_mail(
+            subject="jauna biedra pieteikums",
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.MEMBERSHIP_FORM_RECIPIENT],
+            fail_silently=False,
+        )
+        logger.info("Membership form email sent successfully")
+    except Exception:
+        logger.exception("Membership form email failed")
+        return JsonResponse(
+            {"success": False, "message": "Pieteikuma nosūtīšana neizdevās."},
+            status=500,
+        )
+
+    return JsonResponse({"success": True, "message": "Pieteikums saņemts"})
 @csrf_exempt
 @require_POST
 def kontakti(request):
@@ -74,6 +163,9 @@ def kontakti(request):
         {"success": True, "message": "Ziņa saņemta", "correlationId": correlation_id}
     )
 
+
+@csrf_exempt
+@require_POST
 
 @csrf_exempt
 @require_POST

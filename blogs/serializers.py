@@ -40,3 +40,9 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ("id", "name", "url", "logo")
+
+
+class RegistrationApplicationSerializer(serializers.Serializer):
+    fullName = serializers.CharField()
+    email = serializers.EmailField()
+    companyName = serializers.CharField()
