@@ -58,6 +58,8 @@ def registrs(request):
         )
 
     return JsonResponse({"success": True, "message": "Pieteikums saņemts"})
+@csrf_exempt
+@require_POST
 def kontakti(request):
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
@@ -101,6 +103,9 @@ def kontakti(request):
 
     return JsonResponse({"success": True, "message": "Ziņa saņemta"})
 
+
+@csrf_exempt
+@require_POST
 def ktparbiedru(request):
     serializer = MembershipApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
