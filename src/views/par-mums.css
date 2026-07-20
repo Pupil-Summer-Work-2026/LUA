@@ -28,17 +28,24 @@
 .about-page__service-dialog { width: min(100%, 680px); max-height: min(700px, calc(100vh - 48px)); overflow: auto; border: 1px solid #c3d0de; border-radius: 8px; background: #fff; box-shadow: 0 20px 50px rgb(0 0 0 / .3); }
 .about-page__service-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 24px; border-bottom: 1px solid #dbe2ec; }
 .about-page__service-dialog header > div { display: flex; align-items: flex-start; gap: 12px; }
-.about-page__service-dialog header span, .about-page__service-dialog li > span { flex: 0 0 auto; display: grid; place-items: center; width: 32px; height: 32px; color: #fff; background: var(--lua-red); font: 700 13px 'DM Sans', sans-serif; }
+.about-page__service-dialog header span { flex: 0 0 auto; display: grid; place-items: center; width: 32px; height: 32px; color: #fff; background: var(--lua-red); font: 700 13px 'DM Sans', sans-serif; }
 .about-page__service-dialog h2 { margin: 2px 0 0; font-size: 30px; line-height: 1; }
 .about-page__service-dialog-close { display: grid; flex: 0 0 auto; width: 36px; height: 36px; place-items: center; color: var(--lua-navy); border: 1px solid #aab9c5; border-radius: 4px; background: #fff; cursor: pointer; }
 .about-page__service-dialog-close:hover { color: #fff; border-color: var(--lua-navy); background: var(--lua-navy); }
 .about-page__service-dialog-close:focus-visible { outline: 2px solid #1767d2; outline-offset: 2px; }
 .about-page__service-dialog-status { margin: 0; padding: 28px 24px; color: var(--lua-muted); font: 400 14px/1.5 'DM Sans', sans-serif; }
-.about-page__service-dialog ul { display: grid; gap: 10px; margin: 0; padding: 24px; list-style: none; }
-.about-page__service-dialog li { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #dbe2ec; }
-.about-page__service-dialog li > span { width: 28px; height: 28px; font-size: 11px; }
-.about-page__service-dialog li a, .about-page__service-dialog li strong { color: var(--lua-navy); font: 700 17px 'Barlow Condensed', sans-serif; }
-.about-page__service-dialog li a:hover { color: var(--lua-red); }
+.about-page__service-dialog ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 24px; list-style: none; }
+.about-page__service-dialog li { min-width: 0; }
+.about-page__service-dialog li > a { display: block; color: inherit; text-decoration: none; }
+.about-page__service-member-card { min-height: 126px; position: relative; display: grid; place-items: center; padding: 12px; overflow: hidden; border: 1px solid #8fa5bd; border-radius: 8px; background: #dce8f3; }
+.about-page__service-dialog li:nth-child(even) .about-page__service-member-card { border-color: #bd8794; background: #f4d9df; }
+.about-page__service-member-card img { width: 100%; max-height: 70px; object-fit: contain; }
+.about-page__service-member-placeholder { color: var(--lua-navy); font: 700 20px/1.1 'Barlow Condensed', sans-serif; text-align: center; }
+.about-page__service-member-details { position: absolute; inset: 0; display: grid; align-content: center; gap: 8px; padding: 12px; color: #fff; opacity: 0; background: var(--lua-navy); text-align: center; transform: translateY(100%); transition: opacity .2s ease, transform .2s ease; }
+.about-page__service-member-details h3 { margin: 0; font: 800 19px/1 'Barlow Condensed', sans-serif; }
+.about-page__service-member-details span { font: 700 11px 'DM Sans', sans-serif; }
+.about-page__service-member-card:hover .about-page__service-member-details, .about-page__service-member-card:focus .about-page__service-member-details, .about-page__service-dialog li > a:focus .about-page__service-member-details { opacity: 1; transform: translateY(0); }
+.about-page__service-member-card:focus-visible, .about-page__service-dialog li > a:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
 
 @media (max-width: 760px) {
   .about-page__feature, .about-page__mission-inner { grid-template-columns: 1fr; gap: 34px; }
@@ -55,4 +62,5 @@
   .about-page__service-dialog { max-height: calc(100vh - 32px); }
   .about-page__service-dialog header { padding: 20px; }
   .about-page__service-dialog h2 { font-size: 26px; }
+  .about-page__service-dialog ul { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 20px; }
 }

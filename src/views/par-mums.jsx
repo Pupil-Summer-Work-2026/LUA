@@ -133,12 +133,23 @@ function ParMums() {
               {!isLoadingMembers && !membersLoadFailed && activeServiceMembers.length === 0 && <p className="about-page__service-dialog-status">{t('serviceDialog.empty')}</p>}
               {!isLoadingMembers && !membersLoadFailed && activeServiceMembers.length > 0 && (
                 <ul>
-                  {activeServiceMembers.map((member) => (
-                    <li key={member.id}>
-                      <span>{activeService.number}</span>
-                      {member.url ? <a href={member.url} target="_blank" rel="noreferrer">{member.name}</a> : <strong>{member.name}</strong>}
-                    </li>
-                  ))}
+                  {activeServiceMembers.map((member) => {
+                    const card = (
+                      <article className="about-page__service-member-card" tabIndex={member.url ? undefined : 0}>
+                        {member.logo ? <img src={member.logo} alt={`${member.name} ${t('members.logoSuffix')}`} /> : <span className="about-page__service-member-placeholder">{member.name}</span>}
+                        <div className="about-page__service-member-details">
+                          <h3>{member.name}</h3>
+                          {member.url && <span>{t('members.visit')} →</span>}
+                        </div>
+                      </article>
+                    )
+
+                    return (
+                      <li key={member.id}>
+                        {member.url ? <a href={member.url} target="_blank" rel="noreferrer">{card}</a> : card}
+                      </li>
+                    )
+                  })}
                 </ul>
               )}
             </section>
