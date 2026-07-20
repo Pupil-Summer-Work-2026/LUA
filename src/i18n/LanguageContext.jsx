@@ -23,6 +23,7 @@ const translations = {
       copyright: '© 2026 Latvijas Ugunsdrošības asociācija. Visas tiesības aizsargātas.',
     },
     loading: { page: 'Lapas ielāde' },
+    serviceDialog: { close: 'Aizvērt pakalpojumu sarakstu', loading: 'Ielādē uzņēmumus...', error: 'Uzņēmumu sarakstu pašlaik nevar ielādēt.', empty: 'Šim pakalpojumam vēl nav pievienots neviens uzņēmums.' },
     home: {
       title: 'Latvijas Ugunsdrošības asociācija',
       description: 'Latvijas Ugunsdrošības asociācija',
@@ -107,6 +108,7 @@ const translations = {
       copyright: '© 2026 Latvian Fire Safety Association. All rights reserved.',
     },
     loading: { page: 'Page loading' },
+    serviceDialog: { close: 'Close service list', loading: 'Loading companies...', error: 'The company list cannot be loaded right now.', empty: 'No companies have been assigned this service yet.' },
     home: {
       title: 'Latvian Fire Safety Association', description: 'Latvian Fire Safety Association', heroHeading: 'LATVIAN\nFIRE SAFETY\nASSOCIATION', heroDescription: 'The Latvian Fire Safety Association brings together fire-safety companies and specialists to promote a safer environment across the country.', apply: 'Apply now', statistics: 'Association statistics', statisticsLabels: ['MEMBERS', 'PARTNERS'], aboutEyebrow: 'ABOUT THE ASSOCIATION', aboutHeading: 'A SAFER\nLATVIA\nTOGETHER', aboutText: 'Founded in 2002, the Latvian Fire Safety Association (LUA) brings together Latvian fire-safety companies, organisations, and specialists. We foster professionalism, safety, and sustainability in the industry. The Association actively works with public institutions to shape effective fire-safety policy in Latvia.', learnMore: 'Learn more', extinguisherAlt: 'Fire extinguishers', services: [['Standards development', 'The Association considers developing and implementing fire-safety standards its most important task, helping ensure high safety standards throughout the country.'], ['Education and training', 'Association members can participate in education and training events that build knowledge and skills in the field of fire safety.'], ['Fire protection', 'Our Association provides fire-safety measures and firefighting equipment to protect people and property.']], newsEyebrow: 'NEWS', newsHeading: 'DISCOVER THE LATEST UPDATES', loadingNews: 'Loading news...', newsError: 'News cannot be loaded right now.', noNews: 'There is currently no news available.', communityEyebrow: 'MEMBERS AND PARTNERS', communityHeading: 'OUR INDUSTRY\nCOMMUNITY', memberCompanies: 'MEMBER COMPANIES', partners: 'PARTNERS', memberLogos: 'Member company logos', logoSuffix: 'logo', joinHeading: 'BECOME A LUA MEMBER', joinText: 'Join more than 30 companies creating a safer Latvia.'
     },

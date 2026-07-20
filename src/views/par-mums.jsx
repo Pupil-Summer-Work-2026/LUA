@@ -1,11 +1,13 @@
-﻿import React, { useEffect } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
+import { X } from 'lucide-react'
 
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import CountUpNumber from '../components/CountUpNumber'
 import { useLanguage } from '../i18n/LanguageContext'
+import { getMembers } from '../services/blogApi'
 
 import './par-mums.css'
 
@@ -21,11 +23,53 @@ function getAssociationYears() {
 
 function ParMums() {
   const associationYears = getAssociationYears()
+  const [members, setMembers] = useState([])
+  const [isLoadingMembers, setIsLoadingMembers] = useState(true)
+  const [membersLoadFailed, setMembersLoadFailed] = useState(false)
+  const [activeServiceIndex, setActiveServiceIndex] = useState(null)
   const { t } = useLanguage()
+  const serviceTitles = t('about.sectors')
+  const activeService = activeServiceIndex === null ? null : {
+    number: String(activeServiceIndex + 1).padStart(2, '0'),
+    title: serviceTitles[activeServiceIndex],
+  }
+  const activeServiceMembers = activeService
+    ? members.filter((member) => member.tags.some((tag) => tag.name === activeService.number))
+    : []
 
   useEffect(() => {
     document.title = t('about.pageTitle')
   }, [t])
+
+  useEffect(() => {
+    let isActive = true
+
+    getMembers()
+      .then((data) => {
+        if (isActive) setMembers(data)
+      })
+      .catch(() => {
+        if (isActive) setMembersLoadFailed(true)
+      })
+      .finally(() => {
+        if (isActive) setIsLoadingMembers(false)
+      })
+
+    return () => {
+      isActive = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (activeServiceIndex === null) return undefined
+
+    function closeOnEscape(event) {
+      if (event.key === 'Escape') setActiveServiceIndex(null)
+    }
+
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [activeServiceIndex])
 
   return (
     <SiteLayout className="about-page">
@@ -64,14 +108,42 @@ function ParMums() {
           <span className="lua-eyebrow">{t('about.offerEyebrow')}</span>
           <h2>{t('about.offerHeading')}</h2>
           <div className="about-page__sector-grid">
-            {t('about.sectors').map((title, index) => (
-              <article key={title} style={{ '--sector-label': `url("${sectorLabels[index]}")` }}>
+            {serviceTitles.map((title, index) => (
+              <button type="button" key={title} onClick={() => setActiveServiceIndex(index)} style={{ '--sector-label': `url("${sectorLabels[index]}")` }}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
                 <h3>{title}</h3>
-              </article>
+              </button>
             ))}
           </div>
         </section>
+        {activeService && (
+          <div className="about-page__service-dialog-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setActiveServiceIndex(null)}>
+            <section className="about-page__service-dialog" role="dialog" aria-modal="true" aria-labelledby="service-dialog-heading">
+              <header>
+                <div>
+                  <span>{activeService.number}</span>
+                  <h2 id="service-dialog-heading">{activeService.title}</h2>
+                </div>
+                <button className="about-page__service-dialog-close" type="button" onClick={() => setActiveServiceIndex(null)} aria-label={t('serviceDialog.close')}>
+                  <X size={20} aria-hidden="true" />
+                </button>
+              </header>
+              {isLoadingMembers && <p className="about-page__service-dialog-status" role="status">{t('serviceDialog.loading')}</p>}
+              {!isLoadingMembers && membersLoadFailed && <p className="about-page__service-dialog-status" role="alert">{t('serviceDialog.error')}</p>}
+              {!isLoadingMembers && !membersLoadFailed && activeServiceMembers.length === 0 && <p className="about-page__service-dialog-status">{t('serviceDialog.empty')}</p>}
+              {!isLoadingMembers && !membersLoadFailed && activeServiceMembers.length > 0 && (
+                <ul>
+                  {activeServiceMembers.map((member) => (
+                    <li key={member.id}>
+                      <span>{activeService.number}</span>
+                      {member.url ? <a href={member.url} target="_blank" rel="noreferrer">{member.name}</a> : <strong>{member.name}</strong>}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
+        )}
       </main>
     </SiteLayout>
   )
