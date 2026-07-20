@@ -19,6 +19,7 @@ import Biedri from './views/biedri.jsx'
 import KlutParBiedru from './views/klut-par-biedru.jsx'
 import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
 import LoadingScreen from './components/LoadingScreen'
+import { LanguageProvider } from './i18n/LanguageContext'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -52,7 +53,7 @@ const App = () => {
   }, [])
 
   return (
-    <>
+    <LanguageProvider>
       {isLoading && <LoadingScreen />}
       <Router>
         <ScrollToTop />
@@ -72,7 +73,7 @@ const App = () => {
           <Route component={LapaNavAtrasta} />
         </Switch>
       </Router>
-    </>
+    </LanguageProvider>
   )
 }
 

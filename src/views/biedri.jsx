@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import './biedri.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import { useLanguage } from '../i18n/LanguageContext'
 
 export const members = [
   ['/Biedri/almo.png', 'ALMO Ugunsdrošība','https://company.lursoft.lv/lv/almo/42103029093', true],
@@ -38,28 +39,30 @@ export const members = [
 ]
 
 function Biedri() {
+  const { t } = useLanguage()
+
   useEffect(() => {
-    document.title = 'Biedri | Latvijas Ugunsdrošības asociācija'
-  }, [])
+    document.title = t('members.pageTitle')
+  }, [t])
 
   return (
     <SiteLayout className="members-page">
       <Helmet>
-        <title>Biedri | Latvijas Ugunsdrošības asociācija</title>
-        <meta name="description" content="Latvijas Ugunsdrošības asociācijas biedru uzņēmumi." />
+        <title>{t('members.pageTitle')}</title>
+        <meta name="description" content={t('members.meta')} />
       </Helmet>
       <main>
-        <PageBanner title="Biedri" />
+        <PageBanner title={t('members.title')} />
         <section className="members-page__content lua-container">
-          <h1>LATVIJAS UGUNSDROŠĪBAS ASOCIĀCIJAS BIEDRI</h1>
+          <h1>{t('members.heading')}</h1>
           <div className="members-page__grid">
             {members.map(([logo, title, link, hasWhiteBackground], index) => {
               const card = (
                 <article className="members-page__card" tabIndex={link ? undefined : 0} key={`${title}-${index}`}>
-                  {logo && <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={`${title} logotips`} />}
+                  {logo && <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={`${title} ${t('members.logoSuffix')}`} />}
                   <div className="members-page__card-details">
                     <h2>{title}</h2>
-                    {link && <span>Apmeklēt vietni →</span>}
+                    {link && <span>{t('members.visit')} →</span>}
                   </div>
                 </article>
               )
@@ -72,10 +75,10 @@ function Biedri() {
         </section>
         <section className="members-page__join">
           <div>
-            <h2>KĻŪSTIET PAR LUA BIEDRU</h2>
-            <p>Pievienojies vairāk nekā 120 uzņēmumiem, kas veido drošāku Latviju.</p>
+            <h2>{t('members.joinHeading')}</h2>
+            <p>{t('members.joinText')}</p>
           </div>
-          <Link to="/klut-par-biedru">Piesakieties <span>→</span></Link>
+          <Link to="/klut-par-biedru">{t('members.apply')} <span>→</span></Link>
         </section>
       </main>
     </SiteLayout>
