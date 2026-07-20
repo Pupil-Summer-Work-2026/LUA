@@ -7,6 +7,7 @@ import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { useLanguage } from '../i18n/LanguageContext'
+import { submitForm } from '../services/blogApi'
 
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
@@ -35,20 +36,13 @@ function KlutParBiedru() {
     setSubmitError('')
 
     try {
-      const response = await fetch('/api/ktparbiedru/', {
-        method: 'POST',
-        body: formData,
-      })
+      const data = await submitForm('/ktparbiedru/', formData)
 
-      const data = await response.json().catch(() => null)
-
-      const backendSuccess = response.ok && (data === null || data.success !== false)
-
-      if (!backendSuccess) {
-        const errorMessage = data?.message || `Request failed with status ${response.status}`
-        throw new Error(errorMessage)
+      if (data.success !== true) {
+        throw new Error(data.message || 'Membership form submission failed.')
       }
 
+      console.info('Membership form submitted', { correlationId: data.correlationId })
       setIsSubmitted(true)
       setSubmitError('')
       setHasAcceptedDuties(false)

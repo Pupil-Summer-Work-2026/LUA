@@ -6,6 +6,7 @@ import './kontakti.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { useLanguage } from '../i18n/LanguageContext'
+import { submitForm } from '../services/blogApi'
 
 const resourceLinks = ['vugd.gov.lv', 'latvija.lv', 'likumi.lv', 'ur.gov.lv', 'lursoft.lv', 'abc.lv', 'serteks.lv', 'building.lv']
 
@@ -26,12 +27,12 @@ function Kontakti() {
     setSubmitError('')
 
     try {
-      const response = await fetch('/api/kontakti/', { method: 'POST', body: formData })
-      const data = await response.json().catch(() => null)
-      const backendSuccess = response.ok && (data === null || data.success !== false)
+      const data = await submitForm('/kontakti/', formData)
+      const backendSuccess = data.success === true
 
-      if (!backendSuccess) throw new Error(data?.message || `Request failed with status ${response.status}`)
+      if (!backendSuccess) throw new Error(data.message || 'Contact form submission failed.')
 
+      console.info('Contact form submitted', { correlationId: data.correlationId })
       setIsSubmitted(true)
       form.reset()
     } catch (error) {
