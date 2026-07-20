@@ -35,3 +35,8 @@ class MembershipApplicationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     phone = serializers.CharField()
     companyDescription = serializers.CharField()
+
+class RegistrationApplicationSerializer(serializers.Serializer):
+    fullName = serializers.CharField()
+    email = serializers.EmailField()
+    companyName = serializers.CharField()

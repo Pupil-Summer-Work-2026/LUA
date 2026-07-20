@@ -7,17 +7,36 @@ import { useLanguage } from '../i18n/LanguageContext'
 
 const Registrs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const { t } = useLanguage()
 
   useEffect(() => {
     document.title = t('registrs.pageTitle')
   }, [t])
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    event.currentTarget.reset()
-    setIsSubmitted(true)
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    setSubmitError('')
+
+    try {
+      const response = await fetch('/api/registrs/', { method: 'POST', body: formData })
+      const data = await response.json().catch(() => null)
+      const backendSuccess = response.ok && (data === null || data.success !== false)
+
+      if (!backendSuccess) throw new Error(data?.message || `Request failed with status ${response.status}`)
+
+      setIsSubmitted(true)
+      form.reset()
+    } catch (error) {
+      console.error('Registrs form submission failed', error)
+      setSubmitError(t('registrs.error'))
+      setIsSubmitted(false)
+    }
   }
+
 
   return (
     <SiteLayout className="registry-page">
@@ -34,13 +53,14 @@ const Registrs = () => {
           </div>
           <form className="registry-page__form" onSubmit={handleSubmit} onChange={() => setIsSubmitted(false)}>
             <label htmlFor="name">{t('registrs.name')}</label>
-            <input type="text" id="name" name="name" required />
+            <input type="text" id="name" name="fullName" required />
             <label htmlFor="email">{t('registrs.email')}</label>
             <input type="email" id="email" name="email" required />
             <label htmlFor="company">{t('registrs.company')}</label>
-            <input type="text" id="company" name="company" required />
+            <input type="text" id="company" name="companyName" required />
             <button type="submit">{t('registrs.send')}</button>
             {isSubmitted && <p className="registry-page__form-status" role="status">{t('registrs.sent')}</p>}
+            {submitError && <p className="registry-page__form-error" role="alert">{submitError}</p>}
           </form>
         </section>
       </main>
