@@ -35,7 +35,7 @@ function SiteFooter() {
     <footer className="site-footer">
       <div className="site-footer__grid">
         <div className="site-footer__brand">
-          <img src="/LUA big shield landscape SVG.svg" alt="Latvijas Ugunsdrošības asociācija" />
+          <img src="/LUA big shield landscape static.svg" alt="Latvijas Ugunsdrošības asociācija" />
           <p>{t('footer.description')}</p>
         </div>
         <NavigationColumn items={primaryNavigation} />
