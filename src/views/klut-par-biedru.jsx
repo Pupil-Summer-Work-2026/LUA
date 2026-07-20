@@ -20,6 +20,7 @@ function getAssociationYears() {
 function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [hasAcceptedDuties, setHasAcceptedDuties] = useState(false)
   const associationYears = getAssociationYears()
   const { t } = useLanguage()
 
@@ -44,6 +45,7 @@ function KlutParBiedru() {
       console.info('Membership form submitted', { correlationId: data.correlationId })
       setIsSubmitted(true)
       setSubmitError('')
+      setHasAcceptedDuties(false)
       form.reset()
     } catch (error) {
       console.error('Membership form submission failed', error)
@@ -105,7 +107,23 @@ function KlutParBiedru() {
               <textarea name="companyDescription" rows="5" required />
             </label>
             <div className="join-page__form-action">
-              <button type="submit">{t('join.send')}</button>
+              <div className="join-page__commitment">
+                <h3>{t('join.dutiesHeading')}</h3>
+                <ul>
+                  {t('join.duties').map((duty) => <li key={duty}>{duty}</li>)}
+                </ul>
+                <label>
+                  <input
+                    name="dutiesAccepted"
+                    type="checkbox"
+                    checked={hasAcceptedDuties}
+                    onChange={(event) => setHasAcceptedDuties(event.target.checked)}
+                    required
+                  />
+                  <span>{t('join.dutiesAccepted')}</span>
+                </label>
+              </div>
+              <button type="submit" disabled={!hasAcceptedDuties}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
               {submitError && <p role="alert">{submitError}</p>}
             </div>

@@ -9,8 +9,8 @@ from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .models import Member, Post, Tag
-from .serializers import MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer, RegistrationApplicationSerializer, MemberSerializer
+from .models import Member, MemberTag, Post, Tag
+from .serializers import MemberSerializer, MemberTagSerializer, MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer, RegistrationApplicationSerializer
 from .emailing import send_traced_email
 
 logger = logging.getLogger(__name__)
@@ -252,5 +252,10 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TagSerializer
 
 class MemberViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Member.objects.all()
+    queryset = Member.objects.prefetch_related("tags")
     serializer_class = MemberSerializer
+
+
+class MemberTagViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = MemberTag.objects.all()
+    serializer_class = MemberTagSerializer
