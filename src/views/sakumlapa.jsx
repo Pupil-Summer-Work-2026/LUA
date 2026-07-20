@@ -7,8 +7,7 @@ import { Link, useHistory } from 'react-router-dom'
 import './sakumlapa.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
-import { members } from './biedri'
-import { getPosts } from '../services/blogApi'
+import { getMembers, getPosts } from '../services/blogApi'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const services = [
@@ -39,6 +38,7 @@ function Sakumlapa() {
   const { t } = useLanguage()
   const [posts, setPosts] = useState([])
   const [newsStatus, setNewsStatus] = useState('loading')
+  const [members, setMembers] = useState([])
   const heroLines = t('home.heroHeading').split('\n')
   const aboutHeadingLines = t('home.aboutHeading').split('\n')
   const communityHeadingLines = t('home.communityHeading').split('\n')
@@ -52,6 +52,8 @@ function Sakumlapa() {
         setNewsStatus('ready')
       })
       .catch(() => setNewsStatus('error'))
+
+    getMembers().then(setMembers).catch(() => setMembers([]))
   }, [t])
 
   const featuredArticles = posts.slice(0, 5)
@@ -150,12 +152,12 @@ function Sakumlapa() {
               <div className="lua-logo-carousel__track">
                 {[0, 1].map((copyIndex) => (
                   <div className="lua-logo-carousel__group" aria-hidden={copyIndex === 1} key={copyIndex}>
-                    {members.map(([logo, title, link, hasWhiteBackground], index) => {
-                      const logoImage = <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={copyIndex === 0 ? `${title} ${t('home.logoSuffix')}` : ''} />
-                      const key = `${copyIndex}-${title}-${index}`
+                    {members.map((member) => {
+                      const logoImage = member.logo ? <img src={member.logo} alt={copyIndex === 0 ? `${member.name} ${t('home.logoSuffix')}` : ''} /> : <span className="lua-logo-carousel__name-placeholder">{member.name}</span>
+                      const key = `${copyIndex}-${member.id}`
 
-                      return link ? (
-                        <a className="lua-logo-carousel__item" href={link} key={key} rel="noreferrer" tabIndex={copyIndex === 1 ? -1 : undefined} target="_blank">
+                      return member.url ? (
+                        <a className="lua-logo-carousel__item" href={member.url} key={key} rel="noreferrer" tabIndex={copyIndex === 1 ? -1 : undefined} target="_blank">
                           {logoImage}
                         </a>
                       ) : (

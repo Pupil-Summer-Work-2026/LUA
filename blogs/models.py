@@ -32,3 +32,14 @@ class PostImage(models.Model):
 
     def __str__(self):
         return f"{self.post.title} image {self.position}"
+    
+class Member(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.URLField(blank=True, null=True)
+    logo = models.ImageField(upload_to="members/logos/", blank=True, null=True)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name

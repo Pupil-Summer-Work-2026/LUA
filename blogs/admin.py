@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, PostImage, Tag
+from .models import Member, Post, PostImage, Tag
 
 
 @admin.register(Tag)
@@ -20,3 +20,7 @@ class PostAdmin(admin.ModelAdmin):
 	search_fields = ("title", "content")
 	filter_horizontal = ("tags",)
 	inlines = (PostImageInline,)
+
+@admin.register(Member)
+class MemberAdmin(admin.ModelAdmin):
+    search_fields = ("name",)

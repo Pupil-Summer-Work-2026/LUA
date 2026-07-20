@@ -1,4 +1,5 @@
 django==6.0.7
+django-cors-headers
 djangorestframework
 Pillow
 python-dotenv

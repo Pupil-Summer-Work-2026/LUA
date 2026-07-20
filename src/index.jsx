@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import {
   BrowserRouter as Router,
@@ -18,7 +18,6 @@ import Kontakti from './views/kontakti.jsx'
 import Biedri from './views/biedri.jsx'
 import KlutParBiedru from './views/klut-par-biedru.jsx'
 import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
-import LoadingScreen from './components/LoadingScreen'
 import { LanguageProvider } from './i18n/LanguageContext'
 
 function ScrollToTop() {
@@ -32,29 +31,17 @@ function ScrollToTop() {
 }
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true)
-
   useEffect(() => {
-    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2900
-    let readyFrame
-    const timer = window.setTimeout(() => {
-      setIsLoading(false)
-      readyFrame = window.requestAnimationFrame(() => {
-        document.documentElement.dataset.luaContentReady = 'true'
-        window.dispatchEvent(new Event('lua:content-ready'))
-      })
-    }, delay)
+    document.documentElement.dataset.luaContentReady = 'true'
+    window.dispatchEvent(new Event('lua:content-ready'))
 
     return () => {
-      window.clearTimeout(timer)
-      window.cancelAnimationFrame(readyFrame)
       delete document.documentElement.dataset.luaContentReady
     }
   }, [])
 
   return (
     <LanguageProvider>
-      {isLoading && <LoadingScreen />}
       <Router>
         <ScrollToTop />
         <Switch>
