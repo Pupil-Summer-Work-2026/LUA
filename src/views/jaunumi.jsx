@@ -48,11 +48,11 @@ function Jaunumi() {
   }, [t])
 
   const categories = [allCategory, ...tags.map(({ name }) => name)]
-  const filteredArticles = posts.filter(({ tags: postTags, title }) => {
+  const filteredArticles = posts.filter(({ tags: postTags, title, content }) => {
     const tagNames = postTags.map(({ name }) => name)
     const matchesCategory = activeCategory === allCategory || tagNames.includes(activeCategory)
     const normalizedQuery = searchQuery.toLocaleLowerCase()
-    const matchesSearch = title.toLocaleLowerCase().includes(normalizedQuery) || tagNames.some((name) => name.toLocaleLowerCase().includes(normalizedQuery))
+    const matchesSearch = title.toLocaleLowerCase().includes(normalizedQuery) || content.toLocaleLowerCase().includes(normalizedQuery)
     return matchesCategory && matchesSearch
   })
 

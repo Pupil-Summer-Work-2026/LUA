@@ -4,6 +4,7 @@ import './registrs.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { useLanguage } from '../i18n/LanguageContext'
+import { submitForm } from '../services/blogApi'
 
 const Registrs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -22,11 +23,11 @@ const Registrs = () => {
     setSubmitError('')
 
     try {
-      const response = await fetch('/api/registrs/', { method: 'POST', body: formData })
-      const data = await response.json().catch(() => null)
-      const backendSuccess = response.ok && (data === null || data.success !== false)
+      const data = await submitForm('/registrs/', formData)
 
-      if (!backendSuccess) throw new Error(data?.message || `Request failed with status ${response.status}`)
+      if (data.success !== true) throw new Error(data.message || 'Registry form submission failed.')
+
+      console.info('Registrs form submitted successfully', { correlationId: data.correlationId })
 
       setIsSubmitted(true)
       form.reset()

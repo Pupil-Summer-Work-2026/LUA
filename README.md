@@ -46,24 +46,6 @@ The public read-only API is available at:
 
 The Vite development server proxies `/api` and `/media` to Django. Uploaded files are stored locally in `media/` and served by Django only while `DEBUG=True`; this directory is intentionally not committed. Production deployment needs persistent media storage and web-server or object-storage configuration.
 
-## Production forms
-
-Vercel deploys this repository as a static Vite frontend; its rewrite sends `/api/*` requests to `index.html` and cannot execute the Django email handlers. Deploy Django to a Python-capable host, configure its mail environment variables there, and set these Django environment variables:
-
-```text
-DEBUG=False
-ALLOWED_HOSTS=api.example.com
-CORS_ALLOWED_ORIGINS=https://example.vercel.app
-```
-
-Add the deployed Django API URL to the Vercel project environment variables before building:
-
-```text
-VITE_API_BASE_URL=https://api.example.com/api
-```
-
-After redeploying the Vercel frontend, membership and contact forms will submit to that Django service. Locally, omit `VITE_API_BASE_URL` so Vite continues proxying `/api` to Django.
-
 ## Email diagnostics
 
 Restart Django after changing any `.env` mail setting. The development autoreloader can inherit values that `python-dotenv` loaded when the parent process first started, so editing `.env` alone may leave the running server on an older backend or recipient configuration.

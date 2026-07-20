@@ -45,15 +45,25 @@ function Sakumlapa() {
   const serviceContent = t('home.services')
 
   useEffect(() => {
+    const controller = new AbortController()
+
     document.title = t('home.title')
-    getPosts()
+    getPosts({ signal: controller.signal })
       .then((nextPosts) => {
         setPosts(nextPosts)
         setNewsStatus('ready')
       })
-      .catch(() => setNewsStatus('error'))
+      .catch((error) => {
+        if (error.name !== 'AbortError') setNewsStatus('error')
+      })
 
-    getMembers().then(setMembers).catch(() => setMembers([]))
+    getMembers({ signal: controller.signal })
+      .then(setMembers)
+      .catch((error) => {
+        if (error.name !== 'AbortError') setMembers([])
+      })
+
+    return () => controller.abort()
   }, [t])
 
   const featuredArticles = posts.slice(0, 5)
