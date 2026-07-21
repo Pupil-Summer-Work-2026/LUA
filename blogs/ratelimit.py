@@ -35,11 +35,12 @@ def check_form_rate_limit(request, endpoint):
     counters = []
 
     for scope, limit_config in limits.items():
+        limit = limit_config["limit"]
         window_seconds = limit_config["window_seconds"]
-        cache_key = _cache_key(scope, client_ip)
+        cache_key = _cache_key(scope, client_ip, limit, window_seconds)
         current_count = cache.get(cache_key, 0)
 
-        if current_count >= limit_config["limit"]:
+        if current_count >= limit:
             expires_at = cache.get(_expiry_cache_key(cache_key))
             retry_after = window_seconds
             if isinstance(expires_at, (int, float)):
@@ -57,8 +58,8 @@ def check_form_rate_limit(request, endpoint):
     return RateLimitResult(True, client_ip)
 
 
-def _cache_key(scope, client_ip):
-    key_material = f"form-submission:{scope}:{client_ip}".encode("utf-8")
+def _cache_key(scope, client_ip, limit, window_seconds):
+    key_material = f"form-submission:{scope}:{client_ip}:{limit}:{window_seconds}".encode("utf-8")
     return f"form-submission:{hashlib.sha256(key_material).hexdigest()}"
 
 

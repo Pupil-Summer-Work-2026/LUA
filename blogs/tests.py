@@ -392,5 +392,5 @@ class FormRateLimitTests(APITestCase):
 			self.assertEqual(invalid_response.status_code, status.HTTP_400_BAD_REQUEST)
 			self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
 
-		self.assertEqual(mock_email_message.call_count, 4)
+		self.assertEqual(mock_email_message.call_count, 2)
 		mock_send_mail.assert_called_once()
