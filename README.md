@@ -22,6 +22,38 @@ npm.cmd install
 npm.cmd run dev
 ```
 
+## Turnstile
+
+Protecting the contact, membership, and registry forms requires these variables in `.env` and in the deployed frontend/backend environments:
+
+```dotenv
+VITE_TURNSTILE_SITE_KEY=your-turnstile-site-key
+TURNSTILE_SECRET_KEY=your-turnstile-secret-key
+```
+
+`VITE_TURNSTILE_SITE_KEY` is intentionally exposed to the browser so the widget can render. Keep `TURNSTILE_SECRET_KEY` on the Django server only; it is used to validate each `cf-turnstile-response` with Cloudflare before a form is processed. Restart both Vite and Django after changing either value.
+
+For compatibility, the existing `VITE_TURNSTILE_API_KEY` and `TURNSTILE_SITE_KEY` variable names are also accepted. Prefer the names above for new deployments.
+
+## Form rate limits
+
+After Turnstile succeeds, Django rate-limits email-sending form submissions by client IP to limit spam and email abuse. The defaults are five total form submissions per hour, with additional per-form limits of three contact submissions per hour, two membership submissions per day, and three registry submissions per day. Exceeding a limit returns JSON `429 Too Many Requests` with a `Retry-After` header; no email is sent.
+
+The limits can be adjusted with these server-only environment variables:
+
+```dotenv
+FORM_RATE_LIMIT_SHARED_LIMIT=5
+FORM_RATE_LIMIT_SHARED_WINDOW_SECONDS=3600
+FORM_RATE_LIMIT_CONTACT_LIMIT=3
+FORM_RATE_LIMIT_CONTACT_WINDOW_SECONDS=3600
+FORM_RATE_LIMIT_MEMBERSHIP_LIMIT=2
+FORM_RATE_LIMIT_MEMBERSHIP_WINDOW_SECONDS=86400
+FORM_RATE_LIMIT_REGISTRY_LIMIT=3
+FORM_RATE_LIMIT_REGISTRY_WINDOW_SECONDS=86400
+```
+
+The default Django local-memory cache makes these limits effective for one Django process. Configure `FORM_RATE_LIMIT_CACHE_ALIAS` to use a shared Django cache alias before running multiple backend workers or replicas. Keep `FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR=False` unless a trusted reverse proxy removes client-supplied forwarding headers and sets its own.
+
 ## Blog publishing
 
 Create the first editorial account with:

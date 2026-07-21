@@ -12,14 +12,68 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Member, MemberTag, Post, Tag
 from .serializers import MemberSerializer, MemberTagSerializer, MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer, RegistrationApplicationSerializer
 from .emailing import send_traced_email
+from .ratelimit import check_form_rate_limit
+from .turnstile import verify_turnstile
 
 logger = logging.getLogger(__name__)
+
+
+def turnstile_failure_response(request, correlation_id):
+    token = request.POST.get("cf-turnstile-response", "")
+    remote_ip = request.META.get("REMOTE_ADDR", "")
+
+    if verify_turnstile(token, remote_ip):
+        return None
+
+    logger.warning("Turnstile verification failed correlation_id=%s", correlation_id)
+    return JsonResponse(
+        {
+            "success": False,
+            "message": "Captcha verification failed.",
+            "errors": {"turnstile": ["Captcha verification failed."]},
+            "correlationId": correlation_id,
+        },
+        status=400,
+    )
+
+
+def rate_limit_failure_response(request, correlation_id, endpoint):
+    result = check_form_rate_limit(request, endpoint)
+    if result.allowed:
+        return None
+
+    logger.warning(
+        "Form rate limit exceeded endpoint=%s scope=%s client_ip=%s correlation_id=%s",
+        endpoint,
+        result.scope,
+        result.client_ip,
+        correlation_id,
+    )
+    response = JsonResponse(
+        {
+            "success": False,
+            "message": "Too many form submissions. Please try again later.",
+            "errors": {"rateLimit": ["Too many form submissions. Please try again later."]},
+            "correlationId": correlation_id,
+        },
+        status=429,
+    )
+    response["Retry-After"] = str(result.retry_after)
+    return response
 
 
 @csrf_exempt
 @require_POST
 def registrs(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
+    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "registrs")
+    if rate_limit_failure:
+        return rate_limit_failure
+
     serializer = RegistrationApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
@@ -71,6 +125,14 @@ def registrs(request):
 @require_POST
 def kontakti(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
+    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "kontakti")
+    if rate_limit_failure:
+        return rate_limit_failure
+
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
@@ -116,6 +178,10 @@ def kontakti(request):
 @require_POST
 def kontakti(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
@@ -179,6 +245,14 @@ def kontakti(request):
 @require_POST
 def ktparbiedru(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
+    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "ktparbiedru")
+    if rate_limit_failure:
+        return rate_limit_failure
+
     serializer = MembershipApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(

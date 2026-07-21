@@ -18,6 +18,7 @@
 .join-page__form textarea { min-height: 124px; resize: vertical; }
 .join-page__form-description, .join-page__form-action { grid-column: 1 / -1; }
 .join-page__form-action { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.join-page__form-action .turnstile-widget { width: fit-content; min-height: 65px; }
 .join-page__form button { padding: 13px 22px; color: #fff; border: 0; border-radius: 4px; background: var(--lua-red); cursor: pointer; font: 700 14px 'DM Sans', sans-serif; }
 .join-page__form button:hover { background: #a40d18; }
 .join-page__form button:disabled { cursor: not-allowed; opacity: .55; }

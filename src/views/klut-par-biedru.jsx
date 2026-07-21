@@ -6,6 +6,7 @@ import './klut-par-biedru.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
 
@@ -21,6 +22,8 @@ function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [hasAcceptedDuties, setHasAcceptedDuties] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const associationYears = getAssociationYears()
   const { t } = useLanguage()
 
@@ -35,6 +38,8 @@ function KlutParBiedru() {
     const formData = new FormData(form)
     setSubmitError('')
 
+    if (!turnstileToken) return
+
     try {
       const data = await submitForm('/ktparbiedru/', formData)
 
@@ -47,6 +52,8 @@ function KlutParBiedru() {
       setSubmitError('')
       setHasAcceptedDuties(false)
       form.reset()
+      setTurnstileToken('')
+      setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Membership form submission failed', error)
       setSubmitError(t('join.error'))
@@ -123,7 +130,8 @@ function KlutParBiedru() {
                   <span>{t('join.dutiesAccepted')}</span>
                 </label>
               </div>
-              <button type="submit" disabled={!hasAcceptedDuties}>{t('join.send')}</button>
+              <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+              <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
               {submitError && <p role="alert">{submitError}</p>}
             </div>
