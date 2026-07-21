@@ -9,6 +9,7 @@ import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
 import { getFormErrorMessage } from '../services/formErrorMessage'
+import { useFormCooldown } from '../hooks/useFormCooldown'
 
 const resourceLinks = ['vugd.gov.lv', 'latvija.lv', 'likumi.lv', 'ur.gov.lv', 'lursoft.lv', 'abc.lv', 'serteks.lv', 'building.lv']
 
@@ -19,6 +20,7 @@ function Kontakti() {
   const [turnstileToken, setTurnstileToken] = useState('')
   const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const { t } = useLanguage()
+  const { isOnCooldown, remainingSeconds, startCooldown } = useFormCooldown()
 
   useEffect(() => {
     document.title = t('contacts.pageTitle')
@@ -48,6 +50,7 @@ function Kontakti() {
       setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Contact form submission failed', error)
+      if (error.status === 429) startCooldown(error.retryAfter)
       setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
     } finally {
@@ -96,9 +99,10 @@ function Kontakti() {
               <label htmlFor="contact-message">{t('contacts.message')}</label>
               <textarea id="contact-message" name="message" placeholder={t('contacts.messagePlaceholder')} rows="4" required onChange={() => setIsSubmitted(false)} />
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-              <button type="submit" disabled={!turnstileToken || isSubmitting} aria-busy={isSubmitting}>{t('contacts.send')}</button>
+              <button type="submit" disabled={!turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('contacts.send')}</button>
               {isSubmitted && <p className="contacts-page__form-status" role="status">{t('contacts.sent')}</p>}
               {submitError && <p className="contacts-page__form-error" role="alert">{submitError}</p>}
+              {isOnCooldown && <p className="contacts-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
             </form>
             <div className="contacts-page__resources">
               <h2>{t('contacts.resourcesHeading')}</h2>

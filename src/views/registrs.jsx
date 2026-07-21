@@ -7,6 +7,7 @@ import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
 import { getFormErrorMessage } from '../services/formErrorMessage'
+import { useFormCooldown } from '../hooks/useFormCooldown'
 
 const Registrs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -15,6 +16,7 @@ const Registrs = () => {
   const [turnstileToken, setTurnstileToken] = useState('')
   const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const { t } = useLanguage()
+  const { isOnCooldown, remainingSeconds, startCooldown } = useFormCooldown()
 
   useEffect(() => {
     document.title = t('registrs.pageTitle')
@@ -44,6 +46,7 @@ const Registrs = () => {
       setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Registrs form submission failed', error)
+      if (error.status === 429) startCooldown(error.retryAfter)
       setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
     } finally {
@@ -73,9 +76,10 @@ const Registrs = () => {
             <label htmlFor="company">{t('registrs.company')}</label>
             <input type="text" id="company" name="companyName" required />
             <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-            <button type="submit" disabled={!turnstileToken || isSubmitting} aria-busy={isSubmitting}>{t('registrs.send')}</button>
+            <button type="submit" disabled={!turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('registrs.send')}</button>
             {isSubmitted && <p className="registry-page__form-status" role="status">{t('registrs.sent')}</p>}
             {submitError && <p className="registry-page__form-error" role="alert">{submitError}</p>}
+            {isOnCooldown && <p className="registry-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
           </form>
         </section>
       </main>

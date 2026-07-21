@@ -10,6 +10,7 @@ import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
 import { getFormErrorMessage } from '../services/formErrorMessage'
+import { useFormCooldown } from '../hooks/useFormCooldown'
 
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
@@ -28,6 +29,7 @@ function KlutParBiedru() {
   const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const associationYears = getAssociationYears()
   const { t } = useLanguage()
+  const { isOnCooldown, remainingSeconds, startCooldown } = useFormCooldown()
 
   useEffect(() => {
     document.title = t('join.pageTitle')
@@ -60,6 +62,7 @@ function KlutParBiedru() {
       setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Membership form submission failed', error)
+      if (error.status === 429) startCooldown(error.retryAfter)
       setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
     } finally {
@@ -137,9 +140,10 @@ function KlutParBiedru() {
                 </label>
               </div>
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-              <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken || isSubmitting} aria-busy={isSubmitting}>{t('join.send')}</button>
+              <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
               {submitError && <p className="join-page__form-error" role="alert">{submitError}</p>}
+              {isOnCooldown && <p className="join-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
             </div>
           </form>
         </section>

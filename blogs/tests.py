@@ -128,7 +128,7 @@ class MembershipFormTests(APITestCase):
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertTrue(response.json()["success"])
 		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.call_count, 2)
+		self.assertEqual(mock_email_message.call_count, 1)
 
 	@patch("blogs.emailing.EmailMessage")
 	def test_membership_form_rejects_empty_request(self, mock_email_message):
@@ -142,7 +142,7 @@ class MembershipFormTests(APITestCase):
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.emailing.EmailMessage")
-	def test_membership_form_returns_success_with_traceable_messages(self, mock_email_message):
+	def test_membership_form_sends_only_to_configured_recipient(self, mock_email_message):
 		mock_email_message.return_value.send.return_value = 1
 
 		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
@@ -151,30 +151,24 @@ class MembershipFormTests(APITestCase):
 		self.assertTrue(response.json()["success"])
 		correlation_id = response.json()["correlationId"]
 		UUID(correlation_id)
-		self.assertEqual(mock_email_message.call_count, 2)
-		self.assertEqual(mock_email_message.call_args_list[0].kwargs["to"], ["membership@example.com"])
-		self.assertEqual(mock_email_message.call_args_list[1].kwargs["to"], ["jane@example.com"])
-		message_ids = [
-			email_call.kwargs["headers"]["Message-ID"]
-			for email_call in mock_email_message.call_args_list
-		]
-		self.assertNotEqual(message_ids[0], message_ids[1])
-		self.assertTrue(all(correlation_id in message_id for message_id in message_ids))
-		mock_email_message.return_value.send.assert_has_calls(
-			[call(fail_silently=False), call(fail_silently=False)]
-		)
+		self.assertEqual(mock_email_message.call_count, 1)
+		email_call = mock_email_message.call_args
+		self.assertEqual(email_call.kwargs["to"], ["membership@example.com"])
+		self.assertNotEqual(email_call.kwargs["to"], ["jane@example.com"])
+		self.assertIn(correlation_id, email_call.kwargs["headers"]["Message-ID"])
+		mock_email_message.return_value.send.assert_called_once_with(fail_silently=False)
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.emailing.EmailMessage")
 	def test_membership_form_rejects_zero_send_count(self, mock_email_message):
-		mock_email_message.return_value.send.side_effect = [1, 0]
+		mock_email_message.return_value.send.return_value = 0
 
 		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
 
 		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 		self.assertFalse(response.json()["success"])
 		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.return_value.send.call_count, 2)
+		self.assertEqual(mock_email_message.return_value.send.call_count, 1)
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.emailing.EmailMessage")
@@ -188,19 +182,6 @@ class MembershipFormTests(APITestCase):
 		UUID(response.json()["correlationId"])
 		self.assertEqual(mock_email_message.return_value.send.call_count, 1)
 
-	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
-	@patch("blogs.emailing.EmailMessage")
-	def test_membership_form_rejects_applicant_send_exception(self, mock_email_message):
-		mock_email_message.return_value.send.side_effect = [1, RuntimeError("SMTP unavailable")]
-
-		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
-
-		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-		self.assertFalse(response.json()["success"])
-		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.return_value.send.call_count, 2)
-
-
 class ContactFormTests(APITestCase):
 	def setUp(self):
 		cache.clear()
@@ -210,7 +191,7 @@ class ContactFormTests(APITestCase):
 
 	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
 	@patch("blogs.emailing.EmailMessage")
-	def test_contact_form_sends_traceable_messages_to_configured_recipients(self, mock_email_message):
+	def test_contact_form_sends_only_to_configured_recipient(self, mock_email_message):
 		mock_email_message.return_value.send.return_value = 1
 
 		response = self.client.post(
@@ -226,15 +207,12 @@ class ContactFormTests(APITestCase):
 		self.assertTrue(response.json()["success"])
 		correlation_id = response.json()["correlationId"]
 		UUID(correlation_id)
-		self.assertEqual(mock_email_message.call_count, 2)
-		self.assertEqual(mock_email_message.call_args_list[0].kwargs["to"], ["contact@example.com"])
-		self.assertEqual(mock_email_message.call_args_list[1].kwargs["to"], ["jane@example.com"])
-		self.assertTrue(
-			all(
-				correlation_id in email_call.kwargs["headers"]["Message-ID"]
-				for email_call in mock_email_message.call_args_list
-			)
-		)
+		self.assertEqual(mock_email_message.call_count, 1)
+		email_call = mock_email_message.call_args
+		self.assertEqual(email_call.kwargs["to"], ["contact@example.com"])
+		self.assertNotEqual(email_call.kwargs["to"], ["jane@example.com"])
+		self.assertIn(correlation_id, email_call.kwargs["headers"]["Message-ID"])
+		mock_email_message.return_value.send.assert_called_once_with(fail_silently=False)
 
 
 class TurnstileFormVerificationTests(APITestCase):
@@ -327,7 +305,7 @@ class FormRateLimitTests(APITestCase):
 		self.assertIn("rateLimit", response.json()["errors"])
 		self.assertGreater(int(response["Retry-After"]), 0)
 		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.call_count, 4)
+		self.assertEqual(mock_email_message.call_count, 2)
 
 	@override_settings(
 		FORM_SUBMISSION_RATE_LIMITS={
@@ -351,3 +329,68 @@ class FormRateLimitTests(APITestCase):
 
 		self.assertEqual(limited_response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
 		self.assertEqual(allowed_response.status_code, status.HTTP_200_OK)
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 60},
+			"kontakti": {"limit": 1, "window_seconds": 60},
+			"ktparbiedru": {"limit": 10, "window_seconds": 60},
+			"registrs": {"limit": 10, "window_seconds": 60},
+		}
+	)
+	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_contact_limit_uses_rolling_window_across_clock_boundary(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		with patch("blogs.ratelimit.time.time", return_value=59.9):
+			first_response = self.client.post(
+				reverse("kontakti"),
+				self.contact_payload(),
+				REMOTE_ADDR="203.0.113.10",
+			)
+
+		with patch("blogs.ratelimit.time.time", return_value=60.1):
+			limited_response = self.client.post(
+				reverse("kontakti"),
+				self.contact_payload(),
+				REMOTE_ADDR="203.0.113.10",
+			)
+
+		self.assertEqual(first_response.status_code, status.HTTP_200_OK)
+		self.assertEqual(limited_response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertEqual(int(limited_response["Retry-After"]), 60)
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 3600},
+			"kontakti": {"limit": 1, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 1, "window_seconds": 3600},
+			"registrs": {"limit": 1, "window_seconds": 3600},
+		}
+	)
+	@patch("blogs.views.send_mail")
+	@patch("blogs.emailing.EmailMessage")
+	def test_invalid_submissions_do_not_consume_rate_limit(self, mock_email_message, mock_send_mail):
+		mock_email_message.return_value.send.return_value = 1
+
+		for endpoint, payload in [
+			("kontakti", self.contact_payload()),
+			("ktparbiedru", self.membership_payload()),
+			(
+				"registrs",
+				{
+					"fullName": "Jane Doe",
+					"email": "jane@example.com",
+					"companyName": "Acme",
+				},
+			),
+		]:
+			invalid_response = self.client.post(reverse(endpoint), {}, REMOTE_ADDR="203.0.113.10")
+			valid_response = self.client.post(reverse(endpoint), payload, REMOTE_ADDR="203.0.113.10")
+
+			self.assertEqual(invalid_response.status_code, status.HTTP_400_BAD_REQUEST)
+			self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
+
+		self.assertEqual(mock_email_message.call_count, 4)
+		mock_send_mail.assert_called_once()

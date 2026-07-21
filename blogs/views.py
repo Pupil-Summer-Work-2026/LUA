@@ -70,16 +70,17 @@ def registrs(request):
     if turnstile_failure:
         return turnstile_failure
 
-    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "registrs")
-    if rate_limit_failure:
-        return rate_limit_failure
-
     serializer = RegistrationApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
             {"success": False, "errors": serializer.errors, "correlationId": correlation_id},
             status=400,
         )
+
+    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "registrs")
+    if rate_limit_failure:
+        return rate_limit_failure
+
     full_name = serializer.validated_data["fullName"]
     email = serializer.validated_data["email"]
     company_name = serializer.validated_data["companyName"]
@@ -131,16 +132,16 @@ def kontakti(request):
     if turnstile_failure:
         return turnstile_failure
 
-    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "kontakti")
-    if rate_limit_failure:
-        return rate_limit_failure
-
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
             {"success": False, "errors": serializer.errors, "correlationId": correlation_id},
             status=400,
         )
+
+    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "kontakti")
+    if rate_limit_failure:
+        return rate_limit_failure
 
     name = serializer.validated_data["name"]
     email = serializer.validated_data["email"]
@@ -167,13 +168,6 @@ def kontakti(request):
             correlation_id=correlation_id,
             role="association",
         )
-        send_traced_email(
-            subject=f"Jūsu ziņa ir saņemta: {name}",
-            body="Paldies par ziņu Latvijas Ugunsdrošības asociācijai. Mēs ar jums sazināsimies iespējami drīz.",
-            recipient=email,
-            correlation_id=correlation_id,
-            role="applicant",
-        )
     except Exception:
         logger.warning("Contact form email failed correlation_id=%s", correlation_id)
         return JsonResponse(
@@ -199,16 +193,16 @@ def ktparbiedru(request):
     if turnstile_failure:
         return turnstile_failure
 
-    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "ktparbiedru")
-    if rate_limit_failure:
-        return rate_limit_failure
-
     serializer = MembershipApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
             {"success": False, "errors": serializer.errors, "correlationId": correlation_id},
             status=400,
         )
+
+    rate_limit_failure = rate_limit_failure_response(request, correlation_id, "ktparbiedru")
+    if rate_limit_failure:
+        return rate_limit_failure
 
     company_name = serializer.validated_data["companyName"]
     position = serializer.validated_data["position"]
@@ -240,13 +234,6 @@ def ktparbiedru(request):
             recipient=settings.MEMBERSHIP_FORM_RECIPIENT,
             correlation_id=correlation_id,
             role="association",
-        )
-        send_traced_email(
-            subject=f"Jūsu biedra pieteikums ir saņemts: {company_name}",
-            body="Paldies par biedra pieteikumu Latvijas Ugunsdrošības asociācijai. Mēs to izvērtēsim un sazināsimies ar jums iespējami drīz.",
-            recipient=email,
-            correlation_id=correlation_id,
-            role="applicant",
         )
     except Exception:
         logger.warning("Membership form email failed correlation_id=%s", correlation_id)
