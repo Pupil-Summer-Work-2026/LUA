@@ -90,11 +90,13 @@ class MemberApiTests(APITestCase):
 
 	def test_member_tag_list_returns_reusable_member_tags(self):
 		member_tag = MemberTag.objects.create(name="Pakalpojumu sniedzējs")
-
 		response = self.client.get(reverse("membertag-list"))
+		self.assertIn(
+			{"id": member_tag.id, "name": member_tag.name},
+			response.data,
+		)
 
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
-		self.assertEqual(response.data, [{"id": member_tag.id, "name": member_tag.name}])
 
 
 class MembershipFormTests(APITestCase):

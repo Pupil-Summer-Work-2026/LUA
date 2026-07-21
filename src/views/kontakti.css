@@ -37,14 +37,14 @@
 .contacts-page__resource-category strong { display: block; font-weight: 700; }
 .contacts-page__resource-category ul { margin: 4px 0 0; padding-left: 18px; }
 .contacts-page__resource-category li { padding-left: 2px; }
-.contacts-page__resource-category:nth-child(5), .contacts-page__resource-category:nth-child(6) { margin-top: 24px; }
+.contacts-page__resource-subheading { grid-column: 1 / -1; margin: 24px 0 8px; color: #fff; font: 700 20px/.95 'Barlow Condensed', sans-serif; }
 .contacts-page__resource-list a { color: var(--lua-red); }
 
 @media (max-width: 760px) {
   .contacts-page__intro { grid-template-columns: 1fr; gap: 36px; }
   .contacts-page__help-inner { grid-template-columns: 1fr; gap: 48px; }
   .contacts-page__resource-list { grid-template-columns: 1fr; gap: 20px; }
-  .contacts-page__resource-category:nth-child(6) { margin-top: 0; }
+  .contacts-page__resource-subheading { margin-bottom: 0; }
 }
 
 @media (max-width: 480px) {

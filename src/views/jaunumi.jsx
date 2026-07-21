@@ -106,10 +106,6 @@ function Jaunumi() {
               <h2>{t('news.categories')}</h2>
               <nav aria-label={t('news.categories')}>{categories.map((category) => <button key={category} type="button" className={activeCategory === category ? 'is-active' : ''} aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category === allCategory ? t('news.all') : category}</button>)}</nav>
             </section>
-            <section className="news-page__maintenance">
-              <h2>{t('news.maintenance')}</h2>
-              <img src="/Images/5extinguishers.png" alt={t('news.maintenanceAlt')} />
-            </section>
           </aside>
         </section>
       </main>
