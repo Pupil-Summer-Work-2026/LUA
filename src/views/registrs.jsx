@@ -6,9 +6,11 @@ import PageBanner from '../components/PageBanner'
 import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
+import { getFormErrorMessage } from '../services/formErrorMessage'
 
 const Registrs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
   const [turnstileResetKey, setTurnstileResetKey] = useState(0)
@@ -25,7 +27,9 @@ const Registrs = () => {
     const formData = new FormData(form)
     setSubmitError('')
 
-    if (!turnstileToken) return
+    if (!turnstileToken || isSubmitting) return
+
+    setIsSubmitting(true)
 
     try {
       const data = await submitForm('/registrs/', formData)
@@ -40,8 +44,10 @@ const Registrs = () => {
       setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Registrs form submission failed', error)
-      setSubmitError(t('registrs.error'))
+      setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -67,7 +73,7 @@ const Registrs = () => {
             <label htmlFor="company">{t('registrs.company')}</label>
             <input type="text" id="company" name="companyName" required />
             <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-            <button type="submit" disabled={!turnstileToken}>{t('registrs.send')}</button>
+            <button type="submit" disabled={!turnstileToken || isSubmitting} aria-busy={isSubmitting}>{t('registrs.send')}</button>
             {isSubmitted && <p className="registry-page__form-status" role="status">{t('registrs.sent')}</p>}
             {submitError && <p className="registry-page__form-error" role="alert">{submitError}</p>}
           </form>

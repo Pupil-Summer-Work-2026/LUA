@@ -25,6 +25,7 @@
 .join-page__form button:disabled:hover { background: var(--lua-red); }
 .join-page__form button:focus-visible { outline: 2px solid #1767d2; outline-offset: 2px; }
 .join-page__form-action p { margin: 0; color: #1767d2; font: 700 14px 'DM Sans', sans-serif; }
+.join-page__form-action .join-page__form-error { color: #a40d18; }
 .join-page__commitment { width: min(100%, 570px); color: #111; }
 .join-page__commitment h3 { margin: 0 0 8px; font: 700 16px 'DM Sans', sans-serif; }
 .join-page__commitment > label { min-width: 0; display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font: 700 14px/1.35 'DM Sans', sans-serif; cursor: pointer; }

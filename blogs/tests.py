@@ -271,6 +271,38 @@ class FormRateLimitTests(APITestCase):
 			"companyDescription": "We provide fire safety services.",
 		}
 
+	def contact_payload(self):
+		return {
+			"name": "Jane Doe",
+			"email": "jane@example.com",
+			"message": "Labdien!",
+		}
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 3600},
+			"kontakti": {"limit": 2, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 10, "window_seconds": 3600},
+			"registrs": {"limit": 10, "window_seconds": 3600},
+		}
+	)
+	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_contact_limit_rejects_following_submission_without_sending_email(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		for _ in range(2):
+			response = self.client.post(reverse("kontakti"), self.contact_payload(), REMOTE_ADDR="203.0.113.10")
+			self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+		response = self.client.post(reverse("kontakti"), self.contact_payload(), REMOTE_ADDR="203.0.113.10")
+
+		self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertFalse(response.json()["success"])
+		self.assertIn("rateLimit", response.json()["errors"])
+		self.assertGreater(int(response["Retry-After"]), 0)
+		self.assertEqual(mock_email_message.call_count, 4)
+
 	@override_settings(
 		FORM_SUBMISSION_RATE_LIMITS={
 			"shared": {"limit": 2, "window_seconds": 3600},

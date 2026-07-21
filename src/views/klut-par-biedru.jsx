@@ -9,6 +9,7 @@ import PageBanner from '../components/PageBanner'
 import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
+import { getFormErrorMessage } from '../services/formErrorMessage'
 
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
@@ -20,6 +21,7 @@ function getAssociationYears() {
 
 function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [hasAcceptedDuties, setHasAcceptedDuties] = useState(false)
   const [turnstileToken, setTurnstileToken] = useState('')
@@ -38,7 +40,9 @@ function KlutParBiedru() {
     const formData = new FormData(form)
     setSubmitError('')
 
-    if (!turnstileToken) return
+    if (!turnstileToken || isSubmitting) return
+
+    setIsSubmitting(true)
 
     try {
       const data = await submitForm('/ktparbiedru/', formData)
@@ -56,8 +60,10 @@ function KlutParBiedru() {
       setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Membership form submission failed', error)
-      setSubmitError(t('join.error'))
+      setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -131,9 +137,9 @@ function KlutParBiedru() {
                 </label>
               </div>
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-              <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken}>{t('join.send')}</button>
+              <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken || isSubmitting} aria-busy={isSubmitting}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
-              {submitError && <p role="alert">{submitError}</p>}
+              {submitError && <p className="join-page__form-error" role="alert">{submitError}</p>}
             </div>
           </form>
         </section>

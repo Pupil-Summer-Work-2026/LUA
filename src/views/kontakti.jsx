@@ -8,11 +8,13 @@ import PageBanner from '../components/PageBanner'
 import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
+import { getFormErrorMessage } from '../services/formErrorMessage'
 
 const resourceLinks = ['vugd.gov.lv', 'latvija.lv', 'likumi.lv', 'ur.gov.lv', 'lursoft.lv', 'abc.lv', 'serteks.lv', 'building.lv']
 
 function Kontakti() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
   const [turnstileResetKey, setTurnstileResetKey] = useState(0)
@@ -29,7 +31,9 @@ function Kontakti() {
     const formData = new FormData(form)
     setSubmitError('')
 
-    if (!turnstileToken) return
+    if (!turnstileToken || isSubmitting) return
+
+    setIsSubmitting(true)
 
     try {
       const data = await submitForm('/kontakti/', formData)
@@ -44,8 +48,10 @@ function Kontakti() {
       setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Contact form submission failed', error)
-      setSubmitError(t('contacts.error'))
+      setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -90,9 +96,9 @@ function Kontakti() {
               <label htmlFor="contact-message">{t('contacts.message')}</label>
               <textarea id="contact-message" name="message" placeholder={t('contacts.messagePlaceholder')} rows="4" required onChange={() => setIsSubmitted(false)} />
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-              <button type="submit" disabled={!turnstileToken}>{t('contacts.send')}</button>
+              <button type="submit" disabled={!turnstileToken || isSubmitting} aria-busy={isSubmitting}>{t('contacts.send')}</button>
               {isSubmitted && <p className="contacts-page__form-status" role="status">{t('contacts.sent')}</p>}
-              {submitError && <p className="contacts-page__form-status" role="alert">{submitError}</p>}
+              {submitError && <p className="contacts-page__form-error" role="alert">{submitError}</p>}
             </form>
             <div className="contacts-page__resources">
               <h2>{t('contacts.resourcesHeading')}</h2>

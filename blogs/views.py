@@ -121,6 +121,8 @@ def registrs(request):
     return JsonResponse(
         {"success": True, "message": "Pieteikums saņemts", "correlationId": correlation_id}
     )
+
+
 @csrf_exempt
 @require_POST
 def kontakti(request):
@@ -132,55 +134,6 @@ def kontakti(request):
     rate_limit_failure = rate_limit_failure_response(request, correlation_id, "kontakti")
     if rate_limit_failure:
         return rate_limit_failure
-
-    serializer = MessageApplicationSerializer(data=request.POST)
-    if not serializer.is_valid():
-        return JsonResponse(
-            {"success": False, "errors": serializer.errors, "correlationId": correlation_id},
-            status=400,
-        )
-    full_name = serializer.validated_data["fullName"]
-    email = serializer.validated_data["email"]
-    company_name = serializer.validated_data["companyName"]
-
-    logger.info("Membership form received for %s", email or full_name)
-
-    message = "\n".join(
-        [
-            "Jauns lietotaja pieteikums",
-
-            f"Vārds un uzvārds: {full_name}",
-            f"E-pasts: {email}",
-            f"Uzņēmuma nosaukums: {company_name}",
-            "",
-            "Jauns lietotaja pieteikums:",
-        ]
-    )
-
-    try:
-        send_mail(
-            subject="jauna biedra pieteikums",
-            message=message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.MEMBERSHIP_FORM_RECIPIENT],
-            fail_silently=False,
-        )
-        logger.info("Membership form email sent successfully")
-    except Exception:
-        logger.exception("Membership form email failed")
-        return JsonResponse(
-            {"success": False, "message": "Pieteikuma nosūtīšana neizdevās."},
-            status=500,
-        )
-
-    return JsonResponse({"success": True, "message": "Pieteikums saņemts"})
-@csrf_exempt
-@require_POST
-def kontakti(request):
-    correlation_id = str(uuid4())
-    turnstile_failure = turnstile_failure_response(request, correlation_id)
-    if turnstile_failure:
-        return turnstile_failure
 
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
@@ -237,9 +190,6 @@ def kontakti(request):
         {"success": True, "message": "Ziņa saņemta", "correlationId": correlation_id}
     )
 
-
-@csrf_exempt
-@require_POST
 
 @csrf_exempt
 @require_POST
