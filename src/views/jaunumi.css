@@ -3,10 +3,10 @@
 .news-page__card { min-height: 210px; display: grid; grid-template-columns: 32% 1fr; overflow: hidden; color: inherit; border: 1px solid #e1e7ee; border-radius: 5px; background: var(--lua-surface); text-decoration: none; }
 .news-page__card img { width: 100%; height: 100%; min-height: 210px; object-fit: contain; background: #fff; }
 .news-page__card-image-placeholder { min-height: 210px; background: #edf1f4; }
-.news-page__card-content { position: relative; padding: 26px 26px 34px; }
+.news-page__card-content { min-width: 0; position: relative; padding: 26px 26px 34px; }
 .news-page__card span { color: var(--lua-red); font: 500 11px 'Barlow Condensed', sans-serif; }
-.news-page__card h1 { margin: 4px 0 12px; color: #111; font: 800 38px/.95 'Barlow Condensed', sans-serif; }
-.news-page__card p { margin: 0; color: var(--lua-muted); font-size: 12px; line-height: 1.45; }
+.news-page__card h1 { margin: 4px 0 12px; overflow-wrap: break-word; word-break: normal; color: #111; font: 800 38px/.95 'Barlow Condensed', sans-serif; }
+.news-page__card p { margin: 0; overflow-wrap: break-word; word-break: normal; color: var(--lua-muted); font-size: 12px; line-height: 1.45; }
 .news-page__card small { position: absolute; right: 26px; bottom: 16px; color: var(--lua-muted); font-size: 10px; }
 .news-page__sidebar { display: grid; gap: 31px; align-content: start; }
 .news-page__sidebar form { position: relative; }

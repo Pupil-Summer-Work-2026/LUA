@@ -3,14 +3,14 @@
 .members-page__grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
 .members-page__status { grid-column: 1 / -1; padding: 40px 20px; color: var(--lua-navy); text-align: center; }
 .members-page__status p { margin: 0; }
-.members-page__card-link { color: inherit; text-decoration: none; }
-.members-page__card { min-height: 132px; position: relative; display: grid; place-items: center; padding: 12px; overflow: hidden; border: 1px solid #8fa5bd; border-radius: 8px; background: #dce8f3; }
+.members-page__card-link { display: block; color: inherit; text-decoration: none; }
+.members-page__card { container-type: inline-size; aspect-ratio: 4 / 3; position: relative; display: grid; place-items: center; padding: 12px; overflow: hidden; border: 1px solid #8fa5bd; border-radius: 8px; background: #dce8f3; }
 .members-page__card img { width: 100%; max-height: 74px; object-fit: contain; }
-.members-page__name-placeholder { color: var(--lua-navy); font: 700 22px/1.1 'Barlow Condensed', sans-serif; text-align: center; }
+.members-page__name-placeholder { overflow-wrap: normal; color: var(--lua-navy); font: 700 clamp(12px, 12cqi, 22px)/1.1 'Barlow Condensed', sans-serif; text-align: center; }
 .members-page__card img.logo--blend-background { mix-blend-mode: multiply; }
 .members-page__logo-caption { color: var(--lua-navy); font: 700 13px/1 'Barlow Condensed', sans-serif; }
 .members-page__card-details { position: absolute; inset: 0; display: grid; align-content: center; gap: 8px; padding: 16px; color: #fff; opacity: 0; background: var(--lua-navy); text-align: center; transform: translateY(100%); transition: opacity .2s ease, transform .2s ease; }
-.members-page__card-details h2 { margin: 0; font: 800 20px/1 'Barlow Condensed', sans-serif; }
+.members-page__card-details h2 { margin: 0; overflow-wrap: normal; font: 800 clamp(12px, 11cqi, 20px)/1 'Barlow Condensed', sans-serif; }
 .members-page__card-details p { margin: 0; font-size: 11px; line-height: 1.4; }
 .members-page__card-details span { color: #fff; font: 700 11px 'DM Sans', sans-serif; }
 .members-page__card:hover .members-page__card-details, .members-page__card:focus .members-page__card-details, .members-page__card-link:focus .members-page__card-details { opacity: 1; transform: translateY(0); }

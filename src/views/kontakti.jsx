@@ -89,12 +89,15 @@ function Kontakti() {
               <h2>{t('contacts.resourcesHeading')}</h2>
               <div className="contacts-page__resource-list">
                 {resourceLinks.map((link, index) => (
-                  <div className="contacts-page__resource-category" key={link}>
-                    {t('contacts.resources')[index] && <strong>{t('contacts.resources')[index]}</strong>}
-                    <ul>
-                      <li><a href={`https://${link}`} target="_blank" rel="noreferrer">{link}</a></li>
-                    </ul>
-                  </div>
+                  <React.Fragment key={link}>
+                    {index === 4 && <h3 className="contacts-page__resource-subheading">{t('contacts.otherResourcesHeading')}</h3>}
+                    <div className="contacts-page__resource-category">
+                      {t('contacts.resources')[index] && <strong>{t('contacts.resources')[index]}</strong>}
+                      <ul>
+                        <li><a href={`https://${link}`} target="_blank" rel="noreferrer">{link}</a></li>
+                      </ul>
+                    </div>
+                  </React.Fragment>
                 ))}
               </div>
             </div>
