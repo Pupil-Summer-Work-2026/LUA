@@ -19,6 +19,25 @@ export const honoraryMembers = [
   'Grigorijs Rodins'
 ]
 
+function getMemberNameSizeClass(name) {
+  if (name.length > 42) return 'members-page__card--name-extra-long'
+  if (name.length > 28) return 'members-page__card--name-long'
+  return ''
+}
+
+function hyphenateLongWords(name) {
+  return name.replace(/\p{L}{21,}/gu, (word) => {
+    const letters = Array.from(word)
+    const parts = []
+
+    for (let index = 0; index < letters.length; index += 20) {
+      parts.push(letters.slice(index, index + 20).join(''))
+    }
+
+    return parts.join('-\u200B')
+  })
+}
+
 function Biedri() {
   const [members, setMembers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -67,11 +86,12 @@ function Biedri() {
             {!isLoading && error && <div className="members-page__status" role="alert"><p>{t('members.error')}</p></div>}
             {!isLoading && !error && members.length === 0 && <div className="members-page__status" role="status"><p>{t('members.empty')}</p></div>}
             {!isLoading && !error && members.map((member) => {
+              const displayedName = hyphenateLongWords(member.name)
               const card = (
-                <article className="members-page__card" tabIndex={member.url ? undefined : 0}>
-                  {member.logo ? <img src={member.logo} alt={`${member.name} ${t('members.logoSuffix')}`} /> : <span className="members-page__name-placeholder">{member.name}</span>}
+                <article className={`members-page__card ${getMemberNameSizeClass(member.name)}`} tabIndex={member.url ? undefined : 0}>
+                  {member.logo ? <img src={member.logo} alt={`${member.name} ${t('members.logoSuffix')}`} /> : <span className="members-page__name-placeholder">{displayedName}</span>}
                   <div className="members-page__card-details">
-                    <h2>{member.name}</h2>
+                    <h2>{displayedName}</h2>
                     {member.url && <span>{t('members.visit')} →</span>}
                   </div>
                 </article>
