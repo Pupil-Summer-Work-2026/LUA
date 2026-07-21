@@ -8,11 +8,12 @@ import './jaunumi.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { getPosts, getTags } from '../services/blogApi'
+import { useLanguage } from '../i18n/LanguageContext'
 
-const defaultCategory = 'Visi jaunumi'
+const allCategory = '__all__'
 
-function formatDate(value) {
-  return new Intl.DateTimeFormat('lv-LV', { dateStyle: 'long' }).format(new Date(value))
+function formatDate(value, language) {
+  return new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'lv-LV', { dateStyle: 'long' }).format(new Date(value))
 }
 
 function getSummary(content) {
@@ -21,7 +22,8 @@ function getSummary(content) {
 }
 
 function Jaunumi() {
-  const [activeCategory, setActiveCategory] = useState(defaultCategory)
+  const { language, t } = useLanguage()
+  const [activeCategory, setActiveCategory] = useState(allCategory)
   const [searchInput, setSearchInput] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [posts, setPosts] = useState([])
@@ -41,16 +43,16 @@ function Jaunumi() {
   }
 
   useEffect(() => {
-    document.title = 'Jaunumi | Latvijas Ugunsdrošības asociācija'
+    document.title = t('news.pageTitle')
     loadNews()
-  }, [])
+  }, [t])
 
-  const categories = [defaultCategory, ...tags.map(({ name }) => name)]
-  const filteredArticles = posts.filter(({ tags: postTags, title }) => {
+  const categories = [allCategory, ...tags.map(({ name }) => name)]
+  const filteredArticles = posts.filter(({ tags: postTags, title, content }) => {
     const tagNames = postTags.map(({ name }) => name)
-    const matchesCategory = activeCategory === defaultCategory || tagNames.includes(activeCategory)
+    const matchesCategory = activeCategory === allCategory || tagNames.includes(activeCategory)
     const normalizedQuery = searchQuery.toLocaleLowerCase()
-    const matchesSearch = title.toLocaleLowerCase().includes(normalizedQuery) || tagNames.some((name) => name.toLocaleLowerCase().includes(normalizedQuery))
+    const matchesSearch = title.toLocaleLowerCase().includes(normalizedQuery) || content.toLocaleLowerCase().includes(normalizedQuery)
     return matchesCategory && matchesSearch
   })
 
@@ -60,7 +62,7 @@ function Jaunumi() {
   }
 
   function clearFilters() {
-    setActiveCategory(defaultCategory)
+    setActiveCategory(allCategory)
     setSearchInput('')
     setSearchQuery('')
   }
@@ -68,17 +70,17 @@ function Jaunumi() {
   return (
     <SiteLayout className="news-page">
       <Helmet>
-        <title>Jaunumi | Latvijas Ugunsdrošības asociācija</title>
-        <meta name="description" content="Latvijas Ugunsdrošības asociācijas jaunumi." />
+        <title>{t('news.pageTitle')}</title>
+        <meta name="description" content={t('news.meta')} />
       </Helmet>
       <main>
-        <PageBanner title="Jaunumi" />
+        <PageBanner title={t('news.title')} />
         <section className="news-page__layout lua-container"> <div className="news-page__list">
-            {status === 'loading' && <div className="news-page__empty" role="status"><p>Ielādē jaunumus...</p></div>}
-            {status === 'error' && <div className="news-page__empty" role="alert"><p>Jaunumus pašlaik nevar ielādēt.</p><button type="button" onClick={loadNews}>Mēģināt vēlreiz</button></div>}
+          {status === 'loading' && <div className="news-page__empty" role="status"><p>{t('news.loading')}</p></div>}
+          {status === 'error' && <div className="news-page__empty" role="alert"><p>{t('news.error')}</p><button type="button" onClick={loadNews}>{t('news.retry')}</button></div>}
             {status === 'ready' && filteredArticles.map((article) => {
               const coverImage = article.images[0]
-              const tagNames = article.tags.map(({ name }) => name).join(', ') || 'Bez kategorijas'
+              const tagNames = article.tags.map(({ name }) => name).join(', ') || t('news.uncategorized')
 
               return (
               <Link key={article.id} className="news-page__card" to={`/jaunums/${article.id}`}>
@@ -87,26 +89,26 @@ function Jaunumi() {
                   <span>{tagNames}</span>
                   <h1>{article.title}</h1>
                   <p>{getSummary(article.content)}</p>
-                  <small>{formatDate(article.created_at)}</small>
+                  <small>{formatDate(article.created_at, language)}</small>
                 </div>
               </Link>
               )
             })}
-            {status === 'ready' && filteredArticles.length === 0 && <div className="news-page__empty" role="status"><p>Neviens jaunums neatbilst izvēlētajiem filtriem.</p><button type="button" onClick={clearFilters}>Notīrīt filtrus</button></div>}
+            {status === 'ready' && filteredArticles.length === 0 && <div className="news-page__empty" role="status"><p>{t('news.noResults')}</p><button type="button" onClick={clearFilters}>{t('news.clear')}</button></div>}
           </div>
           <aside className="news-page__sidebar">
             <form onSubmit={handleSearch}>
-              <label className="news-page__sr-only" htmlFor="news-search">Meklēt jaunumus</label>
-              <input id="news-search" name="search" placeholder="Meklēt" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} />
-              <button type="submit" aria-label="Meklēt jaunumus"><Search size={18} aria-hidden="true" /></button>
+              <label className="news-page__sr-only" htmlFor="news-search">{t('news.searchNews')}</label>
+              <input id="news-search" name="search" placeholder={t('news.search')} value={searchInput} onChange={(event) => setSearchInput(event.target.value)} />
+              <button type="submit" aria-label={t('news.searchNews')}><Search size={18} aria-hidden="true" /></button>
             </form>
             <section>
-              <h2>JAUNUMU KATEGORIJAS</h2>
-              <nav aria-label="Jaunumu kategorijas">{categories.map((category) => <button key={category} type="button" className={activeCategory === category ? 'is-active' : ''} aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category}</button>)}</nav>
+              <h2>{t('news.categories')}</h2>
+              <nav aria-label={t('news.categories')}>{categories.map((category) => <button key={category} type="button" className={activeCategory === category ? 'is-active' : ''} aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category === allCategory ? t('news.all') : category}</button>)}</nav>
             </section>
             <section className="news-page__maintenance">
-              <h2>VAI JŪSU APARĀTI IR APKOPTI?</h2>
-              <img src="/Images/5extinguishers.png" alt="Daudzi ugunsdzēšamie aparāti rindās" />
+              <h2>{t('news.maintenance')}</h2>
+              <img src="/Images/5extinguishers.png" alt={t('news.maintenanceAlt')} />
             </section>
           </aside>
         </section>

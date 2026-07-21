@@ -34,16 +34,19 @@
 .contacts-page__resource-category strong { display: block; font-weight: 700; }
 .contacts-page__resource-category ul { margin: 4px 0 0; padding-left: 18px; }
 .contacts-page__resource-category li { padding-left: 2px; }
+.contacts-page__resource-category:nth-child(5), .contacts-page__resource-category:nth-child(6) { margin-top: 24px; }
 .contacts-page__resource-list a { color: var(--lua-red); }
 
 @media (max-width: 760px) {
   .contacts-page__intro { grid-template-columns: 1fr; gap: 36px; }
   .contacts-page__help-inner { grid-template-columns: 1fr; gap: 48px; }
+  .contacts-page__resource-list { grid-template-columns: 1fr; gap: 20px; }
+  .contacts-page__resource-category:nth-child(6) { margin-top: 0; }
 }
 
 @media (max-width: 480px) {
   .contacts-page__intro { padding: 40px 0; }
   .contacts-page__map { min-height: 255px; }
-  .contacts-page__details-grid, .contacts-page__resource-list { grid-template-columns: 1fr; gap: 20px; }
+  .contacts-page__details-grid { grid-template-columns: 1fr; gap: 20px; }
   .contacts-page h1, .contacts-page h2 { font-size: 38px; }
 }

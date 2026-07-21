@@ -7,30 +7,13 @@ import { Link, useHistory } from 'react-router-dom'
 import './sakumlapa.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
-import { members } from './biedri'
-import { getPosts } from '../services/blogApi'
+import { getMembers, getPosts } from '../services/blogApi'
+import { useLanguage } from '../i18n/LanguageContext'
 
 const services = [
-  {
-    Icon: Landmark,
-    title: 'Standartu izstrāde',
-    description: 'Kā svarīgāko uzdevumu asociācija uzskata ugunsdrošības standartu izstrādi un to ieviešanu, lai nodrošinātu augstus drošības standartus visā valstī.',
-  },
-  {
-    Icon: Award,
-    title: 'Izglītība un apmācības',
-    description: 'Asociācijas biedriem ir iespēja piedalīties dažādos izglītības un apmācību pasākumos, kas palīdz uzlabot zināšanas un prasmes ugunsdrošības jomā.',
-  },
-  {
-    Icon: Shield,
-    title: 'Ugunsaizsardzība',
-    description: 'Mūsu asociācija nodrošina ugunsdrošības pasākumus un ugunsdzēsības aprīkojumu, lai aizsargātu cilvēkus un īpašumu.',
-  },
-]
-
-const statistics = [
-  { value: 30, label: 'BIEDRI' },
-  { value: 4, label: 'SADARBĪBAS PARTNERI' },
+  Landmark,
+  Award,
+  Shield,
 ]
 
 const collaborationPartners = [
@@ -47,82 +30,101 @@ function getSummary(content) {
 
 function Sakumlapa() {
   const history = useHistory()
+  const { t } = useLanguage()
   const [posts, setPosts] = useState([])
   const [newsStatus, setNewsStatus] = useState('loading')
+  const [members, setMembers] = useState([])
+  const heroLines = t('home.heroHeading').split('\n')
+  const aboutHeadingLines = t('home.aboutHeading').split('\n')
+  const communityHeadingLines = t('home.communityHeading').split('\n')
+  const serviceContent = t('home.services')
 
   useEffect(() => {
-    document.title = 'Latvijas Ugunsdrošības asociācija'
-    getPosts()
+    const controller = new AbortController()
+
+    document.title = t('home.title')
+    getPosts({ signal: controller.signal })
       .then((nextPosts) => {
         setPosts(nextPosts)
         setNewsStatus('ready')
       })
-      .catch(() => setNewsStatus('error'))
-  }, [])
+      .catch((error) => {
+        if (error.name !== 'AbortError') setNewsStatus('error')
+      })
+
+    getMembers({ signal: controller.signal })
+      .then(setMembers)
+      .catch((error) => {
+        if (error.name !== 'AbortError') setMembers([])
+      })
+
+    return () => controller.abort()
+  }, [t])
 
   const featuredArticles = posts.slice(0, 5)
+  const statistics = [members.length, collaborationPartners.length]
 
   return (
     <SiteLayout className="lua-home">
       <Helmet>
-        <title>Latvijas Ugunsdrošības asociācija</title>
-        <meta name="description" content="Latvijas Ugunsdrošības asociācija" />
+        <title>{t('home.title')}</title>
+        <meta name="description" content={t('home.description')} />
       </Helmet>
       <main>
         <section className="lua-hero">
           <div className="lua-hero__content">
             <h1>
-              LATVIJAS<br />
-              <em>UGUNSDROŠĪBAS</em><br />
-              ASOCIĀCIJA
+              {heroLines[0]}<br />
+              <em>{heroLines[1]}</em><br />
+              {heroLines[2]}
             </h1>
-            <p>Latvijas Ugunsdrošības asociācija apvieno ugunsdrošības jomas uzņēmumus un speciālistus, veicinot drošu vidi visā valstī.</p>
-            <button type="button" onClick={() => history.push('/klut-par-biedru')}>Piesakieties</button>
+            <p>{t('home.heroDescription')}</p>
+            <button type="button" onClick={() => history.push('/klut-par-biedru')}>{t('home.apply')}</button>
           </div>
         </section>
-        <section className="lua-statistics" aria-label="Asociācijas rādītāji">
-          {statistics.map(({ value, label }) => (
-            <div key={label}>
+        <section className="lua-statistics" aria-label={t('home.statistics')}>
+          {statistics.map((value, index) => (
+            <div key={value}>
               <CountUpNumber value={value} />
-              <span>{label}</span>
+              <span>{t('home.statisticsLabels')[index]}</span>
             </div>
           ))}
         </section>
         <section className="lua-section lua-container lua-intro">
           <div className="lua-intro__copy">
-            <span className="lua-eyebrow">PAR ASOCIĀCIJU</span>
+            <span className="lua-eyebrow">{t('home.aboutEyebrow')}</span>
             <h2>
-              DROŠĀKA<br />
-              <em>LATVIJA</em><br />
-              KOPĀ
+              {aboutHeadingLines[0]}<br />
+              <em>{aboutHeadingLines[1]}</em><br />
+              {aboutHeadingLines[2]}
             </h2>
-            <p>Latvijas Ugunsdrošības asociācija (LUA) ir dibināta 2002. gadā un apvieno Latvijas ugunsdrošības jomas uzņēmumus, organizācijas un speciālistus. Mēs sekmējam nozares profesionalitāti, drošību un ilgtspēju. Asociācija aktīvi sadarbojas ar valsts iestādēm, lai veidotu efektīvu ugunsdrošības politiku Latvijā.</p>
+            <p>{t('home.aboutText')}</p>
             <button className="lua-text-link" type="button" onClick={() => history.push('/par-mums')}>
-              Uzzināt vairāk <span>→</span>
+              {t('home.learnMore')} <span>→</span>
             </button>
           </div>
           <div className="lua-intro__visual">
             <span className="lua-intro__backdrop" aria-hidden="true" />
-            <img className="lua-intro__image" src="/Images/extintinguisher-army.jpg" alt="Ugunsdzēšamie aparāti" />
+            <img className="lua-intro__image" src="/Images/extintinguisher-army.jpg" alt={t('home.extinguisherAlt')} />
           </div>
         </section>
         <section className="lua-section lua-container lua-services">
-          {services.map(({ Icon, title, description }) => (
-            <article key={title}>
+          {services.map((Icon, index) => (
+            <article key={serviceContent[index][0]}>
               <Icon className="lua-services__icon" aria-hidden="true" />
-              <h3>{title}</h3>
-              <p>{description}</p>
+              <h3>{serviceContent[index][0]}</h3>
+              <p>{serviceContent[index][1]}</p>
             </article>
           ))}
         </section>
         <section className="lua-section lua-container lua-news">
           <div className="lua-section__heading">
             <div>
-              <span className="lua-eyebrow">JAUNUMI</span>
-              <h2>ATKLĀJIET JAUNĀKĀS IZMAIŅAS</h2>
+              <span className="lua-eyebrow">{t('home.newsEyebrow')}</span>
+              <h2>{t('home.newsHeading')}</h2>
             </div>
             <button className="lua-text-link" type="button" onClick={() => history.push('/jaunumi')}>
-              Uzzināt vairāk <span>→</span>
+              {t('home.learnMore')} <span>→</span>
             </button>
           </div>
           <div className="lua-article-grid">
@@ -140,28 +142,28 @@ function Sakumlapa() {
               )
             })}
           </div>
-          {newsStatus === 'loading' && <p>Jaunumi tiek ielādēti...</p>}
-          {newsStatus === 'error' && <p>Jaunumus pašlaik nevar ielādēt.</p>}
-          {newsStatus === 'ready' && featuredArticles.length === 0 && <p>Pašlaik nav pieejamu jaunumu.</p>}
+          {newsStatus === 'loading' && <p>{t('home.loadingNews')}</p>}
+          {newsStatus === 'error' && <p>{t('home.newsError')}</p>}
+          {newsStatus === 'ready' && featuredArticles.length === 0 && <p>{t('home.noNews')}</p>}
         </section>
         <section className="lua-community">
           <div className="lua-section lua-container">
-            <span className="lua-eyebrow">BIEDRI UN PARTNERI</span>
+            <span className="lua-eyebrow">{t('home.communityEyebrow')}</span>
             <h2>
-              MŪSU NOZARES<br />
-              <em>KOPIENA</em>
+              {communityHeadingLines[0]}<br />
+              <em>{communityHeadingLines[1]}</em>
             </h2>
-            <h3>BIEDRU UZŅĒMUMI</h3>
-            <div className="lua-logo-carousel" role="region" aria-label="Biedru uzņēmumu logo">
+            <h3>{t('home.memberCompanies')}</h3>
+            <div className="lua-logo-carousel" role="region" aria-label={t('home.memberLogos')}>
               <div className="lua-logo-carousel__track">
                 {[0, 1].map((copyIndex) => (
                   <div className="lua-logo-carousel__group" aria-hidden={copyIndex === 1} key={copyIndex}>
-                    {members.map(([logo, title, link, hasWhiteBackground], index) => {
-                      const logoImage = <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={copyIndex === 0 ? `${title} logotips` : ''} />
-                      const key = `${copyIndex}-${title}-${index}`
+                    {members.map((member) => {
+                      const logoImage = member.logo ? <img src={member.logo} alt={copyIndex === 0 ? `${member.name} ${t('home.logoSuffix')}` : ''} /> : <span className="lua-logo-carousel__name-placeholder">{member.name}</span>
+                      const key = `${copyIndex}-${member.id}`
 
-                      return link ? (
-                        <a className="lua-logo-carousel__item" href={link} key={key} rel="noreferrer" tabIndex={copyIndex === 1 ? -1 : undefined} target="_blank">
+                      return member.url ? (
+                        <a className="lua-logo-carousel__item" href={member.url} key={key} rel="noreferrer" tabIndex={copyIndex === 1 ? -1 : undefined} target="_blank">
                           {logoImage}
                         </a>
                       ) : (
@@ -174,11 +176,11 @@ function Sakumlapa() {
                 ))}
               </div>
             </div>
-            <h3>SADARBĪBAS PARTNERI</h3>
+            <h3>{t('home.partners')}</h3>
             <div className="lua-logo-grid">
               {collaborationPartners.map(([logo, name, link, hasWhiteBackground]) => (
                 <a className="lua-logo-grid__item" href={link} key={name} rel="noreferrer" target="_blank">
-                  <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={`${name} logotips`} />
+                  <img className={hasWhiteBackground ? 'logo--blend-background' : undefined} src={logo} alt={`${name} ${t('home.logoSuffix')}`} />
                 </a>
               ))}
             </div>
@@ -186,10 +188,10 @@ function Sakumlapa() {
         </section>
         <section className="lua-join">
           <div>
-            <h2>KĻŪSTIET PAR LUA BIEDRU</h2>
-            <p>Pievienojieties vairāk nekā 120 uzņēmumiem, kas veido drošāku Latviju.</p>
+            <h2>{t('home.joinHeading')}</h2>
+            <p>{t('home.joinText')}</p>
           </div>
-          <button type="button" onClick={() => history.push('/klut-par-biedru')}>Kļūt par biedru</button>
+          <button type="button" onClick={() => history.push('/klut-par-biedru')}>{t('navigation.join')}</button>
         </section>
       </main>
     </SiteLayout>

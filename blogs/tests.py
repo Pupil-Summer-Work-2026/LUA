@@ -1,15 +1,16 @@
 import tempfile
 from datetime import timedelta
-from unittest.mock import patch
+from unittest.mock import call, patch
+from uuid import UUID
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import override_settings
+from django.test import Client, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Post, PostImage, Tag
+from .models import Member, MemberTag, Post, PostImage, Tag
 
 
 class PostApiTests(APITestCase):
@@ -65,32 +66,157 @@ class PostApiTests(APITestCase):
 		self.assertEqual(Post.objects.filter(title="Nedrīkst publicēt").count(), 0)
 
 
+class MemberApiTests(APITestCase):
+	def test_member_list_returns_member_details_with_tags(self):
+		member = Member.objects.create(name="Acme", url="https://example.com")
+		member_tag = MemberTag.objects.create(name="Ražotājs")
+		member.tags.add(member_tag)
+
+		response = self.client.get(reverse("member-list"))
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(
+			response.data,
+			[
+				{
+					"id": member.id,
+					"name": "Acme",
+					"url": "https://example.com",
+					"logo": None,
+					"tags": [{"id": member_tag.id, "name": member_tag.name}],
+				}
+			],
+		)
+
+	def test_member_tag_list_returns_reusable_member_tags(self):
+		member_tag = MemberTag.objects.create(name="Pakalpojumu sniedzējs")
+
+		response = self.client.get(reverse("membertag-list"))
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(response.data, [{"id": member_tag.id, "name": member_tag.name}])
+
+
 class MembershipFormTests(APITestCase):
-	@patch("blogs.views.send_mail")
-	def test_membership_form_rejects_empty_request(self, mock_send_mail):
+	def valid_payload(self):
+		return {
+			"companyName": "Acme",
+			"position": "CTO",
+			"fullName": "Jane Doe",
+			"email": "jane@example.com",
+			"phone": "+37112345678",
+			"companyDescription": "We provide fire safety services.",
+		}
+
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_accepts_post_without_csrf_token(self, mock_email_message):
+		csrf_client = Client(enforce_csrf_checks=True)
+		mock_email_message.return_value.send.return_value = 1
+
+		response = csrf_client.post(reverse("ktparbiedru"), self.valid_payload())
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertTrue(response.json()["success"])
+		UUID(response.json()["correlationId"])
+		self.assertEqual(mock_email_message.call_count, 2)
+
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_rejects_empty_request(self, mock_email_message):
 		response = self.client.post(reverse("ktparbiedru"), {})
 
 		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 		self.assertFalse(response.json()["success"])
 		self.assertIn("companyName", response.json()["errors"])
-		mock_send_mail.assert_not_called()
+		UUID(response.json()["correlationId"])
+		mock_email_message.assert_not_called()
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
-	@patch("blogs.views.send_mail")
-	def test_membership_form_returns_success(self, mock_send_mail):
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_returns_success_with_traceable_messages(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertTrue(response.json()["success"])
+		correlation_id = response.json()["correlationId"]
+		UUID(correlation_id)
+		self.assertEqual(mock_email_message.call_count, 2)
+		self.assertEqual(mock_email_message.call_args_list[0].kwargs["to"], ["membership@example.com"])
+		self.assertEqual(mock_email_message.call_args_list[1].kwargs["to"], ["jane@example.com"])
+		message_ids = [
+			email_call.kwargs["headers"]["Message-ID"]
+			for email_call in mock_email_message.call_args_list
+		]
+		self.assertNotEqual(message_ids[0], message_ids[1])
+		self.assertTrue(all(correlation_id in message_id for message_id in message_ids))
+		mock_email_message.return_value.send.assert_has_calls(
+			[call(fail_silently=False), call(fail_silently=False)]
+		)
+
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_rejects_zero_send_count(self, mock_email_message):
+		mock_email_message.return_value.send.side_effect = [1, 0]
+
+		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
+
+		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+		self.assertFalse(response.json()["success"])
+		UUID(response.json()["correlationId"])
+		self.assertEqual(mock_email_message.return_value.send.call_count, 2)
+
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_rejects_association_send_exception(self, mock_email_message):
+		mock_email_message.return_value.send.side_effect = RuntimeError("SMTP unavailable")
+
+		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
+
+		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+		self.assertFalse(response.json()["success"])
+		UUID(response.json()["correlationId"])
+		self.assertEqual(mock_email_message.return_value.send.call_count, 1)
+
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_rejects_applicant_send_exception(self, mock_email_message):
+		mock_email_message.return_value.send.side_effect = [1, RuntimeError("SMTP unavailable")]
+
+		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
+
+		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+		self.assertFalse(response.json()["success"])
+		UUID(response.json()["correlationId"])
+		self.assertEqual(mock_email_message.return_value.send.call_count, 2)
+
+
+class ContactFormTests(APITestCase):
+	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_contact_form_sends_traceable_messages_to_configured_recipients(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
 		response = self.client.post(
-			reverse("ktparbiedru"),
+			reverse("kontakti"),
 			{
-				"companyName": "Acme",
-				"position": "CTO",
-				"fullName": "Jane Doe",
+				"name": "Jane Doe",
 				"email": "jane@example.com",
-				"phone": "+37112345678",
-				"companyDescription": "We provide fire safety services.",
+				"message": "Labdien!",
 			},
 		)
 
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertTrue(response.json()["success"])
-		mock_send_mail.assert_called_once()
-		self.assertEqual(mock_send_mail.call_args.kwargs["recipient_list"], ["membership@example.com"])
+		correlation_id = response.json()["correlationId"]
+		UUID(correlation_id)
+		self.assertEqual(mock_email_message.call_count, 2)
+		self.assertEqual(mock_email_message.call_args_list[0].kwargs["to"], ["contact@example.com"])
+		self.assertEqual(mock_email_message.call_args_list[1].kwargs["to"], ["jane@example.com"])
+		self.assertTrue(
+			all(
+				correlation_id in email_call.kwargs["headers"]["Message-ID"]
+				for email_call in mock_email_message.call_args_list
+			)
+		)
