@@ -12,14 +12,38 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .models import Member, MemberTag, Post, Tag
 from .serializers import MemberSerializer, MemberTagSerializer, MembershipApplicationSerializer, PostSerializer, TagSerializer, MessageApplicationSerializer, RegistrationApplicationSerializer
 from .emailing import send_traced_email
+from .turnstile import verify_turnstile
 
 logger = logging.getLogger(__name__)
+
+
+def turnstile_failure_response(request, correlation_id):
+    token = request.POST.get("cf-turnstile-response", "")
+    remote_ip = request.META.get("REMOTE_ADDR", "")
+
+    if verify_turnstile(token, remote_ip):
+        return None
+
+    logger.warning("Turnstile verification failed correlation_id=%s", correlation_id)
+    return JsonResponse(
+        {
+            "success": False,
+            "message": "Captcha verification failed.",
+            "errors": {"turnstile": ["Captcha verification failed."]},
+            "correlationId": correlation_id,
+        },
+        status=400,
+    )
 
 
 @csrf_exempt
 @require_POST
 def registrs(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
     serializer = RegistrationApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
@@ -71,6 +95,10 @@ def registrs(request):
 @require_POST
 def kontakti(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
@@ -116,6 +144,10 @@ def kontakti(request):
 @require_POST
 def kontakti(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
     serializer = MessageApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(
@@ -179,6 +211,10 @@ def kontakti(request):
 @require_POST
 def ktparbiedru(request):
     correlation_id = str(uuid4())
+    turnstile_failure = turnstile_failure_response(request, correlation_id)
+    if turnstile_failure:
+        return turnstile_failure
+
     serializer = MembershipApplicationSerializer(data=request.POST)
     if not serializer.is_valid():
         return JsonResponse(

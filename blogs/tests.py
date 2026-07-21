@@ -98,6 +98,11 @@ class MemberApiTests(APITestCase):
 
 
 class MembershipFormTests(APITestCase):
+	def setUp(self):
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
 	def valid_payload(self):
 		return {
 			"companyName": "Acme",
@@ -193,6 +198,11 @@ class MembershipFormTests(APITestCase):
 
 
 class ContactFormTests(APITestCase):
+	def setUp(self):
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
 	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
 	@patch("blogs.emailing.EmailMessage")
 	def test_contact_form_sends_traceable_messages_to_configured_recipients(self, mock_email_message):
@@ -220,3 +230,17 @@ class ContactFormTests(APITestCase):
 				for email_call in mock_email_message.call_args_list
 			)
 		)
+
+
+class TurnstileFormVerificationTests(APITestCase):
+	def test_all_form_endpoints_reject_failed_turnstile_verification(self):
+		endpoints = ["registrs", "kontakti", "ktparbiedru"]
+
+		with patch("blogs.views.verify_turnstile", return_value=False):
+			for endpoint in endpoints:
+				response = self.client.post(reverse(endpoint), {"cf-turnstile-response": "invalid"})
+
+				self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+				self.assertFalse(response.json()["success"])
+				self.assertIn("turnstile", response.json()["errors"])
+				UUID(response.json()["correlationId"])

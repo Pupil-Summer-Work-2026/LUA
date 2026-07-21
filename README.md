@@ -22,6 +22,19 @@ npm.cmd install
 npm.cmd run dev
 ```
 
+## Turnstile
+
+Protecting the contact, membership, and registry forms requires these variables in `.env` and in the deployed frontend/backend environments:
+
+```dotenv
+VITE_TURNSTILE_SITE_KEY=your-turnstile-site-key
+TURNSTILE_SECRET_KEY=your-turnstile-secret-key
+```
+
+`VITE_TURNSTILE_SITE_KEY` is intentionally exposed to the browser so the widget can render. Keep `TURNSTILE_SECRET_KEY` on the Django server only; it is used to validate each `cf-turnstile-response` with Cloudflare before a form is processed. Restart both Vite and Django after changing either value.
+
+For compatibility, the existing `VITE_TURNSTILE_API_KEY` and `TURNSTILE_SITE_KEY` variable names are also accepted. Prefer the names above for new deployments.
+
 ## Blog publishing
 
 Create the first editorial account with:
