@@ -4,6 +4,7 @@ from unittest.mock import call, patch
 from uuid import UUID
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.cache import cache
 from django.test import Client, override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -101,6 +102,7 @@ class MemberApiTests(APITestCase):
 
 class MembershipFormTests(APITestCase):
 	def setUp(self):
+		cache.clear()
 		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
 		self.turnstile_patcher.start()
 		self.addCleanup(self.turnstile_patcher.stop)
@@ -201,6 +203,7 @@ class MembershipFormTests(APITestCase):
 
 class ContactFormTests(APITestCase):
 	def setUp(self):
+		cache.clear()
 		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
 		self.turnstile_patcher.start()
 		self.addCleanup(self.turnstile_patcher.stop)
@@ -235,6 +238,9 @@ class ContactFormTests(APITestCase):
 
 
 class TurnstileFormVerificationTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+
 	def test_all_form_endpoints_reject_failed_turnstile_verification(self):
 		endpoints = ["registrs", "kontakti", "ktparbiedru"]
 
@@ -246,3 +252,70 @@ class TurnstileFormVerificationTests(APITestCase):
 				self.assertFalse(response.json()["success"])
 				self.assertIn("turnstile", response.json()["errors"])
 				UUID(response.json()["correlationId"])
+
+
+class FormRateLimitTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
+	def membership_payload(self):
+		return {
+			"companyName": "Acme",
+			"position": "CTO",
+			"fullName": "Jane Doe",
+			"email": "jane@example.com",
+			"phone": "+37112345678",
+			"companyDescription": "We provide fire safety services.",
+		}
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 2, "window_seconds": 3600},
+			"kontakti": {"limit": 10, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 10, "window_seconds": 3600},
+			"registrs": {"limit": 10, "window_seconds": 3600},
+		}
+	)
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_shared_limit_rejects_following_submission_without_sending_email(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		for _ in range(2):
+			response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+			self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+		response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+
+		self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertFalse(response.json()["success"])
+		self.assertIn("rateLimit", response.json()["errors"])
+		self.assertGreater(int(response["Retry-After"]), 0)
+		UUID(response.json()["correlationId"])
+		self.assertEqual(mock_email_message.call_count, 4)
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 3600},
+			"kontakti": {"limit": 10, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 2, "window_seconds": 86400},
+			"registrs": {"limit": 10, "window_seconds": 86400},
+		}
+	)
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_limit_isolated_by_client_ip(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		for _ in range(2):
+			response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+			self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+		limited_response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+		allowed_response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.11")
+
+		self.assertEqual(limited_response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertEqual(allowed_response.status_code, status.HTTP_200_OK)

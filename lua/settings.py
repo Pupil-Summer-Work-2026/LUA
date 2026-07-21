@@ -61,6 +61,26 @@ CONTACT_FORM_RECIPIENT = os.getenv('CONTACT_FORM_RECIPIENT', EMAIL_HOST_USER)
 REGISTRATION_FORM_RECIPIENT = os.getenv('REGISTRATION_FORM_RECIPIENT', EMAIL_HOST_USER)
 TURNSTILE_SECRET_KEY = os.getenv('TURNSTILE_SECRET_KEY', os.getenv('TURNSTILE_SITE_KEY', ''))
 TURNSTILE_VERIFY_TIMEOUT_SECONDS = float(os.getenv('TURNSTILE_VERIFY_TIMEOUT_SECONDS', '5'))
+FORM_RATE_LIMIT_CACHE_ALIAS = os.getenv('FORM_RATE_LIMIT_CACHE_ALIAS', 'default')
+FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR = os.getenv('FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR', 'False').lower() == 'true'
+FORM_SUBMISSION_RATE_LIMITS = {
+    'shared': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_SHARED_LIMIT', '5')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_SHARED_WINDOW_SECONDS', '3600')),
+    },
+    'kontakti': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_CONTACT_LIMIT', '3')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_CONTACT_WINDOW_SECONDS', '3600')),
+    },
+    'ktparbiedru': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_MEMBERSHIP_LIMIT', '2')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_MEMBERSHIP_WINDOW_SECONDS', '86400')),
+    },
+    'registrs': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_REGISTRY_LIMIT', '3')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_REGISTRY_WINDOW_SECONDS', '86400')),
+    },
+}
 
 LOGGING = {
     'version': 1,
