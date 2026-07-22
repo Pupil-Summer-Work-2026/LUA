@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Member, MemberTag, Post, PostImage, Tag
+from .models import HonorableMember, Member, MemberTag, Post, PostImage, Tag
 
 class MessageApplicationSerializer(serializers.Serializer):
     name = serializers.CharField()
@@ -48,6 +48,12 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ("id", "name", "url", "logo", "tags")
+
+
+class HonorableMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HonorableMember
+        fields = ("id", "name")
 
 
 class RegistrationApplicationSerializer(serializers.Serializer):

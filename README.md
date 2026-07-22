@@ -153,6 +153,8 @@ The public read-only API is available at:
 - `GET /api/tags/`
 - `GET /api/members/`
 - `GET /api/members/<id>/`
+- `GET /api/honorable-members/`
+- `GET /api/honorable-members/<id>/`
 - `GET /api/member-tags/`
 
 The Vite development server proxies `/api` and `/media` to Django. Uploaded files are stored locally in `media/` and served by Django only while `DEBUG=True`; this directory is intentionally not committed. Production deployment needs persistent media storage and web-server or object-storage configuration.

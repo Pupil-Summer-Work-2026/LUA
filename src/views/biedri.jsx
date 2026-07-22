@@ -7,17 +7,7 @@ import './biedri.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { useLanguage } from '../i18n/LanguageContext'
-import { getMembers } from '../services/blogApi'
-
-export const honoraryMembers = [
-  'Juris Ļabis',
-  "Vladimirs Jemeļjanovs",
-  'Georgijs Gerasimovs',
-  'Sergejs Jefimovs',
-  'Māris Ziemelis',
-  'Igors Ponomarjovs',
-  'Grigorijs Rodins'
-]
+import { getHonorableMembers, getMembers } from '../services/blogApi'
 
 function getMemberNameSizeClass(name) {
   if (name.length > 42) return 'members-page__card--name-extra-long'
@@ -42,6 +32,9 @@ function Biedri() {
   const [members, setMembers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [honoraryMembers, setHonoraryMembers] = useState([])
+  const [isHonoraryLoading, setIsHonoraryLoading] = useState(true)
+  const [honoraryError, setHonoraryError] = useState(null)
 
   useEffect(() => {
     let isActive = true
@@ -59,6 +52,29 @@ function Biedri() {
       .finally(() => {
         if (isActive) {
           setIsLoading(false)
+        }
+      })
+    return () => {
+      isActive = false
+    }
+  }, [])
+
+  useEffect(() => {
+    let isActive = true
+    getHonorableMembers()
+      .then((data) => {
+        if (isActive) {
+          setHonoraryMembers(data)
+        }
+      })
+      .catch((requestError) => {
+        if (isActive) {
+          setHonoraryError(requestError)
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsHonoraryLoading(false)
         }
       })
     return () => {
@@ -105,9 +121,12 @@ function Biedri() {
           <section className="members-page__honorary" aria-labelledby="honorary-members-heading">
             <h2 id="honorary-members-heading">{t('members.honoraryHeading')}</h2>
             <div className="members-page__honorary-grid">
-              {honoraryMembers.map((name, index) => (
-                <article className="members-page__honorary-card" key={`${name}-${index}`}>
-                  <h3>{name}</h3>
+              {isHonoraryLoading && <div className="members-page__status" role="status"><p>{t('members.honoraryLoading')}</p></div>}
+              {!isHonoraryLoading && honoraryError && <div className="members-page__status" role="alert"><p>{t('members.honoraryError')}</p></div>}
+              {!isHonoraryLoading && !honoraryError && honoraryMembers.length === 0 && <div className="members-page__status" role="status"><p>{t('members.honoraryEmpty')}</p></div>}
+              {!isHonoraryLoading && !honoraryError && honoraryMembers.map((member) => (
+                <article className="members-page__honorary-card" key={member.id}>
+                  <h3>{member.name}</h3>
                 </article>
               ))}
             </div>

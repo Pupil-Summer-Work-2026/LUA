@@ -37,6 +37,10 @@ export function getMembers(options) {
   return request('/members/', options)
 }
 
+export function getHonorableMembers(options) {
+  return request('/honorable-members/', options)
+}
+
 export function submitForm(path, formData) {
   return request(path, { method: 'POST', body: formData })
 }

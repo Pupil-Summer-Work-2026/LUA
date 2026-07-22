@@ -11,7 +11,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Member, MemberTag, Post, PostImage, Tag
+from .models import HonorableMember, Member, MemberTag, Post, PostImage, Tag
 
 
 class PostApiTests(APITestCase):
@@ -104,6 +104,27 @@ class MemberApiTests(APITestCase):
 		)
 
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class HonorableMemberApiTests(APITestCase):
+	def test_honorable_member_list_returns_names_alphabetically(self):
+		HonorableMember.objects.create(name="Zane Ozola")
+		first_member = HonorableMember.objects.create(name="Anna Bērziņa")
+
+		response = self.client.get(reverse("honorablemember-list"))
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(
+			[member["name"] for member in response.data],
+			sorted(member["name"] for member in response.data),
+		)
+		self.assertEqual(
+			[member for member in response.data if member["name"] in {"Anna Bērziņa", "Zane Ozola"}],
+			[
+				{"id": first_member.id, "name": "Anna Bērziņa"},
+				{"id": HonorableMember.objects.get(name="Zane Ozola").id, "name": "Zane Ozola"},
+			],
+		)
 
 
 class MembershipFormTests(APITestCase):
