@@ -15,9 +15,8 @@ if not exist ".env" (
     if errorlevel 1 exit /b 1
 )
 
-if not exist "node_modules" (
-    npm.cmd install
-)
+npm.cmd install
+if errorlevel 1 exit /b 1
 
 start "" cmd /k "venv\Scripts\python.exe manage.py migrate && venv\Scripts\python.exe manage.py runserver"
 start "" cmd /k "npm.cmd run dev"

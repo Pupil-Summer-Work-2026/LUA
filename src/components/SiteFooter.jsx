@@ -7,7 +7,7 @@ import { footerNavigationColumns } from '../data/navigation'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const [primaryNavigation] = footerNavigationColumns
-const FACEBOOK_URL = 'https://www.facebook.com/'
+const FACEBOOK_URL = 'https://www.facebook.com/p/Latvijas-Ugunsdro%C5%A1%C4%ABbas-asoci%C4%81cija-100057329804981/'
 
 function NavigationColumn({ items }) {
   const history = useHistory()
