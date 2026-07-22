@@ -22,6 +22,85 @@ npm.cmd install
 npm.cmd run dev
 ```
 
+## Production deployment
+
+The production stack runs the Vite frontend, Django API/admin, PostgreSQL, and Caddy on one Linux VPS:
+
+```text
+Browser -> Caddy -> React frontend / Django Gunicorn -> PostgreSQL
+```
+
+Caddy is the only public container. It manages HTTPS certificates, serves the compiled React application, `/static/`, and `/media/`, and proxies `/api/` and `/admin/` to Gunicorn. PostgreSQL and Gunicorn stay on Docker's internal network.
+
+### First deployment
+
+Install Docker Engine with the Compose plugin on the VPS, clone the repository, and create the deployment environment file:
+
+```bash
+cp .env.example .env
+chmod 600 .env
+```
+
+Set the required values in `.env` before starting the stack. At minimum configure `DOMAIN`, `SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, the three `POSTGRES_*` credentials, and the email settings. `VITE_TURNSTILE_SITE_KEY` is a frontend build-time value; `TURNSTILE_SECRET_KEY` is server-only.
+
+Point the domain's DNS records to the VPS. When using Cloudflare, enable the proxy and set **SSL/TLS encryption mode** to **Full (strict)**. Do not use Flexible mode.
+
+The default HSTS lifetime is 30 days. Leave `SECURE_HSTS_INCLUDE_SUBDOMAINS` and `SECURE_HSTS_PRELOAD` disabled until every current and future subdomain is guaranteed to serve HTTPS.
+
+Build and start the services:
+
+```bash
+docker compose up --build -d
+docker compose ps
+docker compose logs -f web
+```
+
+Create the first editorial user after the stack is healthy:
+
+```bash
+docker compose exec web python manage.py createsuperuser
+```
+
+### Updating
+
+Pull the changed code and rebuild the stack:
+
+```bash
+git pull
+docker compose up --build -d
+```
+
+The backend entrypoint applies migrations and runs `collectstatic` before Gunicorn starts. This is appropriate for the initial single `web` service. Move migrations to a dedicated deployment job before running multiple backend replicas.
+
+### Persistent data and backups
+
+Compose keeps PostgreSQL, uploaded files, Django static files, and Caddy certificate state in named volumes. Rebuilding or restarting containers does not remove these volumes.
+
+Do not run the following command in production unless intentionally destroying all persistent database and upload data:
+
+```bash
+docker compose down -v
+```
+
+Take off-VPS backups of both PostgreSQL and media files. A database dump can be created with:
+
+```bash
+docker compose exec -T db pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" > lua-db-backup.sql
+```
+
+Use `docker volume ls` to find the Compose media volume, archive it regularly, and copy both backup artifacts to storage outside the VPS. Test restoring a database dump and media archive before launch.
+
+### Operations checks
+
+```bash
+docker compose ps
+docker compose logs --tail=100 web
+docker compose logs --tail=100 caddy
+docker compose exec web python manage.py check --deploy
+```
+
+Verify the deployed domain, a direct client-side route such as `/kontakti`, `/api/posts/`, `/admin/`, an uploaded image under `/media/`, and the public form submissions after each initial deployment.
+
 ## Turnstile
 
 Protecting the contact, membership, and registry forms requires these variables in `.env` and in the deployed frontend/backend environments:

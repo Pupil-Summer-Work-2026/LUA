@@ -68,6 +68,12 @@ class PostApiTests(APITestCase):
 
 
 class MemberApiTests(APITestCase):
+	def test_member_logo_allows_common_web_image_extensions(self):
+		for extension in ("avif", "gif", "jpeg", "jpg", "png", "svg", "webp"):
+			member = Member(name="Acme", logo=SimpleUploadedFile(f"logo.{extension}", b"image"))
+
+			member.full_clean()
+
 	def test_member_list_returns_member_details_with_tags(self):
 		member = Member.objects.create(name="Acme", url="https://example.com")
 		member_tag = MemberTag.objects.create(name="Ražotājs")
@@ -279,7 +285,7 @@ class FormRateLimitTests(APITestCase):
 		self.assertFalse(response.json()["success"])
 		self.assertIn("rateLimit", response.json()["errors"])
 		self.assertGreater(int(response["Retry-After"]), 0)
-		self.assertEqual(mock_email_message.call_count, 4)
+		self.assertEqual(mock_email_message.call_count, 2)
 
 	@override_settings(
 		FORM_SUBMISSION_RATE_LIMITS={

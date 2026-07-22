@@ -24,7 +24,7 @@
 .about-page__sector-grid button:focus-visible { outline: 2px solid #1767d2; outline-offset: -3px; }
 .about-page__sector-grid span { display: block; margin-bottom: 12px; color: var(--lua-red); font: 400 12px 'Barlow Condensed', sans-serif; }
 .about-page__sector-grid h3 { max-width: 88%; font-size: 19px; line-height: 1.05; }
-.about-page__service-dialog-backdrop { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 24px; background: rgb(7 21 44 / .72); }
+.about-page__service-dialog-backdrop { position: fixed; z-index: 100; inset: 0; width: 100vw; display: grid; place-items: center; padding: 24px; background: rgb(7 21 44 / .72); }
 .about-page__service-dialog { width: min(100%, 680px); max-height: min(700px, calc(100vh - 48px)); overflow: auto; border: 1px solid #c3d0de; border-radius: 8px; background: #fff; box-shadow: 0 20px 50px rgb(0 0 0 / .3); }
 .about-page__service-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 24px; border-bottom: 1px solid #dbe2ec; }
 .about-page__service-dialog header > div { display: flex; align-items: flex-start; gap: 12px; }
@@ -67,4 +67,6 @@
   .about-page__service-dialog header { padding: 20px; }
   .about-page__service-dialog h2 { font-size: 26px; }
   .about-page__service-dialog ul { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 20px; }
+  .about-page__service-member-card { min-height: 0; }
+  .about-page__service-dialog li:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc((100% - 12px) / 2); justify-self: center; }
 }
