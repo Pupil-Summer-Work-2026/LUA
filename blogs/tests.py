@@ -4,13 +4,14 @@ from unittest.mock import call, patch
 from uuid import UUID
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.cache import cache
 from django.test import Client, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Member, MemberTag, Post, PostImage, Tag
+from .models import HonorableMember, Member, MemberTag, Post, PostImage, Tag
 
 
 class PostApiTests(APITestCase):
@@ -67,6 +68,12 @@ class PostApiTests(APITestCase):
 
 
 class MemberApiTests(APITestCase):
+	def test_member_logo_allows_common_web_image_extensions(self):
+		for extension in ("avif", "gif", "jpeg", "jpg", "png", "svg", "webp"):
+			member = Member(name="Acme", logo=SimpleUploadedFile(f"logo.{extension}", b"image"))
+
+			member.full_clean()
+
 	def test_member_list_returns_member_details_with_tags(self):
 		member = Member.objects.create(name="Acme", url="https://example.com")
 		member_tag = MemberTag.objects.create(name="Ražotājs")
@@ -90,14 +97,43 @@ class MemberApiTests(APITestCase):
 
 	def test_member_tag_list_returns_reusable_member_tags(self):
 		member_tag = MemberTag.objects.create(name="Pakalpojumu sniedzējs")
-
 		response = self.client.get(reverse("membertag-list"))
+		self.assertIn(
+			{"id": member_tag.id, "name": member_tag.name},
+			response.data,
+		)
 
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
-		self.assertEqual(response.data, [{"id": member_tag.id, "name": member_tag.name}])
+
+
+class HonorableMemberApiTests(APITestCase):
+	def test_honorable_member_list_returns_names_alphabetically(self):
+		HonorableMember.objects.create(name="Zane Ozola")
+		first_member = HonorableMember.objects.create(name="Anna Bērziņa")
+
+		response = self.client.get(reverse("honorablemember-list"))
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(
+			[member["name"] for member in response.data],
+			sorted(member["name"] for member in response.data),
+		)
+		self.assertEqual(
+			[member for member in response.data if member["name"] in {"Anna Bērziņa", "Zane Ozola"}],
+			[
+				{"id": first_member.id, "name": "Anna Bērziņa"},
+				{"id": HonorableMember.objects.get(name="Zane Ozola").id, "name": "Zane Ozola"},
+			],
+		)
 
 
 class MembershipFormTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
 	def valid_payload(self):
 		return {
 			"companyName": "Acme",
@@ -119,7 +155,7 @@ class MembershipFormTests(APITestCase):
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertTrue(response.json()["success"])
 		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.call_count, 2)
+		self.assertEqual(mock_email_message.call_count, 1)
 
 	@patch("blogs.emailing.EmailMessage")
 	def test_membership_form_rejects_empty_request(self, mock_email_message):
@@ -133,7 +169,7 @@ class MembershipFormTests(APITestCase):
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.emailing.EmailMessage")
-	def test_membership_form_returns_success_with_traceable_messages(self, mock_email_message):
+	def test_membership_form_sends_only_to_configured_recipient(self, mock_email_message):
 		mock_email_message.return_value.send.return_value = 1
 
 		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
@@ -142,30 +178,24 @@ class MembershipFormTests(APITestCase):
 		self.assertTrue(response.json()["success"])
 		correlation_id = response.json()["correlationId"]
 		UUID(correlation_id)
-		self.assertEqual(mock_email_message.call_count, 2)
-		self.assertEqual(mock_email_message.call_args_list[0].kwargs["to"], ["membership@example.com"])
-		self.assertEqual(mock_email_message.call_args_list[1].kwargs["to"], ["jane@example.com"])
-		message_ids = [
-			email_call.kwargs["headers"]["Message-ID"]
-			for email_call in mock_email_message.call_args_list
-		]
-		self.assertNotEqual(message_ids[0], message_ids[1])
-		self.assertTrue(all(correlation_id in message_id for message_id in message_ids))
-		mock_email_message.return_value.send.assert_has_calls(
-			[call(fail_silently=False), call(fail_silently=False)]
-		)
+		self.assertEqual(mock_email_message.call_count, 1)
+		email_call = mock_email_message.call_args
+		self.assertEqual(email_call.kwargs["to"], ["membership@example.com"])
+		self.assertNotEqual(email_call.kwargs["to"], ["jane@example.com"])
+		self.assertIn(correlation_id, email_call.kwargs["headers"]["Message-ID"])
+		mock_email_message.return_value.send.assert_called_once_with(fail_silently=False)
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.emailing.EmailMessage")
 	def test_membership_form_rejects_zero_send_count(self, mock_email_message):
-		mock_email_message.return_value.send.side_effect = [1, 0]
+		mock_email_message.return_value.send.return_value = 0
 
 		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
 
 		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 		self.assertFalse(response.json()["success"])
 		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.return_value.send.call_count, 2)
+		self.assertEqual(mock_email_message.return_value.send.call_count, 1)
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
 	@patch("blogs.emailing.EmailMessage")
@@ -179,23 +209,16 @@ class MembershipFormTests(APITestCase):
 		UUID(response.json()["correlationId"])
 		self.assertEqual(mock_email_message.return_value.send.call_count, 1)
 
-	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
-	@patch("blogs.emailing.EmailMessage")
-	def test_membership_form_rejects_applicant_send_exception(self, mock_email_message):
-		mock_email_message.return_value.send.side_effect = [1, RuntimeError("SMTP unavailable")]
-
-		response = self.client.post(reverse("ktparbiedru"), self.valid_payload())
-
-		self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-		self.assertFalse(response.json()["success"])
-		UUID(response.json()["correlationId"])
-		self.assertEqual(mock_email_message.return_value.send.call_count, 2)
-
-
 class ContactFormTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
 	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
 	@patch("blogs.emailing.EmailMessage")
-	def test_contact_form_sends_traceable_messages_to_configured_recipients(self, mock_email_message):
+	def test_contact_form_sends_only_to_configured_recipient(self, mock_email_message):
 		mock_email_message.return_value.send.return_value = 1
 
 		response = self.client.post(
@@ -211,12 +234,190 @@ class ContactFormTests(APITestCase):
 		self.assertTrue(response.json()["success"])
 		correlation_id = response.json()["correlationId"]
 		UUID(correlation_id)
+		self.assertEqual(mock_email_message.call_count, 1)
+		email_call = mock_email_message.call_args
+		self.assertEqual(email_call.kwargs["to"], ["contact@example.com"])
+		self.assertNotEqual(email_call.kwargs["to"], ["jane@example.com"])
+		self.assertIn(correlation_id, email_call.kwargs["headers"]["Message-ID"])
+		mock_email_message.return_value.send.assert_called_once_with(fail_silently=False)
+
+
+class TurnstileFormVerificationTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+
+	def test_all_form_endpoints_reject_failed_turnstile_verification(self):
+		endpoints = ["registrs", "kontakti", "ktparbiedru"]
+
+		with patch("blogs.views.verify_turnstile", return_value=False):
+			for endpoint in endpoints:
+				response = self.client.post(reverse(endpoint), {"cf-turnstile-response": "invalid"})
+
+				self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+				self.assertFalse(response.json()["success"])
+				self.assertIn("turnstile", response.json()["errors"])
+				UUID(response.json()["correlationId"])
+
+
+class FormRateLimitTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
+	def membership_payload(self):
+		return {
+			"companyName": "Acme",
+			"position": "CTO",
+			"fullName": "Jane Doe",
+			"email": "jane@example.com",
+			"phone": "+37112345678",
+			"companyDescription": "We provide fire safety services.",
+		}
+
+	def contact_payload(self):
+		return {
+			"name": "Jane Doe",
+			"email": "jane@example.com",
+			"message": "Labdien!",
+		}
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 3600},
+			"kontakti": {"limit": 2, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 10, "window_seconds": 3600},
+			"registrs": {"limit": 10, "window_seconds": 3600},
+		}
+	)
+	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_contact_limit_rejects_following_submission_without_sending_email(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		for _ in range(2):
+			response = self.client.post(reverse("kontakti"), self.contact_payload(), REMOTE_ADDR="203.0.113.10")
+			self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+		response = self.client.post(reverse("kontakti"), self.contact_payload(), REMOTE_ADDR="203.0.113.10")
+
+		self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertFalse(response.json()["success"])
+		self.assertIn("rateLimit", response.json()["errors"])
+		self.assertGreater(int(response["Retry-After"]), 0)
 		self.assertEqual(mock_email_message.call_count, 2)
-		self.assertEqual(mock_email_message.call_args_list[0].kwargs["to"], ["contact@example.com"])
-		self.assertEqual(mock_email_message.call_args_list[1].kwargs["to"], ["jane@example.com"])
-		self.assertTrue(
-			all(
-				correlation_id in email_call.kwargs["headers"]["Message-ID"]
-				for email_call in mock_email_message.call_args_list
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 2, "window_seconds": 3600},
+			"kontakti": {"limit": 10, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 10, "window_seconds": 3600},
+			"registrs": {"limit": 10, "window_seconds": 3600},
+		}
+	)
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_shared_limit_rejects_following_submission_without_sending_email(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		for _ in range(2):
+			response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+			self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+		response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+
+		self.assertEqual(response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertFalse(response.json()["success"])
+		self.assertIn("rateLimit", response.json()["errors"])
+		self.assertGreater(int(response["Retry-After"]), 0)
+		UUID(response.json()["correlationId"])
+		self.assertEqual(mock_email_message.call_count, 2)
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 3600},
+			"kontakti": {"limit": 10, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 2, "window_seconds": 86400},
+			"registrs": {"limit": 10, "window_seconds": 86400},
+		}
+	)
+	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_limit_isolated_by_client_ip(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		for _ in range(2):
+			response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+			self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+		limited_response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.10")
+		allowed_response = self.client.post(reverse("ktparbiedru"), self.membership_payload(), REMOTE_ADDR="203.0.113.11")
+
+		self.assertEqual(limited_response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertEqual(allowed_response.status_code, status.HTTP_200_OK)
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 60},
+			"kontakti": {"limit": 1, "window_seconds": 60},
+			"ktparbiedru": {"limit": 10, "window_seconds": 60},
+			"registrs": {"limit": 10, "window_seconds": 60},
+		}
+	)
+	@override_settings(CONTACT_FORM_RECIPIENT="contact@example.com")
+	@patch("blogs.emailing.EmailMessage")
+	def test_contact_limit_uses_rolling_window_across_clock_boundary(self, mock_email_message):
+		mock_email_message.return_value.send.return_value = 1
+
+		with patch("blogs.ratelimit.time.time", return_value=59.9):
+			first_response = self.client.post(
+				reverse("kontakti"),
+				self.contact_payload(),
+				REMOTE_ADDR="203.0.113.10",
 			)
-		)
+
+		with patch("blogs.ratelimit.time.time", return_value=60.1):
+			limited_response = self.client.post(
+				reverse("kontakti"),
+				self.contact_payload(),
+				REMOTE_ADDR="203.0.113.10",
+			)
+
+		self.assertEqual(first_response.status_code, status.HTTP_200_OK)
+		self.assertEqual(limited_response.status_code, status.HTTP_429_TOO_MANY_REQUESTS)
+		self.assertEqual(int(limited_response["Retry-After"]), 60)
+
+	@override_settings(
+		FORM_SUBMISSION_RATE_LIMITS={
+			"shared": {"limit": 10, "window_seconds": 3600},
+			"kontakti": {"limit": 1, "window_seconds": 3600},
+			"ktparbiedru": {"limit": 1, "window_seconds": 3600},
+			"registrs": {"limit": 1, "window_seconds": 3600},
+		}
+	)
+	@patch("blogs.views.send_mail")
+	@patch("blogs.emailing.EmailMessage")
+	def test_invalid_submissions_do_not_consume_rate_limit(self, mock_email_message, mock_send_mail):
+		mock_email_message.return_value.send.return_value = 1
+
+		for endpoint, payload in [
+			("kontakti", self.contact_payload()),
+			("ktparbiedru", self.membership_payload()),
+			(
+				"registrs",
+				{
+					"fullName": "Jane Doe",
+					"email": "jane@example.com",
+					"companyName": "Acme",
+				},
+			),
+		]:
+			invalid_response = self.client.post(reverse(endpoint), {}, REMOTE_ADDR="203.0.113.10")
+			valid_response = self.client.post(reverse(endpoint), payload, REMOTE_ADDR="203.0.113.10")
+
+			self.assertEqual(invalid_response.status_code, status.HTTP_400_BAD_REQUEST)
+			self.assertEqual(valid_response.status_code, status.HTTP_200_OK)
+
+		self.assertEqual(mock_email_message.call_count, 2)
+		mock_send_mail.assert_called_once()

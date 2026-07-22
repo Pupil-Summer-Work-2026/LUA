@@ -3,9 +3,9 @@
 .article-page__back { display: inline-block; margin-bottom: 26px; color: #111; font-size: 15px; }
 .article-page__back:hover { color: var(--lua-red); }
 .article-page__back:focus-visible { outline: 2px solid #1767d2; outline-offset: 3px; }
-.article-page__article h1 { margin: 0; font: 800 clamp(52px, 6vw, 72px)/.9 'Barlow Condensed', sans-serif; }
+.article-page__article h1 { margin: 0; overflow-wrap: break-word; word-break: normal; font: 800 clamp(52px, 6vw, 72px)/.9 'Barlow Condensed', sans-serif; }
 .article-page__meta { margin: 4px 0 22px; color: var(--lua-muted); font: 700 12px 'Barlow Condensed', sans-serif; }
-.article-page__article > p:not(.article-page__meta) { max-width: 720px; margin: 0 0 21px; font-size: 15px; line-height: 1.35; }
+.article-page__article > p:not(.article-page__meta) { max-width: 720px; margin: 0 0 21px; overflow-wrap: break-word; word-break: normal; font-size: 15px; line-height: 1.35; }
 .article-page__gallery { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 30px; }
 .article-page__gallery img { width: min(100%, 560px); object-fit: contain; }
 .article-page__sidebar { display: grid; align-content: start; gap: 16px; padding-top: 106px; }

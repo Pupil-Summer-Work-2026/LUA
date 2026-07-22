@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaFacebookF } from 'react-icons/fa'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import './site.css'
@@ -6,6 +7,7 @@ import { footerNavigationColumns } from '../data/navigation'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const [primaryNavigation] = footerNavigationColumns
+const FACEBOOK_URL = 'https://www.facebook.com/p/Latvijas-Ugunsdro%C5%A1%C4%ABbas-asoci%C4%81cija-100057329804981/'
 
 function NavigationColumn({ items }) {
   const history = useHistory()
@@ -24,6 +26,9 @@ function NavigationColumn({ items }) {
     <div className="site-footer__column">
       <h2>{t('footer.navigation')}</h2>
       {items.map(({ labelKey, path }) => <button key={path} type="button" aria-current={pathname === path ? 'page' : undefined} onClick={() => navigateTo(path)}>{t(labelKey)}</button>)}
+      <a className="site-footer__facebook" href={FACEBOOK_URL} target="_blank" rel="noreferrer" aria-label="Facebook">
+        <FaFacebookF aria-hidden="true" />
+      </a>
     </div>
   )
 }

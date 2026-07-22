@@ -6,8 +6,11 @@ import './klut-par-biedru.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
+import { getFormErrorMessage } from '../services/formErrorMessage'
+import { useFormCooldown } from '../hooks/useFormCooldown'
 
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
@@ -19,10 +22,14 @@ function getAssociationYears() {
 
 function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [hasAcceptedDuties, setHasAcceptedDuties] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const associationYears = getAssociationYears()
   const { t } = useLanguage()
+  const { isOnCooldown, remainingSeconds, startCooldown } = useFormCooldown()
 
   useEffect(() => {
     document.title = t('join.pageTitle')
@@ -34,6 +41,10 @@ function KlutParBiedru() {
     const form = event.currentTarget
     const formData = new FormData(form)
     setSubmitError('')
+
+    if (!turnstileToken || isSubmitting) return
+
+    setIsSubmitting(true)
 
     try {
       const data = await submitForm('/ktparbiedru/', formData)
@@ -47,10 +58,15 @@ function KlutParBiedru() {
       setSubmitError('')
       setHasAcceptedDuties(false)
       form.reset()
+      setTurnstileToken('')
+      setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Membership form submission failed', error)
-      setSubmitError(t('join.error'))
+      if (error.status === 429) startCooldown(error.retryAfter)
+      setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -123,9 +139,11 @@ function KlutParBiedru() {
                   <span>{t('join.dutiesAccepted')}</span>
                 </label>
               </div>
-              <button type="submit" disabled={!hasAcceptedDuties}>{t('join.send')}</button>
+              <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+              <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
-              {submitError && <p role="alert">{submitError}</p>}
+              {submitError && <p className="join-page__form-error" role="alert">{submitError}</p>}
+              {isOnCooldown && <p className="join-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
             </div>
           </form>
         </section>

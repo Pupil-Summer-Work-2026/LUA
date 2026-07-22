@@ -25,23 +25,27 @@
 .contacts-page__form label { margin-top: 3px; color: #c1ccdc; font-size: 11px; }
 .contacts-page__form input, .contacts-page__form textarea { width: 100%; padding: 10px 12px; color: var(--lua-navy); border: 0; border-radius: 4px; background: #fff; font: 12px 'DM Sans', sans-serif; }
 .contacts-page__form textarea { resize: vertical; }
+.contacts-page__form .turnstile-widget { width: fit-content; min-height: 65px; justify-self: center; margin-top: 6px; }
 .contacts-page__form button { width: min(100%, 216px); justify-self: center; margin-top: 3px; padding: 12px; color: #fff; border: 0; border-radius: 5px; background: var(--lua-red); font: 500 13px 'DM Sans', sans-serif; cursor: pointer; }
 .contacts-page__form button:hover { background: #a40d18; }
+.contacts-page__form button:disabled { cursor: not-allowed; opacity: .55; }
+.contacts-page__form button:disabled:hover { background: var(--lua-red); }
 .contacts-page__form input:focus-visible, .contacts-page__form textarea:focus-visible, .contacts-page__form button:focus-visible { outline: 2px solid #64c8f1; outline-offset: 2px; }
 .contacts-page__form-status { margin: 2px 0 0; color: #8ee6ac; font: 700 12px 'DM Sans', sans-serif; }
+.contacts-page__form-error { margin: 2px 0 0; color: #ffb4b9; font: 700 12px 'DM Sans', sans-serif; }
 .contacts-page__resource-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 25px; color: #fff; }
 .contacts-page__resource-category { margin-bottom: 8px; font-size: 13px; line-height: 1.45; }
 .contacts-page__resource-category strong { display: block; font-weight: 700; }
 .contacts-page__resource-category ul { margin: 4px 0 0; padding-left: 18px; }
 .contacts-page__resource-category li { padding-left: 2px; }
-.contacts-page__resource-category:nth-child(5), .contacts-page__resource-category:nth-child(6) { margin-top: 24px; }
+.contacts-page__resource-subheading { grid-column: 1 / -1; margin: 24px 0 8px; color: #fff; font: 700 20px/.95 'Barlow Condensed', sans-serif; }
 .contacts-page__resource-list a { color: var(--lua-red); }
 
 @media (max-width: 760px) {
   .contacts-page__intro { grid-template-columns: 1fr; gap: 36px; }
   .contacts-page__help-inner { grid-template-columns: 1fr; gap: 48px; }
   .contacts-page__resource-list { grid-template-columns: 1fr; gap: 20px; }
-  .contacts-page__resource-category:nth-child(6) { margin-top: 0; }
+  .contacts-page__resource-subheading { margin-bottom: 0; }
 }
 
 @media (max-width: 480px) {

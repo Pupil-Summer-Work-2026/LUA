@@ -21,6 +21,25 @@ function getAssociationYears() {
   return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
 }
 
+function getMemberNameSizeClass(name) {
+  if (name.length > 42) return 'about-page__service-member-card--name-extra-long'
+  if (name.length > 28) return 'about-page__service-member-card--name-long'
+  return ''
+}
+
+function hyphenateLongWords(name) {
+  return name.replace(/\p{L}{21,}/gu, (word) => {
+    const letters = Array.from(word)
+    const parts = []
+
+    for (let index = 0; index < letters.length; index += 20) {
+      parts.push(letters.slice(index, index + 20).join(''))
+    }
+
+    return parts.join('-\u200B')
+  })
+}
+
 function ParMums() {
   const associationYears = getAssociationYears()
   const [members, setMembers] = useState([])
@@ -134,11 +153,12 @@ function ParMums() {
               {!isLoadingMembers && !membersLoadFailed && activeServiceMembers.length > 0 && (
                 <ul>
                   {activeServiceMembers.map((member) => {
+                    const displayedName = hyphenateLongWords(member.name)
                     const card = (
-                      <article className="about-page__service-member-card" tabIndex={member.url ? undefined : 0}>
-                        {member.logo ? <img src={member.logo} alt={`${member.name} ${t('members.logoSuffix')}`} /> : <span className="about-page__service-member-placeholder">{member.name}</span>}
+                      <article className={`about-page__service-member-card ${getMemberNameSizeClass(member.name)}`} tabIndex={member.url ? undefined : 0}>
+                        {member.logo ? <img src={member.logo} alt={`${member.name} ${t('members.logoSuffix')}`} /> : <span className="about-page__service-member-placeholder">{displayedName}</span>}
                         <div className="about-page__service-member-details">
-                          <h3>{member.name}</h3>
+                          <h3>{displayedName}</h3>
                           {member.url && <span>{t('members.visit')} →</span>}
                         </div>
                       </article>

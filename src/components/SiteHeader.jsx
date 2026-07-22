@@ -1,15 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import './site.css'
 import { headerNavigation } from '../data/navigation'
 import { useLanguage } from '../i18n/LanguageContext'
 
+function LatviaFlag() {
+  return (
+    <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+      <path fill="#9e3039" d="M0 0h30v20H0z" />
+      <path fill="#fff" d="M0 8h30v4H0z" />
+    </svg>
+  )
+}
+
+function UnitedKingdomFlag() {
+  return (
+    <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+      <path fill="#012169" d="M0 0h30v20H0z" />
+      <path fill="#fff" d="M0 0l30 20M30 0L0 20" stroke="#fff" strokeWidth="4" />
+      <path fill="none" d="M0 0l30 20M30 0L0 20" stroke="#c8102e" strokeWidth="2" />
+      <path fill="#fff" d="M12 0h6v20h-6zM0 7h30v6H0z" />
+      <path fill="#c8102e" d="M13 0h4v20h-4zM0 8h30v4H0z" />
+    </svg>
+  )
+}
+
+const languageOptions = {
+  lv: { code: 'LV', name: 'Latviešu', Flag: LatviaFlag },
+  en: { code: 'EN', name: 'English', Flag: UnitedKingdomFlag },
+}
+
 function SiteHeader() {
   const history = useHistory()
   const { pathname } = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false)
+  const languageMenuRef = useRef(null)
   const { language, setLanguage, t } = useLanguage()
+  const selectedLanguage = languageOptions[language] || languageOptions.lv
 
   const navigateTo = (path) => {
     setIsMenuOpen(false)
@@ -22,12 +51,29 @@ function SiteHeader() {
 
   useEffect(() => {
     const closeMenu = (event) => {
-      if (event.key === 'Escape') setIsMenuOpen(false)
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false)
+        setIsLanguageMenuOpen(false)
+      }
     }
 
     window.addEventListener('keydown', closeMenu)
     return () => window.removeEventListener('keydown', closeMenu)
   }, [])
+
+  useEffect(() => {
+    const closeLanguageMenu = (event) => {
+      if (!languageMenuRef.current?.contains(event.target)) setIsLanguageMenuOpen(false)
+    }
+
+    document.addEventListener('pointerdown', closeLanguageMenu)
+    return () => document.removeEventListener('pointerdown', closeLanguageMenu)
+  }, [])
+
+  const selectLanguage = (nextLanguage) => {
+    setLanguage(nextLanguage)
+    setIsLanguageMenuOpen(false)
+  }
 
   return (
     <header className="site-header">
@@ -51,13 +97,22 @@ function SiteHeader() {
           <button key={path} className={pathname === path ? 'is-active' : ''} type="button" aria-current={pathname === path ? 'page' : undefined} onClick={() => navigateTo(path)}>{t(labelKey)}</button>
         ))}
         <button className={`site-header__cta${pathname === '/klut-par-biedru' ? ' is-active' : ''}`} type="button" aria-current={pathname === '/klut-par-biedru' ? 'page' : undefined} onClick={() => navigateTo('/klut-par-biedru')}>{t('navigation.join')}</button>
-        <label className="site-header__language">
-          <span className="site-header__language-label">{t('header.language')}</span>
-          <select value={language} aria-label={t('header.language')} onChange={(event) => setLanguage(event.target.value)}>
-            <option value="lv">LV</option>
-            <option value="en">EN</option>
-          </select>
-        </label>
+        <div className="site-header__language" ref={languageMenuRef}>
+          <button className="site-header__language-trigger" type="button" aria-haspopup="menu" aria-expanded={isLanguageMenuOpen} aria-label={t('header.language')} onClick={() => setIsLanguageMenuOpen((isOpen) => !isOpen)}>
+            <selectedLanguage.Flag />
+            <span>{selectedLanguage.code}</span>
+          </button>
+          {isLanguageMenuOpen && (
+            <div className="site-header__language-menu" role="menu" aria-label={t('header.language')}>
+              {Object.entries(languageOptions).map(([value, { code, name, Flag }]) => (
+                <button key={value} type="button" role="menuitemradio" aria-checked={language === value} aria-label={`${name} (${code})`} onClick={() => selectLanguage(value)}>
+                  <Flag />
+                  <span>{code}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   )

@@ -41,7 +41,7 @@ class Member(models.Model):
         upload_to="members/logos/",
         blank=True,
         null=True,
-        validators=[FileExtensionValidator(allowed_extensions=["png", "svg"])],
+        validators=[FileExtensionValidator(allowed_extensions=["avif", "gif", "jpeg", "jpg", "png", "svg", "webp"])],
     )
     tags = models.ManyToManyField("MemberTag", blank=True, related_name="members")
 
@@ -50,6 +50,17 @@ class Member(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class HonorableMember(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
 
 class MemberTag(models.Model):
     name = models.CharField(max_length=80, unique=True)

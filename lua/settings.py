@@ -46,6 +46,21 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() == 'true'
+    SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '2592000'))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', 'False').lower() == 'true'
+    SECURE_HSTS_PRELOAD = os.getenv('SECURE_HSTS_PRELOAD', 'False').lower() == 'true'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 EMAIL_BACKEND = os.getenv(
     'EMAIL_BACKEND',
     'django.core.mail.backends.smtp.EmailBackend',
@@ -59,6 +74,28 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 MEMBERSHIP_FORM_RECIPIENT = os.getenv('MEMBERSHIP_FORM_RECIPIENT', EMAIL_HOST_USER)
 CONTACT_FORM_RECIPIENT = os.getenv('CONTACT_FORM_RECIPIENT', EMAIL_HOST_USER)
 REGISTRATION_FORM_RECIPIENT = os.getenv('REGISTRATION_FORM_RECIPIENT', EMAIL_HOST_USER)
+TURNSTILE_SECRET_KEY = os.getenv('TURNSTILE_SECRET_KEY', os.getenv('TURNSTILE_SITE_KEY', ''))
+TURNSTILE_VERIFY_TIMEOUT_SECONDS = float(os.getenv('TURNSTILE_VERIFY_TIMEOUT_SECONDS', '5'))
+FORM_RATE_LIMIT_CACHE_ALIAS = os.getenv('FORM_RATE_LIMIT_CACHE_ALIAS', 'default')
+FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR = os.getenv('FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR', 'False').lower() == 'true'
+FORM_SUBMISSION_RATE_LIMITS = {
+    'shared': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_SHARED_LIMIT', '5')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_SHARED_WINDOW_SECONDS', '3600')),
+    },
+    'kontakti': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_CONTACT_LIMIT', '3')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_CONTACT_WINDOW_SECONDS', '3600')),
+    },
+    'ktparbiedru': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_MEMBERSHIP_LIMIT', '2')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_MEMBERSHIP_WINDOW_SECONDS', '86400')),
+    },
+    'registrs': {
+        'limit': int(os.getenv('FORM_RATE_LIMIT_REGISTRY_LIMIT', '3')),
+        'window_seconds': int(os.getenv('FORM_RATE_LIMIT_REGISTRY_WINDOW_SECONDS', '86400')),
+    },
+}
 
 LOGGING = {
     'version': 1,
@@ -133,12 +170,24 @@ WSGI_APPLICATION = 'lua.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.getenv('POSTGRES_HOST'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['POSTGRES_DB'],
+            'USER': os.environ['POSTGRES_USER'],
+            'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+            'HOST': os.environ['POSTGRES_HOST'],
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -175,7 +224,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = Path(os.getenv('STATIC_ROOT', BASE_DIR / 'staticfiles'))
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', BASE_DIR / 'media'))

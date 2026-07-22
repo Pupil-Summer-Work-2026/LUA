@@ -5,15 +5,22 @@ import { Helmet } from 'react-helmet'
 import './kontakti.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
+import { getFormErrorMessage } from '../services/formErrorMessage'
+import { useFormCooldown } from '../hooks/useFormCooldown'
 
 const resourceLinks = ['vugd.gov.lv', 'latvija.lv', 'likumi.lv', 'ur.gov.lv', 'lursoft.lv', 'abc.lv', 'serteks.lv', 'building.lv']
 
 function Kontakti() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const { t } = useLanguage()
+  const { isOnCooldown, remainingSeconds, startCooldown } = useFormCooldown()
 
   useEffect(() => {
     document.title = t('contacts.pageTitle')
@@ -26,6 +33,10 @@ function Kontakti() {
     const formData = new FormData(form)
     setSubmitError('')
 
+    if (!turnstileToken || isSubmitting) return
+
+    setIsSubmitting(true)
+
     try {
       const data = await submitForm('/kontakti/', formData)
       const backendSuccess = data.success === true
@@ -35,10 +46,15 @@ function Kontakti() {
       console.info('Contact form submitted', { correlationId: data.correlationId })
       setIsSubmitted(true)
       form.reset()
+      setTurnstileToken('')
+      setTurnstileResetKey((key) => key + 1)
     } catch (error) {
       console.error('Contact form submission failed', error)
-      setSubmitError(t('contacts.error'))
+      if (error.status === 429) startCooldown(error.retryAfter)
+      setSubmitError(getFormErrorMessage(error, t))
       setIsSubmitted(false)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -82,19 +98,25 @@ function Kontakti() {
               <input id="contact-email" name="email" type="email" autoComplete="email" placeholder={t('contacts.emailPlaceholder')} required onChange={() => setIsSubmitted(false)} />
               <label htmlFor="contact-message">{t('contacts.message')}</label>
               <textarea id="contact-message" name="message" placeholder={t('contacts.messagePlaceholder')} rows="4" required onChange={() => setIsSubmitted(false)} />
-              <button type="submit">{t('contacts.send')}</button>
+              <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+              <button type="submit" disabled={!turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('contacts.send')}</button>
               {isSubmitted && <p className="contacts-page__form-status" role="status">{t('contacts.sent')}</p>}
+              {submitError && <p className="contacts-page__form-error" role="alert">{submitError}</p>}
+              {isOnCooldown && <p className="contacts-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
             </form>
             <div className="contacts-page__resources">
               <h2>{t('contacts.resourcesHeading')}</h2>
               <div className="contacts-page__resource-list">
                 {resourceLinks.map((link, index) => (
-                  <div className="contacts-page__resource-category" key={link}>
-                    {t('contacts.resources')[index] && <strong>{t('contacts.resources')[index]}</strong>}
-                    <ul>
-                      <li><a href={`https://${link}`} target="_blank" rel="noreferrer">{link}</a></li>
-                    </ul>
-                  </div>
+                  <React.Fragment key={link}>
+                    {index === 4 && <h3 className="contacts-page__resource-subheading">{t('contacts.otherResourcesHeading')}</h3>}
+                    <div className="contacts-page__resource-category">
+                      {t('contacts.resources')[index] && <strong>{t('contacts.resources')[index]}</strong>}
+                      <ul>
+                        <li><a href={`https://${link}`} target="_blank" rel="noreferrer">{link}</a></li>
+                      </ul>
+                    </div>
+                  </React.Fragment>
                 ))}
               </div>
             </div>

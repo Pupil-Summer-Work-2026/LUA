@@ -9,6 +9,8 @@ async function request(path, options) {
     const error = new Error(data?.message || `Request failed with status ${response.status}`)
     error.status = response.status
     error.correlationId = data?.correlationId
+    error.errors = data?.errors
+    error.retryAfter = response.headers.get('retry-after')
     throw error
   }
 
@@ -33,6 +35,10 @@ export function getTags() {
 
 export function getMembers(options) {
   return request('/members/', options)
+}
+
+export function getHonorableMembers(options) {
+  return request('/honorable-members/', options)
 }
 
 export function submitForm(path, formData) {
