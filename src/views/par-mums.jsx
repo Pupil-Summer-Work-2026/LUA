@@ -100,7 +100,7 @@ function ParMums() {
         <PageBanner title={t('about.title')} />
         <section className="about-page__feature about-page__feature--intro lua-container">
           <div className="about-page__years" aria-label={t('about.years', { years: associationYears })}>
-            <img src="/Images/biznesa gadi.svg" alt="" />
+            <img src={t('about.biznesaGadi')} alt="" />
             <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
           <div>
