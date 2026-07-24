@@ -38,3 +38,7 @@
         file_server
     }
 }
+
+www.ugunsdzesiba.lv {
+    redir https://lua.lv permanent
+}
