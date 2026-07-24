@@ -15,6 +15,7 @@ const translations = {
       news: 'Jaunumi',
       members: 'Biedri',
       contacts: 'Kontakti',
+      registry: 'Reģistrs',
       join: 'Kļūt par biedru',
     },
     footer: {
@@ -106,6 +107,7 @@ const translations = {
       news: 'News',
       members: 'Members',
       contacts: 'Contacts',
+      registry: 'Registry',
       join: 'Become a member',
     },
     footer: {

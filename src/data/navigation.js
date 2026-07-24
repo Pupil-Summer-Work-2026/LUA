@@ -3,6 +3,7 @@ const navigationItems = {
   news: { labelKey: 'navigation.news', path: '/jaunumi' },
   members: { labelKey: 'navigation.members', path: '/biedri' },
   contacts: { labelKey: 'navigation.contacts', path: '/kontakti' },
+  // registry: { labelKey: 'navigation.registry', path: '/registrs' }, // Attkomentēt šo līniju ja nepieciešama reģista poga sākumalapā
   join: { labelKey: 'navigation.join', path: '/klut-par-biedru' },
 }
 
@@ -11,6 +12,7 @@ export const headerNavigation = [
   navigationItems.news,
   navigationItems.members,
   navigationItems.contacts,
+ // navigationItems.registry, // Attkomentēt šo līniju ja nepieciešama reģista poga sākumalapā
 ]
 
 export const footerNavigationColumns = [
