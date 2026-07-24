@@ -85,7 +85,7 @@ function KlutParBiedru() {
             <p>{t('join.eligibility')}</p>
           </div>
           <div className="join-page__years" aria-label={t('join.years', { years: associationYears })}>
-            <img src="/Images/biznesa gadi.svg" alt="" />
+            <img src={t('join.biznesaGadi')} alt="" />
             <CountUpNumber value={associationYears} aria-hidden="true" />
           </div>
         </section>
