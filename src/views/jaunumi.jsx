@@ -12,15 +12,18 @@ import { useLanguage } from '../i18n/LanguageContext'
 
 const allCategory = '__all__'
 
+// Formatē jaunuma datumu atbilstoši izvēlētajai vietnes valodai.
 function formatDate(value, language) {
   return new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'lv-LV', { dateStyle: 'long' }).format(new Date(value))
 }
 
+// Saīsina jaunuma tekstu līdz kartītei paredzētam priekšskatījumam.
 function getSummary(content) {
   const normalizedContent = content.replace(/\s+/g, ' ').trim()
   return normalizedContent.length > 220 ? `${normalizedContent.slice(0, 220)}...` : normalizedContent
 }
 
+// Attēlo jaunumu sarakstu ar meklēšanu un kategoriju filtrēšanu.
 function Jaunumi() {
   const { language, t } = useLanguage()
   const [activeCategory, setActiveCategory] = useState(allCategory)
@@ -30,6 +33,7 @@ function Jaunumi() {
   const [tags, setTags] = useState([])
   const [status, setStatus] = useState('loading')
 
+  // Ielādē jaunumu un kategoriju datus, kā arī nosaka ielādes rezultāta stāvokli.
   function loadNews() {
     setStatus('loading')
 
@@ -56,11 +60,13 @@ function Jaunumi() {
     return matchesCategory && matchesSearch
   })
 
+  // Pielieto lietotāja ievadīto meklēšanas frāzi jaunumu sarakstam.
   function handleSearch(event) {
     event.preventDefault()
     setSearchQuery(searchInput.trim())
   }
 
+  // Atjauno sākotnējo kategoriju un meklēšanas filtrus.
   function clearFilters() {
     setActiveCategory(allCategory)
     setSearchInput('')

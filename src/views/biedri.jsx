@@ -9,12 +9,14 @@ import PageBanner from '../components/PageBanner'
 import { useLanguage } from '../i18n/LanguageContext'
 import { getHonorableMembers, getMembers } from '../services/blogApi'
 
+// Izvēlas kartītes teksta izmēra klasi atbilstoši biedra nosaukuma garumam.
 function getMemberNameSizeClass(name) {
   if (name.length > 42) return 'members-page__card--name-extra-long'
   if (name.length > 28) return 'members-page__card--name-long'
   return ''
 }
 
+// Sadala ļoti garus vārdus, lai tie nepārsniegtu biedra kartītes platumu.
 function hyphenateLongWords(name) {
   return name.replace(/\p{L}{21,}/gu, (word) => {
     const letters = Array.from(word)
@@ -28,6 +30,7 @@ function hyphenateLongWords(name) {
   })
 }
 
+// Attēlo asociācijas biedrus, goda biedrus un pieteikšanās aicinājumu.
 function Biedri() {
   const [members, setMembers] = useState([])
   const [isLoading, setIsLoading] = useState(true)

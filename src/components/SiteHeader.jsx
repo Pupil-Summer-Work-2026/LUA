@@ -5,6 +5,7 @@ import './site.css'
 import { headerNavigation } from '../data/navigation'
 import { useLanguage } from '../i18n/LanguageContext'
 
+// Attēlo Latvijas karogu valodas izvēlnē.
 function LatviaFlag() {
   return (
     <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
@@ -14,6 +15,7 @@ function LatviaFlag() {
   )
 }
 
+// Attēlo Apvienotās Karalistes karogu angļu valodas izvēlnē.
 function UnitedKingdomFlag() {
   return (
     <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
@@ -31,6 +33,7 @@ const languageOptions = {
   en: { code: 'EN', name: 'English', Flag: UnitedKingdomFlag },
 }
 
+// Attēlo vietnes galveni ar navigāciju, valodas izvēli un mobilo izvēlni.
 function SiteHeader() {
   const history = useHistory()
   const { pathname } = useLocation()
@@ -40,6 +43,7 @@ function SiteHeader() {
   const { language, setLanguage, t } = useLanguage()
   const selectedLanguage = languageOptions[language] || languageOptions.lv
 
+  // Aizver mobilo izvēlni un pārvieto lietotāju uz norādīto vietnes lapu.
   const navigateTo = (path) => {
     setIsMenuOpen(false)
     if (path === pathname) {
@@ -50,6 +54,7 @@ function SiteHeader() {
   }
 
   useEffect(() => {
+    // Aizver atvērtās izvēlnes, kad lietotājs nospiež Escape taustiņu.
     const closeMenu = (event) => {
       if (event.key === 'Escape') {
         setIsMenuOpen(false)
@@ -62,6 +67,7 @@ function SiteHeader() {
   }, [])
 
   useEffect(() => {
+    // Aizver valodas izvēlni, kad lietotājs noklikšķina ārpus tās.
     const closeLanguageMenu = (event) => {
       if (!languageMenuRef.current?.contains(event.target)) setIsLanguageMenuOpen(false)
     }
@@ -70,6 +76,7 @@ function SiteHeader() {
     return () => document.removeEventListener('pointerdown', closeLanguageMenu)
   }, [])
 
+  // Iestata izvēlēto valodu un aizver valodas izvēlni.
   const selectLanguage = (nextLanguage) => {
     setLanguage(nextLanguage)
     setIsLanguageMenuOpen(false)

@@ -10,10 +10,12 @@ import PageBanner from '../components/PageBanner'
 import { getPost } from '../services/blogApi'
 import { useLanguage } from '../i18n/LanguageContext'
 
+// Formatē jaunuma datumu atbilstoši izvēlētajai vietnes valodai.
 function formatDate(value, language) {
   return new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'lv-LV', { dateStyle: 'long' }).format(new Date(value))
 }
 
+// Attēlo vienu jaunumu, tā tekstu, kategorijas un attēlu galeriju.
 function Jaunums() {
   const { postId } = useParams()
   const { language, t } = useLanguage()

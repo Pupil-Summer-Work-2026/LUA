@@ -18,6 +18,7 @@ from .turnstile import verify_turnstile
 logger = logging.getLogger(__name__)
 
 
+# Atgriež CAPTCHA kļūdas atbildi, ja Cloudflare neapstiprina formas tokenu.
 def turnstile_failure_response(request, correlation_id):
     token = request.POST.get("cf-turnstile-response", "")
     remote_ip = request.META.get("REMOTE_ADDR", "")
@@ -37,6 +38,7 @@ def turnstile_failure_response(request, correlation_id):
     )
 
 
+# Atgriež limita kļūdas atbildi, ja apmeklētājs ir pārsniedzis iesniegumu skaitu.
 def rate_limit_failure_response(request, correlation_id, endpoint):
     result = check_form_rate_limit(request, endpoint)
     if result.allowed:
@@ -64,6 +66,7 @@ def rate_limit_failure_response(request, correlation_id, endpoint):
 
 @csrf_exempt
 @require_POST
+# Apstrādā uzņēmuma informācijas iesniegšanu asociācijas reģistram.
 def registrs(request):
     correlation_id = str(uuid4())
     turnstile_failure = turnstile_failure_response(request, correlation_id)
@@ -126,6 +129,7 @@ def registrs(request):
 
 @csrf_exempt
 @require_POST
+# Apstrādā kontaktformas ziņojumu un nosūta to asociācijai e-pastā.
 def kontakti(request):
     correlation_id = str(uuid4())
     turnstile_failure = turnstile_failure_response(request, correlation_id)
@@ -187,6 +191,7 @@ def kontakti(request):
 
 @csrf_exempt
 @require_POST
+# Apstrādā pieteikumu kļūšanai par asociācijas biedru.
 def ktparbiedru(request):
     correlation_id = str(uuid4())
     turnstile_failure = turnstile_failure_response(request, correlation_id)
@@ -252,26 +257,31 @@ def ktparbiedru(request):
     )
 
 
+# Nodrošina autentificētiem lietotājiem jaunumu izveidi un publisku lasīšanu.
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.prefetch_related("tags", "images").order_by("-created_at")
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
+# Nodrošina jaunumu kategoriju publisku nolasīšanu.
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
+# Nodrošina biedru saraksta publisku nolasīšanu ar to pakalpojumu kategorijām.
 class MemberViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Member.objects.prefetch_related("tags")
     serializer_class = MemberSerializer
 
 
+# Nodrošina goda biedru saraksta publisku nolasīšanu.
 class HonorableMemberViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HonorableMember.objects.all()
     serializer_class = HonorableMemberSerializer
 
 
+# Nodrošina biedru kategoriju publisku nolasīšanu.
 class MemberTagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = MemberTag.objects.all()
     serializer_class = MemberTagSerializer

@@ -9,6 +9,7 @@ import { submitForm } from '../services/blogApi'
 import { getFormErrorMessage } from '../services/formErrorMessage'
 import { useFormCooldown } from '../hooks/useFormCooldown'
 
+// Attēlo biedru uzņēmumu reģistra formas iesniegšanu ar CAPTCHA pārbaudi.
 const Registrs = () => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -22,6 +23,7 @@ const Registrs = () => {
     document.title = t('registrs.pageTitle')
   }, [t])
 
+  // Pārbauda formas stāvokli, nosūta reģistra informāciju un parāda rezultātu lietotājam.
   async function handleSubmit(event) {
     event.preventDefault()
 

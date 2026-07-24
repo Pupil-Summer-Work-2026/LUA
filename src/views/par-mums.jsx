@@ -13,6 +13,7 @@ import './par-mums.css'
 
 const sectorLabels = ['/Lables/fire%20extinguisher.svg', '/Lables/fire%20axes.svg', '/Lables/fire%20helmet.svg', '/Lables/fire%20shield.svg', '/Lables/fire.svg', '/Lables/warning%20sign.svg', '/Lables/high%20voltage%20label.svg', '/Lables/alarm%20bell.svg', '/Lables/sprinkler.svg', '/Lables/water%20droplet.svg', '/Lables/alarm%20light.svg', '/Lables/red%20cross.svg']
 
+// Aprēķina asociācijas pilnos darbības gadus līdz šodienai.
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
   const today = new Date()
@@ -21,12 +22,14 @@ function getAssociationYears() {
   return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
 }
 
+// Izvēlas kartītes teksta izmēra klasi atbilstoši biedra nosaukuma garumam.
 function getMemberNameSizeClass(name) {
   if (name.length > 42) return 'about-page__service-member-card--name-extra-long'
   if (name.length > 28) return 'about-page__service-member-card--name-long'
   return ''
 }
 
+// Sadala ļoti garus vārdus, lai tie nepārsniegtu biedra kartītes platumu.
 function hyphenateLongWords(name) {
   return name.replace(/\p{L}{21,}/gu, (word) => {
     const letters = Array.from(word)
@@ -40,6 +43,7 @@ function hyphenateLongWords(name) {
   })
 }
 
+// Attēlo asociācijas aprakstu, pakalpojumus un ar pakalpojumiem saistītos biedrus.
 function ParMums() {
   const associationYears = getAssociationYears()
   const [members, setMembers] = useState([])
@@ -82,6 +86,7 @@ function ParMums() {
   useEffect(() => {
     if (activeServiceIndex === null) return undefined
 
+    // Aizver aktīvo pakalpojuma dialogu, kad lietotājs nospiež Escape taustiņu.
     function closeOnEscape(event) {
       if (event.key === 'Escape') setActiveServiceIndex(null)
     }

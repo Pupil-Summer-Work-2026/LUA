@@ -12,6 +12,7 @@ import { submitForm } from '../services/blogApi'
 import { getFormErrorMessage } from '../services/formErrorMessage'
 import { useFormCooldown } from '../hooks/useFormCooldown'
 
+// Aprēķina asociācijas pilnos darbības gadus līdz šodienai.
 function getAssociationYears() {
   const startDate = new Date(2002, 3, 4)
   const today = new Date()
@@ -20,6 +21,7 @@ function getAssociationYears() {
   return today.getFullYear() - startDate.getFullYear() - (hasAnniversaryPassed ? 0 : 1)
 }
 
+// Attēlo biedra pieteikuma formu ar pienākumu apstiprinājumu un CAPTCHA pārbaudi.
 function KlutParBiedru() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -35,6 +37,7 @@ function KlutParBiedru() {
     document.title = t('join.pageTitle')
   }, [t])
 
+  // Pārbauda formas stāvokli, nosūta biedra pieteikumu un parāda rezultātu lietotājam.
   async function handleSubmit(event) {
     event.preventDefault()
 

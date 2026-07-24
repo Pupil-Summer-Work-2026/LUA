@@ -21,6 +21,7 @@ import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
 import { LanguageProvider } from './i18n/LanguageContext'
 import LoadingScreen from './components/LoadingScreen'
 
+// Pēc maršruta maiņas ritina lapu uz sākumu.
 function ScrollToTop() {
   const { pathname } = useLocation()
 
@@ -31,6 +32,7 @@ function ScrollToTop() {
   return null
 }
 
+// Iestata lietotnes ielādes ekrānu, valodu kontekstu un visus vietnes maršrutus.
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
 

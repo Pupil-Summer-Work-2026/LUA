@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import SiteFooter from './SiteFooter'
 import SiteHeader from './SiteHeader'
 
+// Apvieno vietnes galveni, saturu un kājeni, kā arī aktivizē sadaļu parādīšanās animācijas.
 function SiteLayout({ children, className = '' }) {
   const pageRef = useRef(null)
 
@@ -18,6 +19,7 @@ function SiteLayout({ children, className = '' }) {
     sections.forEach((section) => section.classList.add('lua-reveal'))
     let observer
 
+    // Vēro lapas sadaļas un parāda tās, kad tās nonāk lietotāja redzes laukā.
     const observeSections = () => {
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {

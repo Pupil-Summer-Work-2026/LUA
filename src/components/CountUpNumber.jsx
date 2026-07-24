@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+// Attēlo skaitli, kas pēc elementa parādīšanās ekrānā pakāpeniski pieaug līdz dotajai vērtībai.
 function CountUpNumber({ value, duration = 1200, ...props }) {
   const [displayValue, setDisplayValue] = useState(0)
   const numberRef = useRef(null)
@@ -17,12 +18,14 @@ function CountUpNumber({ value, duration = 1200, ...props }) {
     let observer
     let hasStarted = false
 
+    // Sāk skaitļa animāciju tikai vienu reizi, kad elements kļūst redzams.
     const startCounting = () => {
       if (hasStarted) return
 
       hasStarted = true
       const startedAt = performance.now()
 
+      // Aprēķina nākamo animācijas vērtību un pieprasa nākamo kadru līdz animācijas beigām.
       const updateValue = (now) => {
         const progress = Math.min((now - startedAt) / duration, 1)
         const easedProgress = 1 - Math.pow(1 - progress, 3)
@@ -34,6 +37,7 @@ function CountUpNumber({ value, duration = 1200, ...props }) {
       animationFrame = window.requestAnimationFrame(updateValue)
     }
 
+    // Vēro skaitļa elementu un sāk animāciju, kad tas ir redzams lapā.
     const observeNumber = () => {
       observer = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) return

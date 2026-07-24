@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.cache import caches
 
 
+# Apraksta formas iesniegšanas limita pārbaudes rezultātu.
 @dataclass(frozen=True)
 class RateLimitResult:
     allowed: bool
@@ -15,6 +16,7 @@ class RateLimitResult:
     scope: str = ""
 
 
+# Nosaka apmeklētāja IP adresi no pieprasījuma vai uzticama starpniekservera galvenes.
 def get_client_ip(request):
     if settings.FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR:
         forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR", "")
@@ -24,6 +26,7 @@ def get_client_ip(request):
     return request.META.get("REMOTE_ADDR", "") or "unknown"
 
 
+# Pārbauda un palielina kopējo un konkrētās formas iesniegšanas limitu.
 def check_form_rate_limit(request, endpoint):
     client_ip = get_client_ip(request)
     cache = caches[settings.FORM_RATE_LIMIT_CACHE_ALIAS]
@@ -58,10 +61,12 @@ def check_form_rate_limit(request, endpoint):
     return RateLimitResult(True, client_ip)
 
 
+# Izveido anonimizētu kešatmiņas atslēgu konkrētam limitam un IP adresei.
 def _cache_key(scope, client_ip, limit, window_seconds):
     key_material = f"form-submission:{scope}:{client_ip}:{limit}:{window_seconds}".encode("utf-8")
     return f"form-submission:{hashlib.sha256(key_material).hexdigest()}"
 
 
+# Izveido kešatmiņas atslēgu limita derīguma laika uzglabāšanai.
 def _expiry_cache_key(cache_key):
     return f"{cache_key}:expires-at"

@@ -9,11 +9,13 @@ import { useLanguage } from '../i18n/LanguageContext'
 const [primaryNavigation] = footerNavigationColumns
 const FACEBOOK_URL = 'https://www.facebook.com/p/Latvijas-Ugunsdro%C5%A1%C4%ABbas-asoci%C4%81cija-100057329804981/'
 
+// Attēlo vienu kājenes navigācijas kolonnu ar saitēm un Facebook ikonu.
 function NavigationColumn({ items }) {
   const history = useHistory()
   const { pathname } = useLocation()
   const { t } = useLanguage()
 
+  // Pārvieto lietotāju uz izvēlēto lapu vai ritina uz sākumu, ja tā jau ir atvērta.
   const navigateTo = (path) => {
     if (path === pathname) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -33,6 +35,7 @@ function NavigationColumn({ items }) {
   )
 }
 
+// Attēlo vietnes kājeni ar navigāciju, kontaktinformāciju un autortiesību tekstu.
 function SiteFooter() {
   const { t } = useLanguage()
 

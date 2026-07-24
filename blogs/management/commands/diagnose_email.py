@@ -7,19 +7,23 @@ from django.core.management.base import BaseCommand, CommandError
 from blogs.emailing import mask_email, send_traced_email
 
 
+# Izveido īsu vērtības nospiedumu, neatklājot pašu vērtību.
 def _fingerprint(value):
     if not value:
         return "empty"
     return sha256(str(value).encode("utf-8")).hexdigest()[:12]
 
 
+# Izveido e-pasta adreses kopsavilkumu ar maskētu adresi un nospiedumu.
 def _address_summary(address):
     return f"{mask_email(address)} fingerprint={_fingerprint(address)}"
 
 
+# Piedāvā komandu e-pasta iestatījumu pārbaudei un diagnostikas ziņojumu nosūtīšanai.
 class Command(BaseCommand):
     help = "Show redacted effective email settings and optionally send traceable probes."
 
+    # Pievieno komandas parametrus iestatījumu rādīšanai un testa e-pastu sūtīšanai.
     def add_arguments(self, parser):
         parser.add_argument(
             "--send",
@@ -38,6 +42,7 @@ class Command(BaseCommand):
             help="Include the configured membership and contact form recipients.",
         )
 
+    # Izvada maskētus e-pasta iestatījumus un pēc izvēles nosūta diagnostikas ziņojumus.
     def handle(self, *args, **options):
         self.stdout.write("Effective email configuration")
         self.stdout.write(f"backend={settings.EMAIL_BACKEND}")

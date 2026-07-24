@@ -23,11 +23,13 @@ const collaborationPartners = [
   ['/Biedri/vugd.png', 'Valsts ugunsdzēsības un glābšanas dienests', 'https://www.vugd.gov.lv/lv', true],
 ]
 
+// Saīsina jaunuma tekstu līdz īsam priekšskatījumam sākumlapas kartītē.
 function getSummary(content) {
   const normalizedContent = content.replace(/\s+/g, ' ').trim()
   return normalizedContent.length > 120 ? `${normalizedContent.slice(0, 120)}...` : normalizedContent
 }
 
+// Attēlo sākumlapu ar asociācijas informāciju, jaunumiem, biedriem un partneriem.
 function Sakumlapa() {
   const history = useHistory()
   const { t } = useLanguage()

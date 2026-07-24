@@ -8,10 +8,12 @@ from django.core.mail import EmailMessage
 logger = logging.getLogger(__name__)
 
 
+# Norāda, ka e-pasta serveris ziņojumu nav pieņēmis nosūtīšanai.
 class EmailHandoffError(Exception):
     pass
 
 
+# Aizstāj lielāko e-pasta adreses daļu ar zvaigznītēm žurnāla ierakstiem.
 def mask_email(address):
     parsed_address = parseaddr(address)[1]
     local_part, separator, domain = parsed_address.partition("@")
@@ -20,6 +22,7 @@ def mask_email(address):
     return f"{local_part[:1]}***@{domain}"
 
 
+# Nosūta e-pastu ar izsekojamu ziņojuma identifikatoru un reģistrē rezultātu žurnālā.
 def send_traced_email(*, subject, body, recipient, correlation_id, role):
     sender_address = parseaddr(settings.DEFAULT_FROM_EMAIL)[1]
     message_domain = sender_address.rpartition("@")[2] or None

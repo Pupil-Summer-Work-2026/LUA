@@ -7,6 +7,7 @@ import { useLanguage } from '../i18n/LanguageContext'
 
 import './lapa-nav-atrasta.css'
 
+// Attēlo 404 kļūdas lapu, ja lietotājs atver neesošu vietnes adresi.
 const LapaNavAtrasta = () => {
   const { t } = useLanguage()
 

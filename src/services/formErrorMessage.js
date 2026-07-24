@@ -1,3 +1,4 @@
+// Pārveido API kļūdu par lietotājam saprotamu, tulkotu formas paziņojumu.
 export function getFormErrorMessage(error, t) {
   if (error.status === 429) return t('formErrors.rateLimited')
   if (error.status === 400 && error.errors?.turnstile) return t('formErrors.captcha')

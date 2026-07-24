@@ -13,6 +13,7 @@ import { useFormCooldown } from '../hooks/useFormCooldown'
 
 const resourceLinks = ['vugd.gov.lv', 'latvija.lv', 'likumi.lv', 'ur.gov.lv', 'lursoft.lv', 'abc.lv', 'serteks.lv', 'building.lv']
 
+// Attēlo kontaktinformāciju, noderīgās saites un kontaktformas iesniegšanu.
 function Kontakti() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,6 +27,7 @@ function Kontakti() {
     document.title = t('contacts.pageTitle')
   }, [t])
 
+  // Pārbauda formas stāvokli, nosūta kontaktziņojumu un parāda rezultātu lietotājam.
   async function handleSubmit(event) {
     event.preventDefault()
 

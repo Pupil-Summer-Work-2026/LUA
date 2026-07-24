@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 
 
+# Nosūta Turnstile tokenu Cloudflare un atgriež, vai CAPTCHA pārbaude ir veiksmīga.
 def verify_turnstile(token, remote_ip):
     if not token:
         return False

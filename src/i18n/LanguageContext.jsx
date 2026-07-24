@@ -141,10 +141,12 @@ const translations = {
 
 const LanguageContext = createContext(null)
 
+// Atrod tulkojuma vērtību pēc punkta atdalītas atslēgas izvēlētajā valodā.
 function readTranslation(language, key) {
   return key.split('.').reduce((value, part) => value?.[part], translations[language])
 }
 
+// Nodrošina bērnkomponentiem aktīvo valodu, tās maiņu un tulkošanas funkciju.
 export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState(() => window.localStorage.getItem('lua-language') || 'lv')
 
@@ -153,6 +155,7 @@ export function LanguageProvider({ children }) {
     window.localStorage.setItem('lua-language', language)
   }, [language])
 
+  // Atgriež tulkoto tekstu un aizstāj tajā norādītos mainīgos ar dotajām vērtībām.
   const t = (key, values = {}) => {
     const translation = readTranslation(language, key)
 
@@ -164,6 +167,7 @@ export function LanguageProvider({ children }) {
   return <LanguageContext.Provider value={{ language, setLanguage, t }}>{children}</LanguageContext.Provider>
 }
 
+// Atgriež aktīvās valodas kontekstu un pārbauda, vai tas tiek lietots nodrošinātāja ietvaros.
 export function useLanguage() {
   const context = useContext(LanguageContext)
 

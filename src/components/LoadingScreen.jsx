@@ -3,6 +3,7 @@ import React from 'react'
 import './loading-screen.css'
 import { useLanguage } from '../i18n/LanguageContext'
 
+// Attēlo vietnes ielādes ekrānu ar animētu asociācijas logotipu.
 function LoadingScreen() {
   const { t } = useLanguage()
 

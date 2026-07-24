@@ -4,6 +4,7 @@ import os
 import sys
 
 
+# Iestata Django vidi un nodod komandrindas argumentus Django pārvaldības rīkam.
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'lua.settings')

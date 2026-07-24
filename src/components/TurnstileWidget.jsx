@@ -4,6 +4,7 @@ const TURNSTILE_SCRIPT_URL = 'https://challenges.cloudflare.com/turnstile/v0/api
 const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || import.meta.env.VITE_TURNSTILE_API_KEY
 let scriptPromise
 
+// Ielādē Cloudflare Turnstile skriptu tikai vienu reizi visā vietnē.
 function loadTurnstile() {
   if (window.turnstile) return Promise.resolve(window.turnstile)
 
@@ -22,6 +23,7 @@ function loadTurnstile() {
   return scriptPromise
 }
 
+// Attēlo Turnstile CAPTCHA un nodod formas tokenu vecākkomponentam.
 function TurnstileWidget({ onTokenChange, resetKey }) {
   const containerRef = useRef(null)
   const onTokenChangeRef = useRef(onTokenChange)
