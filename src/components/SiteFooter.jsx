@@ -48,10 +48,10 @@ function SiteFooter() {
           <h2>{t('footer.details')}</h2>
           <span>Latvijas Ugunsdrošības asociācija BIEDRĪBA</span>
           <span>Vijciema iela 1A, Rīga, LV-1006</span>
-          <span>REĢ. NR: 40008066462</span>
-          <span>BANKA: AS Swedbank</span>
-          <span>SWIFT BIC:HABALV22</span>
-          <span>KONTS: LV24HABA0551044104806</span>
+          <span>{t('footer.regNr')}</span>
+          <span>{t('footer.bank')}</span>
+          <span>{t('footer.swift')}</span>
+          <span>{t('footer.account')}</span>
         </address>
       </div>
       <div className="site-footer__copyright">{t('footer.copyright')}</div>
