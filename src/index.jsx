@@ -58,7 +58,7 @@ const App = () => {
   return (
     <LanguageProvider>
       {isLoading && <LoadingScreen />}
-      <ExternalContentPreferences />
+      <ExternalContentPreferences isSiteReady={!isLoading} />
       <Router>
         <ScrollToTop />
         <Switch>

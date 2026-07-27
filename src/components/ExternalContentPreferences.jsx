@@ -38,12 +38,22 @@ export function useGoogleMapsEnabled() {
   return [enabled, setGoogleMapsEnabled]
 }
 
-function ExternalContentPreferences() {
+function ExternalContentPreferences({ isSiteReady }) {
   const { t } = useLanguage()
-  const [isOpen, setIsOpen] = useState(() => window.localStorage.getItem(GOOGLE_MAPS_PREFERENCE_KEY) === null)
+  const [isOpen, setIsOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [, setGoogleMapsPreference] = useGoogleMapsEnabled()
   const [draftGoogleMapsEnabled, setDraftGoogleMapsEnabled] = useState(getDraftGoogleMapsPreference)
+
+  useEffect(() => {
+    if (!isSiteReady || window.localStorage.getItem(GOOGLE_MAPS_PREFERENCE_KEY) !== null) return undefined
+
+    const timer = window.setTimeout(() => {
+      if (window.localStorage.getItem(GOOGLE_MAPS_PREFERENCE_KEY) === null) setIsOpen(true)
+    }, 1000)
+
+    return () => window.clearTimeout(timer)
+  }, [isSiteReady])
 
   useEffect(() => {
     const openDialog = () => {
@@ -86,21 +96,23 @@ function ExternalContentPreferences() {
             <X size={20} aria-hidden="true" />
           </button>
         </header>
-        {isSettingsOpen ? (
-          <label className="external-content-preferences__option">
-            <input type="checkbox" checked={draftGoogleMapsEnabled} onChange={(event) => setDraftGoogleMapsEnabled(event.target.checked)} />
-            <span>
-              <strong>{t('externalContent.mapsTitle')}</strong>
+        <div className="external-content-preferences__content">
+          {isSettingsOpen ? (
+            <label className="external-content-preferences__option">
+              <input type="checkbox" checked={draftGoogleMapsEnabled} onChange={(event) => setDraftGoogleMapsEnabled(event.target.checked)} />
+              <span>
+                <strong>{t('externalContent.mapsTitle')}</strong>
+                <small>{t('externalContent.mapsDescription')}</small>
+              </span>
+            </label>
+          ) : (
+            <div className="external-content-preferences__summary">
+              <strong>{t('externalContent.optionalCookies')}</strong>
+              <span>{t('externalContent.mapsTitle')}</span>
               <small>{t('externalContent.mapsDescription')}</small>
-            </span>
-          </label>
-        ) : (
-          <div className="external-content-preferences__summary">
-            <strong>{t('externalContent.optionalCookies')}</strong>
-            <span>{t('externalContent.mapsTitle')}</span>
-            <small>{t('externalContent.mapsDescription')}</small>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
         <footer>
           {!isSettingsOpen && <button type="button" className="external-content-preferences__secondary" onClick={() => setIsSettingsOpen(true)}>{t('externalContent.settings')}</button>}
           <button type="button" className="external-content-preferences__primary" onClick={savePreferences}>{t('externalContent.save')}</button>
