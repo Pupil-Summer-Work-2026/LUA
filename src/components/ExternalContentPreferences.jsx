@@ -12,6 +12,10 @@ export function isGoogleMapsEnabled() {
   return window.localStorage.getItem(GOOGLE_MAPS_PREFERENCE_KEY) === 'true'
 }
 
+function getDraftGoogleMapsPreference() {
+  return true
+}
+
 export function setGoogleMapsEnabled(enabled) {
   window.localStorage.setItem(GOOGLE_MAPS_PREFERENCE_KEY, String(enabled))
   window.dispatchEvent(new CustomEvent(PREFERENCE_CHANGED_EVENT, { detail: { googleMapsEnabled: enabled } }))
@@ -36,13 +40,15 @@ export function useGoogleMapsEnabled() {
 
 function ExternalContentPreferences() {
   const { t } = useLanguage()
-  const [isOpen, setIsOpen] = useState(false)
-  const [googleMapsEnabled, setGoogleMapsPreference] = useGoogleMapsEnabled()
-  const [draftGoogleMapsEnabled, setDraftGoogleMapsEnabled] = useState(googleMapsEnabled)
+  const [isOpen, setIsOpen] = useState(() => window.localStorage.getItem(GOOGLE_MAPS_PREFERENCE_KEY) === null)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [, setGoogleMapsPreference] = useGoogleMapsEnabled()
+  const [draftGoogleMapsEnabled, setDraftGoogleMapsEnabled] = useState(getDraftGoogleMapsPreference)
 
   useEffect(() => {
     const openDialog = () => {
-      setDraftGoogleMapsEnabled(isGoogleMapsEnabled())
+      setDraftGoogleMapsEnabled(getDraftGoogleMapsPreference())
+      setIsSettingsOpen(false)
       setIsOpen(true)
     }
 
@@ -62,7 +68,7 @@ function ExternalContentPreferences() {
   }, [isOpen])
 
   const savePreferences = () => {
-    setGoogleMapsPreference(draftGoogleMapsEnabled)
+    setGoogleMapsPreference(isSettingsOpen ? draftGoogleMapsEnabled : true)
     setIsOpen(false)
   }
 
@@ -80,15 +86,23 @@ function ExternalContentPreferences() {
             <X size={20} aria-hidden="true" />
           </button>
         </header>
-        <label className="external-content-preferences__option">
-          <input type="checkbox" checked={draftGoogleMapsEnabled} onChange={(event) => setDraftGoogleMapsEnabled(event.target.checked)} />
-          <span>
-            <strong>{t('externalContent.mapsTitle')}</strong>
+        {isSettingsOpen ? (
+          <label className="external-content-preferences__option">
+            <input type="checkbox" checked={draftGoogleMapsEnabled} onChange={(event) => setDraftGoogleMapsEnabled(event.target.checked)} />
+            <span>
+              <strong>{t('externalContent.mapsTitle')}</strong>
+              <small>{t('externalContent.mapsDescription')}</small>
+            </span>
+          </label>
+        ) : (
+          <div className="external-content-preferences__summary">
+            <strong>{t('externalContent.optionalCookies')}</strong>
+            <span>{t('externalContent.mapsTitle')}</span>
             <small>{t('externalContent.mapsDescription')}</small>
-          </span>
-        </label>
+          </div>
+        )}
         <footer>
-          <button type="button" className="external-content-preferences__secondary" onClick={() => setIsOpen(false)}>{t('externalContent.cancel')}</button>
+          {!isSettingsOpen && <button type="button" className="external-content-preferences__secondary" onClick={() => setIsSettingsOpen(true)}>{t('externalContent.settings')}</button>}
           <button type="button" className="external-content-preferences__primary" onClick={savePreferences}>{t('externalContent.save')}</button>
         </footer>
       </section>

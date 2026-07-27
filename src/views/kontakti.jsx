@@ -8,7 +8,7 @@ import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import FormPrivacyNotice from '../components/FormPrivacyNotice'
 import TurnstileWidget from '../components/TurnstileWidget'
-import { useGoogleMapsEnabled } from '../components/ExternalContentPreferences'
+import { openExternalContentPreferences, useGoogleMapsEnabled } from '../components/ExternalContentPreferences'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
 import { getFormErrorMessage } from '../services/formErrorMessage'
@@ -20,7 +20,7 @@ const GOOGLE_MAPS_EXTERNAL_URL = 'https://www.google.com/maps/search/?api=1&quer
 
 function LocationMap() {
   const { t } = useLanguage()
-  const [isGoogleMapsEnabled, setGoogleMapsEnabled] = useGoogleMapsEnabled()
+  const [isGoogleMapsEnabled] = useGoogleMapsEnabled()
 
   if (isGoogleMapsEnabled) {
     return <iframe className="contacts-page__map" title={t('contacts.map')} src={GOOGLE_MAPS_EMBED_URL} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" />
@@ -31,7 +31,7 @@ function LocationMap() {
       <h2>{t('externalContent.mapHeading')}</h2>
       <p>{t('externalContent.mapDescription')}</p>
       <div>
-        <button type="button" onClick={() => setGoogleMapsEnabled(true)}>{t('externalContent.mapLoad')}</button>
+        <button type="button" onClick={openExternalContentPreferences}>{t('externalContent.mapLoad')}</button>
         <a href={GOOGLE_MAPS_EXTERNAL_URL} target="_blank" rel="noreferrer">{t('externalContent.mapExternal')}</a>
       </div>
       <Link to="/privatuma-politika">{t('externalContent.mapPrivacy')}</Link>

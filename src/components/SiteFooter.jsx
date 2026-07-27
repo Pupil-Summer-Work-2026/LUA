@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import './site.css'
 import { footerNavigationColumns } from '../data/navigation'
 import { useLanguage } from '../i18n/LanguageContext'
-import ExternalContentPreferences, { openExternalContentPreferences } from './ExternalContentPreferences'
+import { openExternalContentPreferences } from './ExternalContentPreferences'
 
 const [primaryNavigation] = footerNavigationColumns
 const FACEBOOK_URL = 'https://www.facebook.com/p/Latvijas-Ugunsdro%C5%A1%C4%ABbas-asoci%C4%81cija-100057329804981/'
@@ -63,7 +63,6 @@ function SiteFooter() {
           <button type="button" onClick={openExternalContentPreferences}>{t('footer.preferences')}</button>
         </div>
       </div>
-      <ExternalContentPreferences />
     </footer>
   )
 }
