@@ -22,6 +22,7 @@ import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
 import PrivatumaPolitika from './views/privatuma-politika.jsx'
 import { LanguageProvider } from './i18n/LanguageContext'
 import LoadingScreen from './components/LoadingScreen'
+import ExternalContentPreferences from './components/ExternalContentPreferences'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -57,6 +58,7 @@ const App = () => {
   return (
     <LanguageProvider>
       {isLoading && <LoadingScreen />}
+      <ExternalContentPreferences />
       <Router>
         <ScrollToTop />
         <Switch>
