@@ -1,8 +1,15 @@
+x-logging: &default-logging
+  driver: local
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   db:
     image: postgres:16-alpine
     restart: unless-stopped
     env_file: .env
+    logging: *default-logging
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -22,6 +29,8 @@ services:
       POSTGRES_PORT: 5432
       STATIC_ROOT: /data/static
       MEDIA_ROOT: /data/media
+      FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR: "True"
+    logging: *default-logging
     depends_on:
       db:
         condition: service_healthy
@@ -35,8 +44,10 @@ services:
       target: frontend-server
       args:
         VITE_TURNSTILE_SITE_KEY: ${VITE_TURNSTILE_SITE_KEY:-}
+        VITE_PRIVACY_CONTACT_EMAIL: ${VITE_PRIVACY_CONTACT_EMAIL:?Set VITE_PRIVACY_CONTACT_EMAIL in .env}
     restart: unless-stopped
     env_file: .env
+    logging: *default-logging
     depends_on:
       - web
     ports:

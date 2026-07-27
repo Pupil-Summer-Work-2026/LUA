@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import './registrs.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import FormPrivacyNotice from '../components/FormPrivacyNotice'
 import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
@@ -70,12 +71,13 @@ const Registrs = () => {
           </div>
           <form className="registry-page__form" onSubmit={handleSubmit} onChange={() => setIsSubmitted(false)}>
             <label htmlFor="name">{t('registrs.name')}</label>
-            <input type="text" id="name" name="fullName" required />
+            <input type="text" id="name" name="fullName" autoComplete="name" maxLength={150} required />
             <label htmlFor="email">{t('registrs.email')}</label>
-            <input type="email" id="email" name="email" required />
+            <input type="email" id="email" name="email" autoComplete="email" maxLength={254} required />
             <label htmlFor="company">{t('registrs.company')}</label>
-            <input type="text" id="company" name="companyName" required />
+            <input type="text" id="company" name="companyName" autoComplete="organization" maxLength={200} required />
             <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+            <FormPrivacyNotice purpose="registry" />
             <button type="submit" disabled={!turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('registrs.send')}</button>
             {isSubmitted && <p className="registry-page__form-status" role="status">{t('registrs.sent')}</p>}
             {submitError && <p className="registry-page__form-error" role="alert">{submitError}</p>}

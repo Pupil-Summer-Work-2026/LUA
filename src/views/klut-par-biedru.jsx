@@ -6,6 +6,7 @@ import './klut-par-biedru.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
+import FormPrivacyNotice from '../components/FormPrivacyNotice'
 import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
@@ -100,27 +101,27 @@ function KlutParBiedru() {
           >
             <label>
               {t('join.company')}
-              <input name="companyName" type="text" autoComplete="organization" required />
+              <input name="companyName" type="text" autoComplete="organization" maxLength={200} required />
             </label>
             <label>
               {t('join.position')}
-              <input name="position" type="text" autoComplete="organization-title" required />
+              <input name="position" type="text" autoComplete="organization-title" maxLength={120} required />
             </label>
             <label>
               {t('join.name')}
-              <input name="fullName" type="text" autoComplete="name" required />
+              <input name="fullName" type="text" autoComplete="name" maxLength={150} required />
             </label>
             <label>
               {t('join.email')}
-              <input name="email" type="email" autoComplete="email" required />
+              <input name="email" type="email" autoComplete="email" maxLength={254} required />
             </label>
             <label>
               {t('join.phone')}
-              <input name="phone" type="tel" autoComplete="tel" required />
+              <input name="phone" type="tel" autoComplete="tel" maxLength={50} required />
             </label>
             <label className="join-page__form-description">
               {t('join.description')}
-              <textarea name="companyDescription" rows="5" required />
+              <textarea name="companyDescription" maxLength={5000} rows="5" required />
             </label>
             <div className="join-page__form-action">
               <div className="join-page__commitment">
@@ -140,6 +141,7 @@ function KlutParBiedru() {
                 </label>
               </div>
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+              <FormPrivacyNotice purpose="membership" />
               <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
               {submitError && <p className="join-page__form-error" role="alert">{submitError}</p>}

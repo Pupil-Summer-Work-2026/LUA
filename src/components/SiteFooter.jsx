@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import './site.css'
 import { footerNavigationColumns } from '../data/navigation'
 import { useLanguage } from '../i18n/LanguageContext'
+import ExternalContentPreferences, { openExternalContentPreferences } from './ExternalContentPreferences'
 
 const [primaryNavigation] = footerNavigationColumns
 const FACEBOOK_URL = 'https://www.facebook.com/p/Latvijas-Ugunsdro%C5%A1%C4%ABbas-asoci%C4%81cija-100057329804981/'
@@ -34,6 +35,7 @@ function NavigationColumn({ items }) {
 }
 
 function SiteFooter() {
+  const history = useHistory()
   const { t } = useLanguage()
 
   return (
@@ -54,7 +56,15 @@ function SiteFooter() {
           <span>{t('footer.account')}</span>
         </address>
       </div>
-      <div className="site-footer__copyright">{t('footer.copyright')}</div>
+      <div className="site-footer__copyright">
+        <span>{t('footer.copyright')}</span>
+        <div className="site-footer__legal">
+          <button type="button" onClick={() => history.push('/privatuma-politika')}>{t('footer.privacy')}</button>
+          <button type="button" onClick={() => history.push('/juridiska-informacija')}>{t('footer.legal')}</button>
+          <button type="button" onClick={openExternalContentPreferences}>{t('footer.preferences')}</button>
+        </div>
+      </div>
+      <ExternalContentPreferences />
     </footer>
   )
 }

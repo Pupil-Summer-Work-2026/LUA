@@ -1,0 +1,99 @@
+import React, { useEffect, useState } from 'react'
+import { X } from 'lucide-react'
+
+import './external-content-preferences.css'
+import { useLanguage } from '../i18n/LanguageContext'
+
+export const GOOGLE_MAPS_PREFERENCE_KEY = 'lua-google-maps-enabled'
+const PREFERENCES_DIALOG_EVENT = 'lua:open-external-content-preferences'
+const PREFERENCE_CHANGED_EVENT = 'lua:external-content-preference-changed'
+
+export function isGoogleMapsEnabled() {
+  return window.localStorage.getItem(GOOGLE_MAPS_PREFERENCE_KEY) === 'true'
+}
+
+export function setGoogleMapsEnabled(enabled) {
+  window.localStorage.setItem(GOOGLE_MAPS_PREFERENCE_KEY, String(enabled))
+  window.dispatchEvent(new CustomEvent(PREFERENCE_CHANGED_EVENT, { detail: { googleMapsEnabled: enabled } }))
+}
+
+export function openExternalContentPreferences() {
+  window.dispatchEvent(new Event(PREFERENCES_DIALOG_EVENT))
+}
+
+export function useGoogleMapsEnabled() {
+  const [enabled, setEnabled] = useState(isGoogleMapsEnabled)
+
+  useEffect(() => {
+    const handlePreferenceChange = (event) => setEnabled(event.detail.googleMapsEnabled)
+
+    window.addEventListener(PREFERENCE_CHANGED_EVENT, handlePreferenceChange)
+    return () => window.removeEventListener(PREFERENCE_CHANGED_EVENT, handlePreferenceChange)
+  }, [])
+
+  return [enabled, setGoogleMapsEnabled]
+}
+
+function ExternalContentPreferences() {
+  const { t } = useLanguage()
+  const [isOpen, setIsOpen] = useState(false)
+  const [googleMapsEnabled, setGoogleMapsPreference] = useGoogleMapsEnabled()
+  const [draftGoogleMapsEnabled, setDraftGoogleMapsEnabled] = useState(googleMapsEnabled)
+
+  useEffect(() => {
+    const openDialog = () => {
+      setDraftGoogleMapsEnabled(isGoogleMapsEnabled())
+      setIsOpen(true)
+    }
+
+    window.addEventListener(PREFERENCES_DIALOG_EVENT, openDialog)
+    return () => window.removeEventListener(PREFERENCES_DIALOG_EVENT, openDialog)
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return undefined
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setIsOpen(false)
+    }
+
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [isOpen])
+
+  const savePreferences = () => {
+    setGoogleMapsPreference(draftGoogleMapsEnabled)
+    setIsOpen(false)
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="external-content-preferences" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setIsOpen(false)}>
+      <section className="external-content-preferences__dialog" role="dialog" aria-modal="true" aria-labelledby="external-content-preferences-heading">
+        <header>
+          <div>
+            <h2 id="external-content-preferences-heading">{t('externalContent.preferencesTitle')}</h2>
+            <p>{t('externalContent.preferencesDescription')}</p>
+          </div>
+          <button type="button" className="external-content-preferences__close" onClick={() => setIsOpen(false)} aria-label={t('externalContent.close')}>
+            <X size={20} aria-hidden="true" />
+          </button>
+        </header>
+        <label className="external-content-preferences__option">
+          <input type="checkbox" checked={draftGoogleMapsEnabled} onChange={(event) => setDraftGoogleMapsEnabled(event.target.checked)} />
+          <span>
+            <strong>{t('externalContent.mapsTitle')}</strong>
+            <small>{t('externalContent.mapsDescription')}</small>
+          </span>
+        </label>
+        <footer>
+          <button type="button" className="external-content-preferences__secondary" onClick={() => setIsOpen(false)}>{t('externalContent.cancel')}</button>
+          <button type="button" className="external-content-preferences__primary" onClick={savePreferences}>{t('externalContent.save')}</button>
+        </footer>
+      </section>
+    </div>
+  )
+}
+
+export default ExternalContentPreferences

@@ -43,10 +43,9 @@ def rate_limit_failure_response(request, correlation_id, endpoint):
         return None
 
     logger.warning(
-        "Form rate limit exceeded endpoint=%s scope=%s client_ip=%s correlation_id=%s",
+        "Form rate limit exceeded endpoint=%s scope=%s correlation_id=%s",
         endpoint,
         result.scope,
-        result.client_ip,
         correlation_id,
     )
     response = JsonResponse(
@@ -85,7 +84,7 @@ def registrs(request):
     email = serializer.validated_data["email"]
     company_name = serializer.validated_data["companyName"]
 
-    logger.info("Membership form received for %s", email or full_name)
+    logger.info("Registry form received correlation_id=%s", correlation_id)
 
     message = "\n".join(
         [
@@ -104,12 +103,12 @@ def registrs(request):
             subject="jauna biedra pieteikums",
             message=message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.MEMBERSHIP_FORM_RECIPIENT],
+            recipient_list=[settings.REGISTRATION_FORM_RECIPIENT],
             fail_silently=False,
         )
-        logger.info("Membership form email sent successfully")
+        logger.info("Registry form email sent correlation_id=%s", correlation_id)
     except Exception:
-        logger.exception("Membership form email failed")
+        logger.exception("Registry form email failed correlation_id=%s", correlation_id)
         return JsonResponse(
             {
                 "success": False,
@@ -221,6 +220,7 @@ def ktparbiedru(request):
             f"Vārds un uzvārds: {full_name}",
             f"E-pasts: {email}",
             f"Tālrunis: {phone}",
+            "Biedra pienākumi: apstiprināti",
             "",
             "Īss uzņēmuma apraksts:",
             company_description,
@@ -268,7 +268,10 @@ class MemberViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class HonorableMemberViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = HonorableMember.objects.all()
+    queryset = HonorableMember.objects.filter(
+        publication_consent_recorded_at__isnull=False,
+        publication_consent_withdrawn_at__isnull=True,
+    ).exclude(publication_consent_reference="")
     serializer_class = HonorableMemberSerializer
 
 

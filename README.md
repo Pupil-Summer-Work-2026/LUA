@@ -12,6 +12,7 @@ LUA is the public website and content platform for the Latvian Fire Safety Assoc
 - [Configuration](#configuration)
 - [Production deployment](#production-deployment)
 - [Operations and backups](#operations-and-backups)
+- [GDPR operations](#gdpr-operations)
 - [Security and abuse prevention](#security-and-abuse-prevention)
 - [Troubleshooting](#troubleshooting)
 - [Quality checks](#quality-checks)
@@ -205,6 +206,10 @@ docker compose exec web python manage.py check --deploy
 
 Verify the deployed domain, a direct client-side route such as `/kontakti`, `/api/posts/`, `/admin/`, an uploaded image under `/media/`, and the public form submissions after each initial deployment.
 
+### GDPR operations
+
+Use [GDPR_OPERATIONS.md](GDPR_OPERATIONS.md) as a release gate and recurring operating procedure. It covers the records, contracts, retention and deletion runs, rights requests, consent evidence, access reviews, incident response, and review schedule that application code cannot perform. Complete and evidence the before-launch items before representing the service as compliant.
+
 ## Configuration
 
 Copy `.env.example` to `.env` for production. Keep `.env` out of version control and restart affected services after changes. The Windows setup script creates a minimal development `.env`; it is not suitable for production.
@@ -218,6 +223,7 @@ Copy `.env.example` to `.env` for production. Keep `.env` out of version control
 | `EMAIL_*`, `DEFAULT_FROM_EMAIL`, form recipients | Django server | Yes for real form delivery | SMTP transport and destinations for public form submissions. |
 | `VITE_API_BASE_URL` | Frontend build-time | Required for a separately hosted API | API origin without a trailing slash. It defaults to `/api` for the Vite proxy and same-origin Docker deployment. |
 | `VITE_TURNSTILE_SITE_KEY` | Frontend build-time | Yes for public forms | Cloudflare Turnstile site key embedded in the built frontend. |
+| `VITE_PRIVACY_CONTACT_EMAIL` | Frontend build-time | Yes before production | Monitored email address shown in the privacy policy for GDPR/privacy requests. Rebuild the frontend after changing it. |
 | `TURNSTILE_SECRET_KEY` | Django server | Yes for public forms | Server-only key used to validate Turnstile tokens. |
 | `FORM_RATE_LIMIT_*` | Django server | Optional | Submission quotas and time windows. |
 
@@ -236,9 +242,13 @@ TURNSTILE_SECRET_KEY=your-turnstile-secret-key
 
 For compatibility, the existing `VITE_TURNSTILE_API_KEY` and `TURNSTILE_SITE_KEY` variable names are also accepted. Prefer the names above for new deployments.
 
+### Privacy contact
+
+Set `VITE_PRIVACY_CONTACT_EMAIL` to a monitored Association mailbox before deploying. Production frontend and Caddy image builds fail when it is absent, preventing a placeholder privacy address from being published. As a `VITE_` variable, it is embedded in the compiled frontend: rebuild the Vite bundle or Caddy image after changing it.
+
 ### Form rate limits
 
-After Turnstile succeeds, Django rate-limits email-sending form submissions by client IP to limit spam and email abuse. The defaults are five total form submissions per hour, with additional per-form limits of three contact submissions per hour, two membership submissions per day, and three registry submissions per day. Exceeding a limit returns JSON `429 Too Many Requests` with a `Retry-After` header; no email is sent.
+After Turnstile succeeds, Django rate-limits email-sending form submissions by client IP to limit spam and email abuse. The supplied Compose topology makes Caddy overwrite `X-Forwarded-For` from its direct peer, keeps Django inaccessible from the host network, and enables trust for that header on the `web` service. The defaults are five total form submissions per hour, with additional per-form limits of three contact submissions per hour, two membership submissions per day, and three registry submissions per day. Exceeding a limit returns JSON `429 Too Many Requests` with a `Retry-After` header; no email is sent.
 
 The limits can be adjusted with these server-only environment variables:
 
@@ -252,6 +262,8 @@ FORM_RATE_LIMIT_MEMBERSHIP_WINDOW_SECONDS=86400
 FORM_RATE_LIMIT_REGISTRY_LIMIT=3
 FORM_RATE_LIMIT_REGISTRY_WINDOW_SECONDS=86400
 ```
+
+Keep `FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR=False` when Django is directly reachable. If another reverse proxy or CDN is placed before Caddy, configure its trusted-proxy handling and origin access restrictions before relying on forwarded client addresses; do not expose the Docker `web` service directly while proxy trust is enabled.
 
 The default Django local-memory cache makes these limits effective for one Django process. Configure `FORM_RATE_LIMIT_CACHE_ALIAS` to use a shared Django cache alias before running multiple backend workers or replicas. Keep `FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR=False` unless a trusted reverse proxy removes client-supplied forwarding headers and sets its own. Enabling it behind an untrusted proxy lets clients choose the IP address used for rate limiting.
 
@@ -357,7 +369,7 @@ Successful submissions return `200 OK`:
 | `429` | Shared or endpoint-specific quota exceeded | `errors.rateLimit`, `correlationId`, and a `Retry-After` response header in seconds. |
 | `500` | Email delivery failed | `success: false`, a user-facing message, and `correlationId`. |
 
-The registry handler currently sends to `MEMBERSHIP_FORM_RECIPIENT`. `REGISTRATION_FORM_RECIPIENT` is read from the environment but is not consumed by the current view implementation.
+The registry handler sends submissions only to `REGISTRATION_FORM_RECIPIENT`. Keep it separate from `MEMBERSHIP_FORM_RECIPIENT` unless the same authorised team is responsible for both processes.
 
 - `GET /api/posts/`
 - `GET /api/posts/<id>/`

@@ -8,6 +8,7 @@ import {
   useLocation,
 } from 'react-router-dom'
 
+import './fonts.css'
 import './style.css'
 import Registrs from './views/registrs.jsx'
 import Sakumlapa from './views/sakumlapa.jsx'
@@ -18,6 +19,8 @@ import Kontakti from './views/kontakti.jsx'
 import Biedri from './views/biedri.jsx'
 import KlutParBiedru from './views/klut-par-biedru.jsx'
 import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
+import PrivatumaPolitika from './views/privatuma-politika.jsx'
+import JuridiskaInformacija from './views/juridiska-informacija.jsx'
 import { LanguageProvider } from './i18n/LanguageContext'
 import LoadingScreen from './components/LoadingScreen'
 
@@ -66,6 +69,8 @@ const App = () => {
           <Route component={Biedri} exact path="/biedri" />
           <Route component={KlutParBiedru} exact path="/klut-par-biedru" />
           <Route component={Registrs} exact path="/registrs" />
+          <Route component={PrivatumaPolitika} exact path="/privatuma-politika" />
+          <Route component={JuridiskaInformacija} exact path="/juridiska-informacija" />
           <Redirect exact from="/about-us" to="/par-mums" />
           <Redirect exact from="/contacts" to="/kontakti" />
           <Redirect exact from="/ktparbiedru" to="/klut-par-biedru" />
