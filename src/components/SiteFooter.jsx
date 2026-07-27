@@ -60,7 +60,6 @@ function SiteFooter() {
         <span>{t('footer.copyright')}</span>
         <div className="site-footer__legal">
           <button type="button" onClick={() => history.push('/privatuma-politika')}>{t('footer.privacy')}</button>
-          <button type="button" onClick={() => history.push('/juridiska-informacija')}>{t('footer.legal')}</button>
           <button type="button" onClick={openExternalContentPreferences}>{t('footer.preferences')}</button>
         </div>
       </div>
