@@ -17,7 +17,7 @@ const services = [
 ]
 
 const collaborationPartners = [
-  ['/Biedri/DAKIB.png', 'DAKIB', 'https://www.dakib.lv/', true],
+  ['/Biedri/EKM.png', 'Ekonomikas ministrija', 'https://www.em.gov.lv/lv', true],
   ['/Biedri/iekslietu ministrija.png', 'Iekšlietu ministrija', 'https://www.iem.gov.lv/lv'],
   ['/Biedri/LDDK.svg', 'Latvijas Darba devēju konfederācija', 'https://lddk.lv/'],
   ['/Biedri/vugd.png', 'Valsts ugunsdzēsības un glābšanas dienests', 'https://www.vugd.gov.lv/lv', true],

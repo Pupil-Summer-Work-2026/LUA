@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 
 import './klut-par-biedru.css'
 import CountUpNumber from '../components/CountUpNumber'
@@ -31,6 +32,7 @@ function KlutParBiedru() {
   const associationYears = getAssociationYears()
   const { t } = useLanguage()
   const { isOnCooldown, remainingSeconds, startCooldown } = useFormCooldown()
+  const statutesWord = t('join.statutesWord')
 
   useEffect(() => {
     document.title = t('join.pageTitle')
@@ -127,7 +129,15 @@ function KlutParBiedru() {
               <div className="join-page__commitment">
                 <h3>{t('join.dutiesHeading')}</h3>
                 <ul>
-                  {t('join.duties').map((duty) => <li key={duty}>{duty}</li>)}
+                  {t('join.duties').map((duty, index) => {
+                    const [beforeStatutes, afterStatutes] = duty.split(statutesWord)
+
+                    return (
+                      <li key={duty}>
+                        {index === 0 && afterStatutes !== undefined ? <>{beforeStatutes}<Link to="/statuti">{statutesWord}</Link>{afterStatutes}</> : duty}
+                      </li>
+                    )
+                  })}
                 </ul>
                 <label>
                   <input

@@ -1,0 +1,21 @@
+.statutes-page__content { max-width: 860px; padding: 64px 0 88px; }
+.statutes-page__document-heading { padding-bottom: 32px; text-align: center; }
+.statutes-page__document-heading p { margin: 0 0 10px; color: var(--lua-navy); font: 700 16px/1.5 'DM Sans', sans-serif; text-transform: uppercase; }
+.statutes-page__document-heading h2 { margin: 0 0 10px; color: var(--lua-navy); font: 800 36px/1.05 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.statutes-page__section { padding: 28px 0; border-top: 1px solid #dce4ee; }
+.statutes-page__section h2 { margin: 0 0 14px; color: var(--lua-navy); font: 800 30px/1 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.statutes-page__section p, .statutes-page__section li, .statutes-page__approval p { color: #435773; font-size: 15px; line-height: 1.65; }
+.statutes-page__section p { margin: 0 0 13px; }
+.statutes-page__section p:last-child { margin-bottom: 0; }
+.statutes-page__clause, .statutes-page__subclauses li { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 8px; }
+.statutes-page__clause-number { color: var(--lua-navy); font-weight: 700; white-space: nowrap; }
+.statutes-page__subclauses { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.statutes-page__approval { padding-top: 28px; border-top: 1px solid #dce4ee; }
+.statutes-page__approval p { margin: 0 0 13px; }
+
+@media (max-width: 600px) {
+  .statutes-page__content { padding: 44px 0 62px; }
+  .statutes-page__document-heading h2 { font-size: 31px; }
+  .statutes-page__section h2 { font-size: 27px; }
+  .statutes-page__section p, .statutes-page__section li, .statutes-page__approval p { font-size: 14px; }
+}
