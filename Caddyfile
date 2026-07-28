@@ -41,6 +41,10 @@
     }
 }
 
+www.{$DOMAIN:localhost} {
+    redir https://{$DOMAIN:localhost}{uri} permanent
+}
+
 ugunsdzesiba.lv, www.ugunsdzesiba.lv {
     redir https://lua.lv{uri} permanent
 }
