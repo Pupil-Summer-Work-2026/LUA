@@ -78,7 +78,6 @@
   .lua-services { grid-template-columns: 1fr; gap: 16px; }
   .lua-services article { min-height: 0; }
   .lua-article-grid { grid-template-columns: repeat(2, 1fr); }
-  .lua-article-grid a:last-child { display: none; }
   .lua-logo-carousel__group { gap: 14px; padding-right: 14px; }
   .lua-logo-carousel__item { width: 132px; }
   .lua-logo-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -88,7 +87,6 @@
   .lua-hero h1 { font-size: 48px; }
   .lua-section__heading, .lua-join { align-items: flex-start; flex-direction: column; }
   .lua-article-grid { grid-template-columns: 1fr; }
-  .lua-article-grid a:nth-child(n + 4) { display: none; }
   .lua-logo-grid { grid-template-columns: repeat(2, minmax(0, 160px)); }
 }
 
