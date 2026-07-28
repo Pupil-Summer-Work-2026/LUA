@@ -44,7 +44,6 @@ services:
       target: frontend-server
       args:
         VITE_TURNSTILE_SITE_KEY: ${VITE_TURNSTILE_SITE_KEY:-}
-        VITE_PRIVACY_CONTACT_EMAIL: ${VITE_PRIVACY_CONTACT_EMAIL:?Set VITE_PRIVACY_CONTACT_EMAIL in .env}
     restart: unless-stopped
     env_file: .env
     logging: *default-logging

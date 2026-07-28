@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet'
 import './privatuma-politika.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
-import FormPrivacyNotice from '../components/FormPrivacyNotice'
 import TurnstileWidget from '../components/TurnstileWidget'
 import { useLanguage } from '../i18n/LanguageContext'
 import { submitForm } from '../services/blogApi'
@@ -93,7 +92,6 @@ function PrivatumaPolitika() {
               {isSubmitted && <p className="legal-page__form-status" role="status">{t('contacts.sent')}</p>}
               {submitError && <p className="legal-page__form-error" role="alert">{submitError}</p>}
               {isOnCooldown && <p className="legal-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
-              <FormPrivacyNotice purpose="contact" />
             </form>
           </section>
           <p className="legal-page__updated">{privacy.updated}</p>
