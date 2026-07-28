@@ -18,7 +18,7 @@
 .contacts-page__map-placeholder button { color: #fff; border: 1px solid var(--lua-red); background: var(--lua-red); }
 .contacts-page__map-placeholder button:hover { border-color: #a40d18; background: #a40d18; }
 .contacts-page__map-placeholder a { color: var(--lua-navy); border: 1px solid #9badc2; background: #fff; }
-.contacts-page__map-placeholder > a { min-height: auto; padding: 0; color: var(--lua-red); border: 0; background: transparent; font-size: 12px; font-weight: 700; text-underline-offset: 3px; }
+.contacts-page__map-placeholder > a { min-height: auto; padding: 0; color: var(--lua-red); border: 0; background: transparent; font-size: 12px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .contacts-page__map-placeholder button:focus-visible, .contacts-page__map-placeholder a:focus-visible { outline: 2px solid #1767d2; outline-offset: 2px; }
 
 .contacts-page h1, .contacts-page h2 { margin: 16px 0 24px; font: 800 42px/.95 'Barlow Condensed', sans-serif; }
@@ -49,7 +49,7 @@
 .contacts-page__resource-category ul { margin: 4px 0 0; padding-left: 18px; }
 .contacts-page__resource-category li { padding-left: 2px; }
 .contacts-page__resource-subheading { grid-column: 1 / -1; margin: 24px 0 8px; color: #fff; font: 700 20px/.95 'Barlow Condensed', sans-serif; }
-.contacts-page__resource-list a { color: var(--lua-red); }
+.contacts-page__resource-list a { color: var(--lua-red); text-decoration: underline; text-underline-offset: 3px; }
 
 @media (max-width: 760px) {
   .contacts-page__intro { grid-template-columns: 1fr; gap: 36px; }

@@ -32,6 +32,7 @@
 .join-page__commitment input[type="checkbox"] { flex: 0 0 auto; width: 18px; height: 18px; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; accent-color: var(--lua-red); }
 .join-page__commitment ul { margin: 0; padding: 0 0 0 20px; font: 400 13px/1.45 'DM Sans', sans-serif; }
 .join-page__commitment li + li { margin-top: 8px; }
+.join-page__commitment li a { color: var(--lua-red); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .join-page__notice { min-height: 92px; display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: center; margin-bottom: 136px; padding: 20px 24px; border: 2px solid #64c8f1; }
 .join-page__notice strong { color: var(--lua-red); font: 800 42px/1 'Barlow Condensed', sans-serif; }
 .join-page__notice p { margin: 0; color: #111; font-size: 12px; font-weight: 700; line-height: 1.35; }
