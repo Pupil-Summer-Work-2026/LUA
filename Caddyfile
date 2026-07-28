@@ -41,6 +41,6 @@
     }
 }
 
-www.ugunsdzesiba.lv {
-    redir https://lua.lv permanent
+ugunsdzesiba.lv, www.ugunsdzesiba.lv {
+    redir https://lua.lv{uri} permanent
 }
