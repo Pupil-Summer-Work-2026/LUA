@@ -1,14 +1,7 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), 'VITE_')
-  const privacyContactEmail = process.env.VITE_PRIVACY_CONTACT_EMAIL || env.VITE_PRIVACY_CONTACT_EMAIL
-
-  if (mode === 'production' && !privacyContactEmail?.trim()) {
-    throw new Error('VITE_PRIVACY_CONTACT_EMAIL is required for production builds')
-  }
-
+export default defineConfig(() => {
   return {
     plugins: [react()],
     server: {

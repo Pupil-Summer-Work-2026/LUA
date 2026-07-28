@@ -223,7 +223,6 @@ Copy `.env.example` to `.env` for production. Keep `.env` out of version control
 | `EMAIL_*`, `DEFAULT_FROM_EMAIL`, form recipients | Django server | Yes for real form delivery | SMTP transport and destinations for public form submissions. |
 | `VITE_API_BASE_URL` | Frontend build-time | Required for a separately hosted API | API origin without a trailing slash. It defaults to `/api` for the Vite proxy and same-origin Docker deployment. |
 | `VITE_TURNSTILE_SITE_KEY` | Frontend build-time | Yes for public forms | Cloudflare Turnstile site key embedded in the built frontend. |
-| `VITE_PRIVACY_CONTACT_EMAIL` | Frontend build-time | Yes before production | Monitored email address shown in the privacy policy for GDPR/privacy requests. Rebuild the frontend after changing it. |
 | `TURNSTILE_SECRET_KEY` | Django server | Yes for public forms | Server-only key used to validate Turnstile tokens. |
 | `FORM_RATE_LIMIT_*` | Django server | Optional | Submission quotas and time windows. |
 
@@ -241,10 +240,6 @@ TURNSTILE_SECRET_KEY=your-turnstile-secret-key
 `VITE_TURNSTILE_SITE_KEY` is intentionally exposed to the browser so the widget can render. Keep `TURNSTILE_SECRET_KEY` on the Django server only; it is used to validate each `cf-turnstile-response` with Cloudflare before a form is processed. Vite-prefixed variables are embedded during `npm run build`; rebuild the frontend or Caddy image after changing the site key, and restart Django after changing the secret key.
 
 For compatibility, the existing `VITE_TURNSTILE_API_KEY` and `TURNSTILE_SITE_KEY` variable names are also accepted. Prefer the names above for new deployments.
-
-### Privacy contact
-
-Set `VITE_PRIVACY_CONTACT_EMAIL` to a monitored Association mailbox before deploying. Production frontend and Caddy image builds fail when it is absent, preventing a placeholder privacy address from being published. As a `VITE_` variable, it is embedded in the compiled frontend: rebuild the Vite bundle or Caddy image after changing it.
 
 ### Form rate limits
 
