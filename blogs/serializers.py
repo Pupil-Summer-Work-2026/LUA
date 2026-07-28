@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import HonorableMember, Member, MemberTag, Post, PostImage, Tag
 
 class MessageApplicationSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=150)
+    name = serializers.CharField(max_length=150, required=False, allow_blank=True)
     email = serializers.EmailField(max_length=254)
     message = serializers.CharField(max_length=5000)
 

@@ -142,7 +142,7 @@ def kontakti(request):
     if rate_limit_failure:
         return rate_limit_failure
 
-    name = serializer.validated_data["name"]
+    name = serializer.validated_data.get("name") or "Privātuma politikas veidlapa"
     email = serializer.validated_data["email"]
     message_content = serializer.validated_data["message"]
 

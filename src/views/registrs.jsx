@@ -77,11 +77,11 @@ const Registrs = () => {
             <label htmlFor="company">{t('registrs.company')}</label>
             <input type="text" id="company" name="companyName" autoComplete="organization" maxLength={200} required />
             <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-            <FormPrivacyNotice purpose="registry" />
             <button type="submit" disabled={!turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('registrs.send')}</button>
             {isSubmitted && <p className="registry-page__form-status" role="status">{t('registrs.sent')}</p>}
             {submitError && <p className="registry-page__form-error" role="alert">{submitError}</p>}
             {isOnCooldown && <p className="registry-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
+          <FormPrivacyNotice purpose="registry" />
           </form>
         </section>
       </main>

@@ -123,11 +123,11 @@ function Kontakti() {
               <label htmlFor="contact-message">{t('contacts.message')}</label>
               <textarea id="contact-message" name="message" maxLength={5000} placeholder={t('contacts.messagePlaceholder')} rows="4" required onChange={() => setIsSubmitted(false)} />
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-              <FormPrivacyNotice purpose="contact" className="form-privacy-notice--inverse" />
               <button type="submit" disabled={!turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('contacts.send')}</button>
               {isSubmitted && <p className="contacts-page__form-status" role="status">{t('contacts.sent')}</p>}
               {submitError && <p className="contacts-page__form-error" role="alert">{submitError}</p>}
               {isOnCooldown && <p className="contacts-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
+              <FormPrivacyNotice purpose="contact" className="form-privacy-notice--inverse" />
             </form>
             <div className="contacts-page__resources">
               <h2>{t('contacts.resourcesHeading')}</h2>

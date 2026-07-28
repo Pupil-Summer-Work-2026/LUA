@@ -130,7 +130,7 @@ const translations = {
         { title: 'Sūdzība uzraudzības iestādei', paragraphs: ['Jums ir tiesības iesniegt sūdzību Datu valsts inspekcijā, Elijas ielā 17, Rīgā, LV-1050, vai tīmekļvietnē www.dvi.gov.lv. Pirms tam aicinām sazināties ar mums, lai varam jautājumu atrisināt.'] },
         { title: 'Automatizēta lēmumu pieņemšana', paragraphs: ['Asociācija neizmanto pilnībā automatizētu lēmumu pieņemšanu vai profilēšanu, kas jums radītu juridiskas vai līdzīgi būtiskas sekas. Turnstile automātiski novērtē ļaunprātīgas izmantošanas risku, taču neveic šāda veida lēmumu par jums; neveiksmīgu pārbaudi varat atkārtot vai sazināties ar mums citā veidā.'] },
       ],
-      contact: { title: 'Saziņa par privātumu', body: 'Lai izmantotu savas tiesības vai uzdotu jautājumu par šo politiku, sazinieties ar Asociāciju, izmantojot šo e-pasta adresi:' },
+      contact: { title: 'Privātuma un politikas jautājumi', body: 'Lai izmantotu savas tiesības vai uzdotu jautājumu par šo politiku, sazinieties ar Asociāciju, izmantojot šo e-pasta adresi:' },
       updated: 'Pēdējoreiz atjaunināts: 2026. gada 27. jūlijā. Par būtiskām izmaiņām informēsim šajā lapā un atjaunināsim datumu.',
     },
     notFound: { heading: 'UPS! LAPA NETIKA ATRASTA', alt: '404 Lapa nav atrasta', message: 'PIEDODIET, BET PIEPRASĪTĀ LAPA NETIKA ATRASTA' },

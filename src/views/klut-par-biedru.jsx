@@ -141,11 +141,11 @@ function KlutParBiedru() {
                 </label>
               </div>
               <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
-              <FormPrivacyNotice purpose="membership" />
               <button type="submit" disabled={!hasAcceptedDuties || !turnstileToken || isSubmitting || isOnCooldown} aria-busy={isSubmitting}>{t('join.send')}</button>
               {isSubmitted && <p role="status">{t('join.sent')}</p>}
               {submitError && <p className="join-page__form-error" role="alert">{submitError}</p>}
               {isOnCooldown && <p className="join-page__form-error">{t('formErrors.retryAfterCountdown', { seconds: remainingSeconds })}</p>}
+              <FormPrivacyNotice purpose="membership" />
             </div>
           </form>
         </section>
