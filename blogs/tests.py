@@ -5,13 +5,64 @@ from uuid import UUID
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.cache import cache
-from django.test import Client, override_settings
+from django.core.checks import run_checks
+from django.test import Client, RequestFactory, SimpleTestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from .models import HonorableMember, Member, MemberTag, Post, PostImage, Tag
+from .ratelimit import get_client_ip
+
+
+class ProductionConfigurationChecksTests(SimpleTestCase):
+	@override_settings(
+		DEFAULT_FROM_EMAIL="",
+		MEMBERSHIP_FORM_RECIPIENT="",
+		CONTACT_FORM_RECIPIENT="",
+		REGISTRATION_FORM_RECIPIENT="",
+	)
+	def test_deployment_check_rejects_implicit_email_destinations(self):
+		errors = run_checks(include_deployment_checks=True)
+
+		self.assertEqual(sum(error.id == "blogs.E001" for error in errors), 4)
+
+	@override_settings(
+		DEFAULT_FROM_EMAIL="sender@example.com",
+		MEMBERSHIP_FORM_RECIPIENT="membership@example.com",
+		CONTACT_FORM_RECIPIENT="contact@example.com",
+		REGISTRATION_FORM_RECIPIENT="registry@example.com",
+	)
+	def test_deployment_check_accepts_explicit_email_destinations(self):
+		errors = run_checks(include_deployment_checks=True)
+
+		self.assertFalse(any(error.id in {"blogs.E001", "blogs.E002"} for error in errors))
+
+
+class ClientIpTests(SimpleTestCase):
+	def setUp(self):
+		self.request_factory = RequestFactory()
+
+	@override_settings(FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR=True)
+	def test_proxy_mode_uses_forwarded_client_address(self):
+		request = self.request_factory.post(
+			"/api/kontakti/",
+			HTTP_X_FORWARDED_FOR="198.51.100.7",
+			REMOTE_ADDR="172.18.0.2",
+		)
+
+		self.assertEqual(get_client_ip(request), "198.51.100.7")
+
+	@override_settings(FORM_RATE_LIMIT_TRUST_X_FORWARDED_FOR=False)
+	def test_standalone_mode_ignores_forwarded_client_address(self):
+		request = self.request_factory.post(
+			"/api/kontakti/",
+			HTTP_X_FORWARDED_FOR="198.51.100.7",
+			REMOTE_ADDR="203.0.113.12",
+		)
+
+		self.assertEqual(get_client_ip(request), "203.0.113.12")
 
 
 class PostApiTests(APITestCase):
@@ -107,9 +158,13 @@ class MemberApiTests(APITestCase):
 
 
 class HonorableMemberApiTests(APITestCase):
-	def test_honorable_member_list_returns_names_alphabetically(self):
-		HonorableMember.objects.create(name="Zane Ozola")
-		first_member = HonorableMember.objects.create(name="Anna Bērziņa")
+	def test_honorable_member_list_returns_only_names_with_active_consent(self):
+		consent_recorded_at = timezone.now()
+		HonorableMember.objects.create(name="Zane Ozola", publication_consent_recorded_at=consent_recorded_at, publication_consent_reference="consent-002")
+		first_member = HonorableMember.objects.create(name="Anna Bērziņa", publication_consent_recorded_at=consent_recorded_at, publication_consent_reference="consent-001")
+		HonorableMember.objects.create(name="Unverified Person")
+		HonorableMember.objects.create(name="Missing Reference", publication_consent_recorded_at=consent_recorded_at)
+		HonorableMember.objects.create(name="Withdrawn Person", publication_consent_recorded_at=consent_recorded_at, publication_consent_reference="consent-003", publication_consent_withdrawn_at=timezone.now())
 
 		response = self.client.get(reverse("honorablemember-list"))
 
@@ -142,6 +197,7 @@ class MembershipFormTests(APITestCase):
 			"email": "jane@example.com",
 			"phone": "+37112345678",
 			"companyDescription": "We provide fire safety services.",
+			"dutiesAccepted": True,
 		}
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
@@ -165,6 +221,17 @@ class MembershipFormTests(APITestCase):
 		self.assertFalse(response.json()["success"])
 		self.assertIn("companyName", response.json()["errors"])
 		UUID(response.json()["correlationId"])
+		mock_email_message.assert_not_called()
+
+	@patch("blogs.emailing.EmailMessage")
+	def test_membership_form_requires_duties_acceptance(self, mock_email_message):
+		payload = self.valid_payload()
+		payload.pop("dutiesAccepted")
+
+		response = self.client.post(reverse("ktparbiedru"), payload)
+
+		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+		self.assertIn("dutiesAccepted", response.json()["errors"])
 		mock_email_message.assert_not_called()
 
 	@override_settings(MEMBERSHIP_FORM_RECIPIENT="membership@example.com")
@@ -242,6 +309,45 @@ class ContactFormTests(APITestCase):
 		mock_email_message.return_value.send.assert_called_once_with(fail_silently=False)
 
 
+class RegistryFormTests(APITestCase):
+	def setUp(self):
+		cache.clear()
+		self.turnstile_patcher = patch("blogs.views.verify_turnstile", return_value=True)
+		self.turnstile_patcher.start()
+		self.addCleanup(self.turnstile_patcher.stop)
+
+	@override_settings(REGISTRATION_FORM_RECIPIENT="registry@example.com")
+	@patch("blogs.views.send_mail")
+	def test_registry_form_sends_only_to_configured_recipient(self, mock_send_mail):
+		response = self.client.post(
+			reverse("registrs"),
+			{
+				"fullName": "Jane Doe",
+				"email": "jane@example.com",
+				"companyName": "Acme",
+			},
+		)
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		mock_send_mail.assert_called_once()
+		self.assertEqual(mock_send_mail.call_args.kwargs["recipient_list"], ["registry@example.com"])
+
+	@patch("blogs.views.send_mail")
+	def test_registry_form_rejects_oversized_name(self, mock_send_mail):
+		response = self.client.post(
+			reverse("registrs"),
+			{
+				"fullName": "x" * 151,
+				"email": "jane@example.com",
+				"companyName": "Acme",
+			},
+		)
+
+		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+		self.assertIn("fullName", response.json()["errors"])
+		mock_send_mail.assert_not_called()
+
+
 class TurnstileFormVerificationTests(APITestCase):
 	def setUp(self):
 		cache.clear()
@@ -274,6 +380,7 @@ class FormRateLimitTests(APITestCase):
 			"email": "jane@example.com",
 			"phone": "+37112345678",
 			"companyDescription": "We provide fire safety services.",
+			"dutiesAccepted": True,
 		}
 
 	def contact_payload(self):

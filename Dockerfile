@@ -31,7 +31,7 @@ RUN chmod +x /app/docker-entrypoint.sh
 EXPOSE 8000
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
-CMD ["gunicorn", "lua.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1", "--access-logfile", "-", "--error-logfile", "-"]
+CMD ["gunicorn", "lua.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1", "--error-logfile", "-"]
 
 
 FROM caddy:2.8-alpine AS frontend-server

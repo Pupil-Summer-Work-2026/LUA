@@ -29,6 +29,7 @@ class MemberAdmin(admin.ModelAdmin):
 
 @admin.register(HonorableMember)
 class HonorableMemberAdmin(admin.ModelAdmin):
+	list_display = ("name", "publication_consent_recorded_at", "publication_consent_withdrawn_at")
 	search_fields = ("name",)
 
 

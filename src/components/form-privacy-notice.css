@@ -1,0 +1,4 @@
+.form-privacy-notice { margin: 4px 0 0; color: #61738d; font: 400 12px/1.55 'DM Sans', sans-serif; }
+.form-privacy-notice a { color: var(--lua-red); font-weight: 700; text-underline-offset: 3px; }
+.form-privacy-notice--inverse { color: #c1ccdc; }
+.form-privacy-notice--inverse a { color: #fff; }

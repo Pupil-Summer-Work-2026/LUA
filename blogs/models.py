@@ -54,6 +54,9 @@ class Member(models.Model):
 
 class HonorableMember(models.Model):
     name = models.CharField(max_length=100)
+    publication_consent_recorded_at = models.DateTimeField(blank=True, null=True)
+    publication_consent_reference = models.CharField(max_length=200, default="")
+    publication_consent_withdrawn_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         ordering = ("name",)

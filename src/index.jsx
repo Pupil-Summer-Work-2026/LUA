@@ -8,6 +8,7 @@ import {
   useLocation,
 } from 'react-router-dom'
 
+import './fonts.css'
 import './style.css'
 import Registrs from './views/registrs.jsx'
 import Sakumlapa from './views/sakumlapa.jsx'
@@ -18,8 +19,10 @@ import Kontakti from './views/kontakti.jsx'
 import Biedri from './views/biedri.jsx'
 import KlutParBiedru from './views/klut-par-biedru.jsx'
 import LapaNavAtrasta from './views/lapa-nav-atrasta.jsx'
+import PrivatumaPolitika from './views/privatuma-politika.jsx'
 import { LanguageProvider } from './i18n/LanguageContext'
 import LoadingScreen from './components/LoadingScreen'
+import ExternalContentPreferences from './components/ExternalContentPreferences'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -55,6 +58,7 @@ const App = () => {
   return (
     <LanguageProvider>
       {isLoading && <LoadingScreen />}
+      <ExternalContentPreferences isSiteReady={!isLoading} />
       <Router>
         <ScrollToTop />
         <Switch>
@@ -66,6 +70,7 @@ const App = () => {
           <Route component={Biedri} exact path="/biedri" />
           <Route component={KlutParBiedru} exact path="/klut-par-biedru" />
           <Route component={Registrs} exact path="/registrs" />
+          <Route component={PrivatumaPolitika} exact path="/privatuma-politika" />
           <Redirect exact from="/about-us" to="/par-mums" />
           <Redirect exact from="/contacts" to="/kontakti" />
           <Redirect exact from="/ktparbiedru" to="/klut-par-biedru" />
