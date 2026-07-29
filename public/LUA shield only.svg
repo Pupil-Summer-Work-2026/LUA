@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="LUA shield only.svg"
+   inkscape:export-filename="LUA-portrait.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.70710677"
+     inkscape:cx="17.67767"
+     inkscape:cy="252.43712"
+     inkscape:window-width="1920"
+     inkscape:window-height="974"
+     inkscape:window-x="-11"
+     inkscape:window-y="1285"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1"
+     inkscape:export-bgcolor="#ffffff00" />
+  <defs
+     id="defs1">
+    <rect
+       x="-240"
+       y="-74"
+       width="638"
+       height="523"
+       id="rect1" />
+    <rect
+       x="1261"
+       y="488"
+       width="265"
+       height="188.99998"
+       id="rect19" />
+  </defs>
+  <g
+     inkscape:label="Slānis 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1"
+       transform="translate(-1.0583333,-0.79375001)">
+      <path
+         style="fill:none;fill-opacity:0.605422;stroke:#0d1f3c;stroke-width:11.0079;stroke-dasharray:none;stroke-opacity:1"
+         d="M 68.631939,7.1966498 C 84.19272,16.853092 99.96681,22.883049 115.92666,25.755337 112.29239,61.698104 127.95949,104.40477 68.48229,129.92352 7.4564028,103.37719 26.219094,60.80738 21.786176,25.455998 39.3464,22.773271 54.227436,15.401949 68.631939,7.1966498 Z"
+         id="path4"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         style="fill:#c8102e;fill-opacity:1;stroke:none;stroke-width:4.28641;stroke-dasharray:none;stroke-opacity:1"
+         d="M 57.382907,114.95197 C 28.531218,97.028957 36.16484,70.059974 45.760105,60.053204 45.678258,66.427812 44.884017,72.720503 53.50417,76.858981 44.338609,43.958525 70.617333,33.849343 68.411936,16.877955 80.431454,30.680144 60.732391,46.285227 83.31041,66.894336 86.93668,61.293674 84.05249,57.104301 83.61447,52.717982 117.06538,82.004219 90.90224,107.76722 80.707307,114.8428 89.60973,85.933756 68.884894,83.86199 66.739662,70.238901 64.86636,77.19611 65.258932,105.78585 56.97628,82.040904 44.679334,92.181986 57.899354,113.36553 57.382907,114.95197 Z"
+         id="path5"
+         sodipodi:nodetypes="cccccccccc" />
+      <text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,1.0583333,0.79375001)"
+         id="text1"
+         style="font-family:'Franklin Gothic Heavy';-inkscape-font-specification:'Franklin Gothic Heavy, ';writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);display:inline;fill:#c8102e;stroke:#c8102e;stroke-width:0.733228;stroke-linecap:round" />
+    </g>
+  </g>
+</svg>
