@@ -37,6 +37,7 @@ function NavigationColumn({ items }) {
 function SiteFooter() {
   const history = useHistory()
   const { t } = useLanguage()
+  const copyright = t('footer.copyright').replace('{year}', new Date().getFullYear())
 
   return (
     <footer className="site-footer">
@@ -57,7 +58,7 @@ function SiteFooter() {
         </address>
       </div>
       <div className="site-footer__copyright">
-        <span>{t('footer.copyright')}</span>
+        <span>{copyright}</span>
         <div className="site-footer__legal">
           <button type="button" onClick={() => history.push('/privatuma-politika')}>{t('footer.privacy')}</button>
           <button type="button" onClick={openExternalContentPreferences}>{t('footer.preferences')}</button>
