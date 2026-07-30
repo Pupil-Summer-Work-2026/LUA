@@ -8,17 +8,13 @@ import './jaunumi.css'
 import SiteLayout from '../components/SiteLayout'
 import PageBanner from '../components/PageBanner'
 import { getPosts, getTags } from '../services/blogApi'
+import { getMarkdownSummary } from '../services/markdown'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const allCategory = '__all__'
 
 function formatDate(value, language) {
   return new Intl.DateTimeFormat(language === 'en' ? 'en-GB' : 'lv-LV', { dateStyle: 'long' }).format(new Date(value))
-}
-
-function getSummary(content) {
-  const normalizedContent = content.replace(/\s+/g, ' ').trim()
-  return normalizedContent.length > 220 ? `${normalizedContent.slice(0, 220)}...` : normalizedContent
 }
 
 function Jaunumi() {
@@ -88,7 +84,7 @@ function Jaunumi() {
                 <div className="news-page__card-content">
                   <span>{tagNames}</span>
                   <h1>{article.title}</h1>
-                  <p>{getSummary(article.content)}</p>
+                  <p>{getMarkdownSummary(article.content, 220)}</p>
                   <small>{formatDate(article.created_at, language)}</small>
                 </div>
               </Link>
