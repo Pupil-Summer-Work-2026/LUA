@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from 'react'
 
 import { Helmet } from 'react-helmet'
+import ReactMarkdown from 'react-markdown'
 import { Link, useParams } from 'react-router-dom'
 
 import './jaunums.css'
@@ -33,7 +34,6 @@ function Jaunums() {
       .catch((error) => setStatus(error.status === 404 ? 'missing' : 'error'))
         }, [postId, t])
 
-  const paragraphs = post ? post.content.split(/\n{2,}/).filter(Boolean) : []
   const title = post ? post.title : t('article.title')
 
   return (
@@ -53,7 +53,7 @@ function Jaunums() {
             {status === 'ready' && <>
               <h1>{post.title}</h1>
               <p className="article-page__meta">{post.tags.map(({ name }) => name).join(', ') || t('news.uncategorized')} • {formatDate(post.created_at, language)}</p>
-              {paragraphs.map((paragraph, index) => <p key={`${index}-${paragraph}`}>{paragraph}</p>)}
+              <ReactMarkdown className="article-page__content" components={{ h1: 'h2' }}>{post.content}</ReactMarkdown>
               {post.images.length > 0 && <div className="article-page__gallery">
                 {post.images.map((postImage) => <img key={postImage.id} src={postImage.image} alt={postImage.alt_text || post.title} />)}
               </div>}

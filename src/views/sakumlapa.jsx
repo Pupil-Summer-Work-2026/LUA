@@ -8,6 +8,7 @@ import './sakumlapa.css'
 import CountUpNumber from '../components/CountUpNumber'
 import SiteLayout from '../components/SiteLayout'
 import { getMembers, getPosts } from '../services/blogApi'
+import { getMarkdownSummary } from '../services/markdown'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const services = [
@@ -22,11 +23,6 @@ const collaborationPartners = [
   ['/Biedri/LDDK.svg', 'Latvijas Darba devēju konfederācija', 'https://lddk.lv/'],
   ['/Biedri/vugd.png', 'Valsts ugunsdzēsības un glābšanas dienests', 'https://www.vugd.gov.lv/lv', true],
 ]
-
-function getSummary(content) {
-  const normalizedContent = content.replace(/\s+/g, ' ').trim()
-  return normalizedContent.length > 120 ? `${normalizedContent.slice(0, 120)}...` : normalizedContent
-}
 
 function Sakumlapa() {
   const history = useHistory()
@@ -136,7 +132,7 @@ function Sakumlapa() {
                   {coverImage ? <img src={coverImage.image} alt={coverImage.alt_text || article.title} /> : <div className="lua-article-grid__image-placeholder" aria-hidden="true" />}
                   <div>
                     <h3>{article.title}</h3>
-                    <p>{getSummary(article.content)}</p>
+                    <p>{getMarkdownSummary(article.content, 120)}</p>
                   </div>
                 </Link>
               )
